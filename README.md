@@ -1,8 +1,23 @@
-# Attendance-Management
+# CoachTech 勤怠管理アプリ
 
 ## 概要
 
 #### 主な機能
+本アプリはユーザーの勤怠と管理を目的とする勤怠管理アプリです。
+【一般ユーザー（スタッフ）側】
+<ul>
+	<li>会員登録・ログイン（メール認証対応）</li>
+	<li>勤怠の打刻（出勤・退勤・休憩）</li>
+	<li>勤怠時刻の修正申請</li>
+	<li>勤怠一覧、申請一覧の確認</li>
+</ul>
+【管理ユーザー側】
+<ul>
+	<li>全スタッフの勤怠一覧</li>
+	<li>スタッフの勤怠情報詳細の確認、修正</li>
+	<li>修正申請の承認</li>
+	<li>勤怠一覧情報のCSV出力</li>
+</ul>
 
 #### 実行環境
 <ul>
@@ -54,6 +69,7 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed
 ```
+&nbsp;
 
 ## テスト環境構築
 ```
