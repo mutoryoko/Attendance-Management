@@ -16,7 +16,7 @@
         <header class="header">
             <div class="header__inner">
                 <div class="header__logo">
-                    <a href="{{ route('loginForm') }}">
+                    <a href="{{ route('login') }}">
                         <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
                     </a>
                 </div>
@@ -32,7 +32,7 @@
                             <a class="request__btn nav__link" href="">申請</a>
                         </li>
                         <li class="header__nav--item">
-                            <form action="" method="POST">
+                            <form action="{{ route('logout') }}" method="POST">
                             @csrf
                                 <button class="logout__btn" type="submit">ログアウト</button>
                             </form>

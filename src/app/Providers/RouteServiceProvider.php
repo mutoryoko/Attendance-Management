@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -10,18 +11,19 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * The path to your application's "home" route.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/home';
+    // @var string
 
-    /**
-     * Define your route model bindings, pattern filters, and other route configuration.
-     */
+    public const HOME = '/attendance';
+    public const ADMIN_HOME = '/admin/attendances';
+
+    protected function redirectTo($request)
+    {
+        if (Auth::guard('admin')->check()) {
+            return self::ADMIN_HOME;
+        }
+        return self::HOME;
+    }
+
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {

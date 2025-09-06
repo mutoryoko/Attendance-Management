@@ -1,9 +1,9 @@
 @extends('layouts.admin_default')
 
-@section('title', '管理者ログイン')
+@section('title', 'ログイン画面（管理者）')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/login.css')}}" />
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
 @endsection
 
 @section('content')
@@ -14,16 +14,16 @@
             <div class="user-form__item">
                 <label class="user-form__label"><div>メールアドレス</div></label>
                 <input class="user-form__input" type="text" name="email" value="{{ old('email') }}" />
-                {{-- @error('email')
+                @error('email')
                     <p class="error">{{ $message }}</p>
-                @enderror --}}
+                @enderror
             </div>
             <div class="user-form__item">
                 <label class="user-form__label"><div>パスワード</div></label>
                 <input class="user-form__input" type="password" name="password" />
-                {{-- @error('password')
+                @error('password')
                     <p class="error">{{ $message }}</p>
-                @enderror --}}
+                @enderror
             </div>
 
             <button class="login__btn" type="submit">管理者ログインする</button>
