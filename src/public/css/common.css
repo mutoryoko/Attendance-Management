@@ -1,0 +1,104 @@
+/* 共通要素 */
+* {
+    box-sizing: border-box;
+}
+
+body, button {
+    font-family: "Zen Kaku Gothic New", sans-serif;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+}
+
+img {
+    width: 100%;
+}
+
+/* ヘッダー */
+.header {
+    background-color: #000;
+}
+
+.header__inner {
+    max-width: 1540px;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.header__logo {
+    width: 270px;
+    height: fit-content;
+    vertical-align: middle;
+}
+
+.header__nav--items {
+    display: flex;
+    align-items: center;
+}
+
+.nav__link,
+.logout__btn {
+    border: none;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.logout__btn {
+    background-color: #000;
+    cursor: pointer;
+}
+
+/* コンテンツ */
+.content {
+    max-width: 1540px;
+    margin: 0 auto;
+}
+
+/* ユーザー登録・ログインページ */
+.user-form {
+    width: 650px;
+    margin: 0 auto;
+}
+
+.user-form__item {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.user-form__label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.user-form__input {
+    width: 650px;
+    padding: 10px;
+    margin-top: 6px;
+}
+
+.user-form__link {
+    display: block;
+    margin-top: 30px;
+    text-align: center;
+    color: rgb(0, 115, 204);
+}
+
+.register__btn,
+.login__btn {
+    width: 100%;
+    background-color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 40px;
+    cursor: pointer;
+}

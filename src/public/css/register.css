@@ -1,0 +1,13 @@
+.header__nav {
+    display: none;
+}
+
+.content {
+    padding: 60px 0;
+}
+
+.title {
+    font-size: 36px;
+    text-align: center;
+    margin: 0 auto 60px;
+}

@@ -1,0 +1,45 @@
+# --- Node / Frontend build ---
+/node_modules
+/public/build
+/public/hot
+/public/storage
+
+# --- Environment files ---
+.env
+.env.backup
+.env.testing
+.env.production
+
+# --- Laravel / PHP ---
+/vendor
+/.phpunit.cache
+.phpunit.result.cache
+/storage/*.key
+
+# --- Docker ---
+docker-compose.override.yml
+
+# --- Homestead / auth.json ---
+Homestead.json
+Homestead.yaml
+auth.json
+
+# --- Logs ---
+npm-debug.log*
+yarn-error.log*
+
+# --- IDE / Editor settings ---
+/.idea
+/.vscode
+/.fleet
+
+# --- System files ---
+.DS_Store
+Thumbs.db
+
+# --- SSH keys / Secrets ---
+*.pem
+*.key
+*.pub
+id_rsa
+id_rsa.*
