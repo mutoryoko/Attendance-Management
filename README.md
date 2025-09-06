@@ -3,7 +3,7 @@
 ## 概要
 
 #### 主な機能
-本アプリはユーザーの勤怠と管理を目的とする勤怠管理アプリです。
+本アプリはユーザーの勤怠と管理を目的とする勤怠管理アプリです。<br />
 【一般ユーザー（スタッフ）側】
 <ul>
 	<li>会員登録・ログイン（メール認証対応）</li>
@@ -39,7 +39,7 @@
 
 ## Dockerビルド
 ```
-git clone git@github.com:mutoryoko/FleaMarket.git
+git clone git@github.com:mutoryoko/Attendance-Management.git
 docker compose up -d --build
 ```
 &nbsp;
