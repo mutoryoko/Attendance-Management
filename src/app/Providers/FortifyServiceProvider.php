@@ -27,7 +27,7 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // 一般ユーザー
+        // 一般ユーザー用
         $this->app->singleton(LoginViewResponseContract::class, UserLoginViewResponse::class);
         $this->app->singleton(RegisterViewResponseContract::class, UserRegisterViewResponse::class);
 
