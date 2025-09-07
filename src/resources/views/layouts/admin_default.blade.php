@@ -16,7 +16,7 @@
         <header class="header">
             <div class="header__inner">
                 <div class="header__logo">
-                    <a href="{{ route('admin.login') }}">
+                    <a href="{{ route('admin.loginForm') }}">
                         <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
                     </a>
                 </div>
@@ -38,9 +38,13 @@
                         </li>
                     </ul>
                 </nav>
+
             </div>
         </header>
         <main>
+            @if (session('status'))
+            <p class="session">{{ session('status') }}</p>
+            @endif
             @yield('content')
         </main>
     </body>

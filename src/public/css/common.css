@@ -107,3 +107,11 @@ img {
     color: red;
     margin-top: 5px;
 }
+
+.session {
+    color: rgb(54, 191, 111);
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 20px 0 0;
+}
