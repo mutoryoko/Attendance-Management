@@ -14,13 +14,9 @@ class RouteServiceProvider extends ServiceProvider
     // @var string
 
     public const HOME = '/attendance';
-    public const ADMIN_HOME = '/admin/attendances';
 
     protected function redirectTo($request)
     {
-        if (Auth::guard('admin')->check()) {
-            return self::ADMIN_HOME;
-        }
         return self::HOME;
     }
 

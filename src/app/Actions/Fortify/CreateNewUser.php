@@ -10,15 +10,11 @@ use Illuminate\Validation\Rule;
 
 class CreateNewUser implements CreatesNewUsers
 {
-    /**
-     * Validate and create a newly registered user.
-     *
-     * @param  array<string, string>  $input
-     */
+    // @param  array<string, string>  $input
     public function create(array $input): User
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:20'],
             'email' => [
                 'required',
                 'string',
@@ -31,7 +27,7 @@ class CreateNewUser implements CreatesNewUsers
         $messages = [
             'name.required' => 'お名前を入力してください',
             'name.string' => 'お名前は文字列で入力してください',
-            'name.max' => 'お名前は255字以下で入力してください',
+            'name.max' => 'お名前は20字以下で入力してください',
             'email.required' => 'メールアドレスを入力してください',
             'email.string' => 'メールアドレスは文字で入力してください',
             'email.email' => 'メール形式で入力してください',

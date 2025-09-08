@@ -4,7 +4,7 @@ namespace App\Http\Responses;
 
 use Laravel\Fortify\Contracts\RegisterViewResponse as RegisterViewResponseContract;
 
-class UserRegisterViewResponse implements RegisterViewResponseContract
+class RegisterViewResponse implements RegisterViewResponseContract
 {
     public function toResponse($request)
     {

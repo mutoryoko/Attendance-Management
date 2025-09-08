@@ -13,7 +13,10 @@ class LoginRequest extends FortifyLoginRequest
 
     public function rules()
     {
-        return parent::rules();
+        return [
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ];
     }
 
     public function messages()
