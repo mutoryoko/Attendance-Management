@@ -16,7 +16,7 @@
         <header class="header">
             <div class="header__inner">
                 <div class="header__logo">
-                    <a href="{{ route('admin.loginForm')}}">
+                    <a href="{{ route('admin.index') }}">
                         <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
                     </a>
                 </div>

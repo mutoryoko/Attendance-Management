@@ -9,7 +9,7 @@
 @section('content')
 <div class="content">
     <h1 class="title">管理者ログイン</h1>
-    <form class="user-form" action="{{ route('admin.login.store') }}" method="POST">
+    <form class="user-form" action="{{ route('admin.login') }}" method="POST">
         @csrf
         <div class="user-form__item">
             <label class="user-form__label"><div>メールアドレス</div></label>
