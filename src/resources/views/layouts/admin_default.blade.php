@@ -6,10 +6,10 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>@yield('title')</title>
         <link rel="stylesheet" href="{{ asset('css/reset.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         @yield('css')
     </head>
     <body>
@@ -20,6 +20,7 @@
                         <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
                     </a>
                 </div>
+                @if(Auth::guard('admin')->check())
                 <nav class="header__nav">
                     <ul class="header__nav--items">
                         <li class="header__nav--item">
@@ -39,7 +40,7 @@
                         </li>
                     </ul>
                 </nav>
-
+                @endif
             </div>
         </header>
         <main>

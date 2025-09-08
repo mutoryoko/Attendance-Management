@@ -1,4 +1,4 @@
-@extends('layouts.admin_default')
+@extends('layouts.default')
 
 @section('title', '勤怠一覧画面（管理者）')
 

@@ -1,4 +1,4 @@
-@extends('layouts.admin_default')
+@extends('layouts.default')
 
 @section('title', 'ログイン画面（管理者）')
 
