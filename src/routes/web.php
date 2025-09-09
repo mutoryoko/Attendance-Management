@@ -9,6 +9,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

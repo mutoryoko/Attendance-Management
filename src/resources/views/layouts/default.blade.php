@@ -64,9 +64,6 @@
             </div>
         </header>
         <main>
-            @if (session('status'))
-            <p class="session">{{ session('status') }}</p>
-            @endif
             @yield('content')
         </main>
     </body>

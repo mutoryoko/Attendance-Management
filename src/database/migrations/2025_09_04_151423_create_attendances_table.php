@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('work_date')->nullable();
-            $table->datetime('clock_in_time')->nullable();
-            $table->datetime('clock_out_time')->nullable();
-            $table->integer('total_break_minutes')->nullable();
+            $table->time('clock_in_time')->nullable();
+            $table->time('clock_out_time')->nullable();
+            $table->integer('total_break_minutes')->default(0);
             $table->integer('total_work_minutes')->nullable();
             $table->timestamps();
         });

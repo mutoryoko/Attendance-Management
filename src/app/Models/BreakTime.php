@@ -9,6 +9,8 @@ class BreakTime extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     protected $fillable = [
         'attendance_id',
         'start_at',
@@ -17,6 +19,6 @@ class BreakTime extends Model
 
     public function attendance()
     {
-        return $this->hasOne(Attendance::class);
+        return $this->belongsTo(Attendance::class);
     }
 }

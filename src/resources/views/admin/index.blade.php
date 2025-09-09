@@ -8,6 +8,9 @@
 
 @section('content')
     <div class="content">
+        @if (session('status'))
+        <p class="session">{{ session('status') }}</p>
+        @endif
         勤怠一覧画面（管理者）
     </div>
 @endsection
