@@ -3,13 +3,13 @@
 @section('title', '出勤登録画面')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/attendance.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/attendance.css') }}" />
 @endsection
 
 @section('content')
 <div class="content">
     @if (session('status'))
-        <p class="session">{{ session('status') }}</p>
+    <p class="session">{{ session('status') }}</p>
     @endif
     <div class="attendance-form">
         <div class="working-status">
@@ -43,14 +43,16 @@
 
                 @case('working')
                 {{-- 出勤中 --}}
-                    <form action="{{ route('attendance.store') }}" method="POST">
-                        @csrf
-                        <button class="clock__btn" type="submit" name="action" value="clock_out">退勤</button>
-                    </form>
-                    <form action="{{ route('attendance.store') }}" method="POST">
-                        @csrf
-                        <button class="break__btn" type="submit" name="action" value="break_start">休憩入</button>
-                    </form>
+                    <div class="while-working__buttons">
+                        <form action="{{ route('attendance.store') }}" method="POST">
+                            @csrf
+                            <button class="clock__btn" type="submit" name="action" value="clock_out">退勤</button>
+                        </form>
+                        <form action="{{ route('attendance.store') }}" method="POST">
+                            @csrf
+                            <button class="break__btn" type="submit" name="action" value="break_start">休憩入</button>
+                        </form>
+                    </div>
                     @break
 
                 @case('on_break')

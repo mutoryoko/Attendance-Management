@@ -20,12 +20,12 @@ class Request extends Model
 
     public function adminUser()
     {
-        return $this->hasOne(AdminUser::class);
+        return $this->belongsTo(AdminUser::class);
     }
 
     public function attendance()
     {
-        return $this->hasOne(Attendance::class);
+        return $this->belongsTo(Attendance::class);
     }
 
     public function requestBreakTimes()

@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
             $table->foreignId('admin_user_id')->nullable()->constrained()->onDelete('set null');
-            $table->dateTime('requested_clock_in')->nullable();
-            $table->dateTime('requested_clock_out')->nullable();
+            $table->time('requested_clock_in')->nullable();
+            $table->time('requested_clock_out')->nullable();
             $table->string('note');
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

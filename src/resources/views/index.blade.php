@@ -1,9 +1,9 @@
 @extends('layouts.default')
 
-@section('title', '勤怠一覧画面（管理者）')
+@section('title', '勤怠一覧画面（一般ユーザー）')
 
 @section('css')
-<link rel="stylesheet" href="" />
+<link rel="stylesheet" href="{{ asset('css/index.css') }}" />
 @endsection
 
 @section('content')
@@ -11,6 +11,6 @@
     @if (session('status'))
     <p class="session">{{ session('status') }}</p>
     @endif
-    勤怠一覧画面（管理者）
+    <h1 class="title">勤怠一覧</h1>
 </div>
 @endsection
