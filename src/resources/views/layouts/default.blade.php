@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="{{ asset('css/reset.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         @yield('css')
     </head>

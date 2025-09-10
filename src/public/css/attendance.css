@@ -22,19 +22,26 @@
 }
 
 .clock-date {
+    font-family: "Inter", sans-serif;
     font-size: 40px;
-    letter-spacing: 0.1rem;
     text-align: center;
     margin: 40px 0;
 }
 
 .clock-time {
-    font-family: "Roboto";
+    font-family: "Inter", sans-serif;
     font-size: 80px;
-    letter-spacing: 0.1rem;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.2rem;
     text-align: center;
     margin-bottom: 80px;
+}
+/* コロンのズレ調整 */
+.clock-time .colon {
+    margin: 0 0.2rem 1rem;
 }
 
 .while-working__buttons {

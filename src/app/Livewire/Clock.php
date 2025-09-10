@@ -7,13 +7,30 @@ use Carbon\Carbon;
 
 class Clock extends Component
 {
-    public function render()
+    public $date;
+    public $time;
+
+    public function mount()
+    {
+        $this->updateTime();
+    }
+
+    public function updateTime()
     {
         $now = Carbon::now()->locale('ja');
 
-        return view('livewire.clock', [
-            'date' => $now->translatedFormat('Y年m月d日 (D)'),
-            'time' => $now->format('H:i'),
-        ]);
+        $dateString = $now->format('Y年n月j日');
+        $dayOfWeek = $now->shortDayName; //日本語の曜日取得
+        $this->date = "{$dateString} ({$dayOfWeek})";
+
+        $hour = $now->format('H');
+        $minute = $now->format('i');
+        $this->time = "<span>{$hour}</span><span class=\"colon\">:</span><span>{$minute}</span>";
+    }
+
+    public function render()
+    {
+        $this->updateTime();
+        return view('livewire.clock');
     }
 }
