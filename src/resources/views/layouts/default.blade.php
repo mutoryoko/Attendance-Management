@@ -16,9 +16,7 @@
         <header class="header">
             <div class="header__inner">
                 <div class="header__logo">
-                    <a href="{{ route('login') }}">
-                        <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
-                    </a>
+                    <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
                 </div>
                 @if(Auth::guard('web')->check())
                 <nav class="header__nav">

@@ -142,7 +142,7 @@ class AttendanceController extends Controller
                 break;
         }
 
-        return to_route('attendance.index')->with('status', '打刻が完了しました');
+        return back()->with('status', '打刻が完了しました');
     }
 
     public function show()
