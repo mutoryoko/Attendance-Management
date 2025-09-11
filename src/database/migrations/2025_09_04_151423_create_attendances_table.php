@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('total_break_minutes')->default(0);
             $table->integer('total_work_minutes')->nullable();
             $table->timestamps();
+
+            $table->unique(['user_id', 'work_date']);
         });
     }
 
