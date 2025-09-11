@@ -1,4 +1,4 @@
-@extends('layouts.admin_default')
+@extends('layouts.default')
 
 @section('title', 'ログイン画面（管理者）')
 
@@ -8,6 +8,9 @@
 
 @section('content')
 <div class="content">
+    @if (session('status'))
+        <p class="session">{{ session('status') }}</p>
+    @endif
     <h1 class="title">管理者ログイン</h1>
     <form class="user-form" action="{{ route('admin.login') }}" method="POST">
         @csrf

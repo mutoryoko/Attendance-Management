@@ -8,6 +8,9 @@
 
 @section('content')
 <div class="content">
+    @if (session('status'))
+        <p class="session">{{ session('status') }}</p>
+    @endif
     <h1 class="title">ログイン</h1>
     <form class="user-form" action="{{ route('login') }}" method="POST">
         @csrf

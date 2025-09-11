@@ -4,7 +4,7 @@
 }
 
 body, button {
-    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-family: "Zen Kaku Gothic New", "Inter", sans-serif;
 }
 
 h1, h2, h3 {
@@ -17,6 +17,9 @@ img {
 
 /* ヘッダー */
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     background-color: #000;
 }
 
@@ -46,17 +49,21 @@ img {
     text-decoration: none;
     color: #fff;
     font-size: 18px;
-    margin-right: 20px;
+    font-weight: bold;
+    margin-right: 30px;
 }
 
 .logout__btn {
     background-color: #000;
     cursor: pointer;
+    padding: 0;
+    margin-right: 0;
 }
 
 /* コンテンツ */
 .content {
     max-width: 1540px;
+    padding: 30px;
     margin: 0 auto;
 }
 
@@ -69,6 +76,10 @@ img {
 .user-form__item {
     width: 100%;
     margin-bottom: 30px;
+}
+
+.user-form__item:last-of-type {
+    margin-bottom: 50px;
 }
 
 .user-form__label {
@@ -99,7 +110,6 @@ img {
     border: none;
     border-radius: 5px;
     padding: 10px;
-    margin-top: 40px;
     cursor: pointer;
 }
 
@@ -109,9 +119,9 @@ img {
 }
 
 .session {
-    color: rgb(54, 191, 111);
+    color: rgb(31, 170, 89);
     text-align: right;
     font-size: 20px;
     font-weight: bold;
-    padding: 20px 20px 0 0;
+    margin-bottom: 30px;
 }

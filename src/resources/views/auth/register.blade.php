@@ -8,6 +8,9 @@
 
 @section('content')
 <div class="content">
+    @if (session('status'))
+        <p class="session">{{ session('status') }}</p>
+    @endif
     <h1 class="title">会員登録</h1>
     <form class="user-form" action="{{ route('register') }}" method="POST">
         @csrf
