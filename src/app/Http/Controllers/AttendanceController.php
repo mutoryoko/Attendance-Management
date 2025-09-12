@@ -5,14 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 
 class AttendanceController extends Controller
 {
+    // 勤怠一覧画面表示
     public function index()
     {
-        return view('index');
+        $user = Auth::user();
+
+        $past = Carbon::now()->subDays(60);
+        $future = Carbon::now()->addDays(60);
+        $period = CarbonPeriod::create($past,'1 day', $future);
+
+        $attendances = Attendance::where('user_id', $user->id)
+                    ->whereDate('work_date', '>=', $past)
+                    ->whereDate('work_date', '<=', $future)
+                    ->get()
+                    ->keyBy(function ($item) {
+                        return Carbon::parse($item->work_date)->format('Y-m-d');
+                    });
+
+        return view('index', compact('period', 'attendances'));
     }
 
     // 勤怠登録画面表示
