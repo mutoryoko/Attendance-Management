@@ -32,10 +32,10 @@
                 @endphp
                 <tr class="table-row">
                     <td class="table-data">{{ $date->format('m/d') }}</td>
-                    <td class="table-data">{{ $attendance->formatted_clock_in_time ?? '' }}</td>
-                    <td class="table-data">{{ $attendance->formatted_clock_out_time ?? '' }}</td>
-                    <td class="table-data">{{ $attendance->total_break_minutes ?? '' }}</td>
-                    <td class="table-data">{{ $attendance->total_work_minutes ?? '' }}</td>
+                    <td class="table-data">{{ $attendance->formatted_in_time ?? '' }}</td>
+                    <td class="table-data">{{ $attendance->formatted_out_time ?? '' }}</td>
+                    <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
+                    <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                     @if ($attendance)
                     <td class="table-data"><a class="detail__link" href="">詳細</a></td>
                     @endif
