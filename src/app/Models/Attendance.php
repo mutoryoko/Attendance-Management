@@ -46,13 +46,13 @@ class Attendance extends Model
      * @return string
      */
     // 出勤時刻をH:i形式で取得
-    public function getFormattedInTimeAttribute(): string
+    public function getFormattedInTimeAttribute()
     {
         return $this->clock_in_time ? $this->clock_in_time->format('H:i') : null;
     }
 
     // 退勤時刻をH:i形式で取得
-    public function getFormattedOutTimeAttribute(): string
+    public function getFormattedOutTimeAttribute()
     {
         return $this->clock_out_time ? $this->clock_out_time->format('H:i') : null;
     }

@@ -31,7 +31,7 @@
                 $attendance = $attendances->get($date->format('Y-m-d'));
                 @endphp
                 <tr class="table-row">
-                    <td class="table-data">{{ $date->format('m/d') }}</td>
+                    <td class="table-data">{{ $date->isoFormat('MM/DD(ddd)') }}</td>
                     <td class="table-data">{{ $attendance->formatted_in_time ?? '' }}</td>
                     <td class="table-data">{{ $attendance->formatted_out_time ?? '' }}</td>
                     <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
