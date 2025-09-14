@@ -6,12 +6,15 @@ use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 
 
+// 一般ユーザー（スタッフ）
 Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(function () {
     Route::get('/', [AttendanceController::class, 'create'])->name('create');
     Route::post('/', [AttendanceController::class, 'store'])->name('store');
     Route::get('/list', [AttendanceController::class, 'index'])->name('index');
+    Route::get('/detail/{id}', [AttendanceController::class, 'show'])->name('detail');
 });
 
+// 管理ユーザー
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminUserController::class, 'loginForm'])->name('loginForm');
     Route::post('/login', [AdminUserController::class, 'login'])->name('login');

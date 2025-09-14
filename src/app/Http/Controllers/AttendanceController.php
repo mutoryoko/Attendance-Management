@@ -5,14 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    // 勤怠一覧画面表示
+    public function index(Request $request)
     {
-        return view('index');
+        $month = $request->query('month', Carbon::now()->format('Y-m'));
+        $currentMonth = Carbon::parse($month);
+
+        $startOfMonth = $currentMonth->copy()->startOfMonth();
+        $endOfMonth = $currentMonth->copy()->endOfMonth();
+
+        $period = CarbonPeriod::create($startOfMonth,'1 day', $endOfMonth);
+
+        $attendances = Attendance::where('user_id', Auth::id())
+                    ->whereYear('work_date', $currentMonth->year)
+                    ->whereMonth('work_date', $currentMonth->month)
+                    ->orderBy('work_date', 'asc')
+                    ->get()
+                    ->keyBy(function ($item) {
+                        return Carbon::parse($item->work_date)->format('Y-m-d');
+                    });
+
+        $prevMonth = $currentMonth->copy()->subMonth()->format('Y-m');
+        $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
+
+        return view('index', compact('period', 'attendances', 'currentMonth', 'prevMonth', 'nextMonth'));
     }
 
     // 勤怠登録画面表示

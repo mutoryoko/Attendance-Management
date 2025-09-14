@@ -1,0 +1,11 @@
+.content {
+    background: rgb(240, 239, 242);
+    padding: 80px 30px;
+}
+
+.title {
+    font-size: 30px;
+    border-left: 8px solid #000;
+    padding: 3px 16px;
+    margin-bottom: 40px;
+}
