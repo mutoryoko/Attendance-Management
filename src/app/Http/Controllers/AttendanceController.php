@@ -169,7 +169,7 @@ class AttendanceController extends Controller
 
     public function show()
     {
-        //
+        return view('detail');
     }
 
     public function update()

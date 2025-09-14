@@ -50,7 +50,7 @@
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                         @if ($attendance)
-                        <td class="table-data"><a class="detail__link" href="">詳細</a></td>
+                        <td class="table-data"><a class="detail__link" href="{{ route('attendance.detail', ['id' => $attendance->id]) }}">詳細</a></td>
                         @endif
                     </tr>
                     @endforeach
