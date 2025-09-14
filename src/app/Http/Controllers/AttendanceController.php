@@ -12,23 +12,29 @@ use App\Models\BreakTime;
 class AttendanceController extends Controller
 {
     // 勤怠一覧画面表示
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $month = $request->query('month', Carbon::now()->format('Y-m'));
+        $currentMonth = Carbon::parse($month);
 
-        $past = Carbon::now()->subDays(60);
-        $future = Carbon::now()->addDays(60);
-        $period = CarbonPeriod::create($past,'1 day', $future);
+        $startOfMonth = $currentMonth->copy()->startOfMonth();
+        $endOfMonth = $currentMonth->copy()->endOfMonth();
 
-        $attendances = Attendance::where('user_id', $user->id)
-                    ->whereDate('work_date', '>=', $past)
-                    ->whereDate('work_date', '<=', $future)
+        $period = CarbonPeriod::create($startOfMonth,'1 day', $endOfMonth);
+
+        $attendances = Attendance::where('user_id', Auth::id())
+                    ->whereYear('work_date', $currentMonth->year)
+                    ->whereMonth('work_date', $currentMonth->month)
+                    ->orderBy('work_date', 'asc')
                     ->get()
                     ->keyBy(function ($item) {
                         return Carbon::parse($item->work_date)->format('Y-m-d');
                     });
 
-        return view('index', compact('period', 'attendances'));
+        $prevMonth = $currentMonth->copy()->subMonth()->format('Y-m');
+        $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
+
+        return view('index', compact('period', 'attendances', 'currentMonth', 'prevMonth', 'nextMonth'));
     }
 
     // 勤怠登録画面表示
