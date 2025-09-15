@@ -29,7 +29,7 @@ class Attendance extends Model
     // リレーション
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function breakTimes()
@@ -37,9 +37,9 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
 
-    public function request()
+    public function requestAttendance()
     {
-        return $this->hasOne(Request::class);
+        return $this->hasOne(RequestAttendance::class);
     }
 
     /**

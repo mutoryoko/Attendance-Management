@@ -4,8 +4,60 @@
 }
 
 .title {
+    width: 900px;
     font-size: 30px;
     border-left: 8px solid #000;
     padding: 3px 16px;
-    margin-bottom: 40px;
+    margin: 0 auto 40px;
+}
+
+.detail__table {
+    width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    margin: 0 auto 30px;
+}
+
+.table-header {
+    width: 40%;
+    text-align: left;
+    color: rgb(115, 115, 115);
+    letter-spacing: 0.1rem;
+    padding: 36px 60px;
+}
+
+.table-data {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+}
+
+.table-row {
+    border-bottom: 2px solid rgb(225, 225, 225);
+}
+
+.table-row:last-of-type {
+    border: none;
+}
+
+.work-date {
+    display: flex;
+}
+
+.edit__button {
+    width: 900px;
+    text-align: end;
+    margin: 0 auto;
+}
+
+.edit__btn--submit {
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 22px;
+    letter-spacing: 0.3rem;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 10px 40px;
+    cursor: pointer;
 }
