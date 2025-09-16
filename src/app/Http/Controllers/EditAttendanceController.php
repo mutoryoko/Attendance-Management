@@ -15,11 +15,10 @@ class EditAttendanceController extends Controller
     public function show($id)
     {
         $attendance = Attendance::find($id);
-        $workDate = Carbon::parse($attendance->work_date);
 
         $breakTimes = BreakTime::where('attendance_id', $attendance->id)->get();
 
-        return view('detail', compact('attendance', 'workDate', 'breakTimes'));
+        return view('detail', compact('attendance', 'breakTimes'));
     }
 
     public function sendRequest(ChangeTimeRequest $request, $id)
@@ -34,11 +33,17 @@ class EditAttendanceController extends Controller
             'note' => $validatedData['note'],
         ]);
 
-        RequestBreakTime::create([
-            'request_id' => $requestAttendance->id,
-            'requested_break_start' => $validatedData['requested_break_start'],
-            'requested_break_end' => $validatedData['requested_break_end'],
-        ]);
+        if (isset($validatedData['breaks'])) {
+            foreach ($validatedData['breaks'] as $breakData) {
+                if (!empty($breakData['start']) && !empty($breakData['end'])) {
+                    RequestBreakTime::create([
+                        'request_id' => $requestAttendance->id,
+                        'requested_break_start' => $breakData['start'],
+                        'requested_break_end' => $breakData['end'],
+                    ]);
+                }
+            }
+        }
 
         return to_route('attendance.index')->with('status', '申請しました');
     }
