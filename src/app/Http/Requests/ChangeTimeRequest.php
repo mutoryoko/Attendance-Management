@@ -15,10 +15,10 @@ class ChangeTimeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'requested_work_start' => 'nullable|before:requested_work_end',
-            'requested_work_end' => 'nullable|after:requested_work_start',
-            'breaks.*.start' => 'nullable|before:requested_work_end|after:requested_work_start',
-            'breaks.*.end' => 'nullable|before:requested_work_end|after:breaks.*.start',
+            'requested_work_start' => 'nullable|date_format:H:i|before:requested_work_end',
+            'requested_work_end' => 'nullable|date_format:H:i|after:requested_work_start',
+            'breaks.*.start' => 'nullable|date_format:H:i|before:requested_work_end|after:requested_work_start',
+            'breaks.*.end' => 'nullable|date_format:H:i|before:requested_work_end|after:breaks.*.start',
             'note' => 'required|string|max:255',
         ];
     }

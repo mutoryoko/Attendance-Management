@@ -23,18 +23,22 @@
     text-align: left;
     color: rgb(115, 115, 115);
     letter-spacing: 0.1rem;
-    padding: 40px 60px;
+    padding: 10px 60px;
 }
 
 .table-data {
     font-family: "Inter", sans-serif;
     font-weight: bold;
     letter-spacing: 0.1rem;
+    padding: 40px 0;
 }
 
-.user-name,
+.user-name {
+    margin-left: 1.6em;
+}
+
 .work-year {
-    margin: 0 1em 0 1.3em;
+    margin: 0 0.5em 0 1.6em;
 }
 
 .work-date {
@@ -47,16 +51,17 @@
     font-weight: bold;
     letter-spacing: 0.2rem;
     border: 1px solid rgb(225, 225, 225);
+    border-radius: 4px;
     outline: none;
-    padding: 5px 20px;
+    padding: 5px 25px;
+}
+
+.time__input::-webkit-calendar-picker-indicator {
+    display: none;
 }
 
 .range {
     margin: 0 30px;
-}
-
-.time__input::-webkit-calendar-picker-indicator {
-    background: none;
 }
 
 .table-row {
@@ -72,12 +77,17 @@
 }
 
 .note-text {
-    width: 360px;
+    width: 325px;
     border: 1px solid rgb(225, 225, 225);
+    border-radius: 4px;
     outline: none;
     vertical-align: middle;
     resize: vertical;
     padding: 10px;
+}
+
+.note-text::placeholder {
+    color: rgb(225, 225, 225);
 }
 
 .edit__button {

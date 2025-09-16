@@ -61,7 +61,7 @@
                 <tr class="table-row">
                     <th class="table-header">備考</th>
                     <td class="table-data note-data">
-                        <textarea class="note-text" name="note">{{ old('note') }}</textarea>
+                        <textarea class="note-text" name="note" placeholder="電車遅延のため" rows="3">{{ old('note') }}</textarea>
 
                         @error('note')
                         <p class="error">{{ $message }}</p>
