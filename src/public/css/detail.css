@@ -23,12 +23,40 @@
     text-align: left;
     color: rgb(115, 115, 115);
     letter-spacing: 0.1rem;
-    padding: 36px 60px;
+    padding: 40px 60px;
 }
 
 .table-data {
     font-family: "Inter", sans-serif;
     font-weight: bold;
+    letter-spacing: 0.1rem;
+}
+
+.user-name,
+.work-year {
+    margin: 0 1em 0 1.3em;
+}
+
+.work-date {
+    display: flex;
+}
+
+.time__input {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.2rem;
+    border: 1px solid rgb(225, 225, 225);
+    outline: none;
+    padding: 5px 20px;
+}
+
+.range {
+    margin: 0 30px;
+}
+
+.time__input::-webkit-calendar-picker-indicator {
+    background: none;
 }
 
 .table-row {
@@ -39,8 +67,17 @@
     border: none;
 }
 
-.work-date {
-    display: flex;
+.note-data {
+    padding: 20px 0;
+}
+
+.note-text {
+    width: 360px;
+    border: 1px solid rgb(225, 225, 225);
+    outline: none;
+    vertical-align: middle;
+    resize: vertical;
+    padding: 10px;
 }
 
 .edit__button {
@@ -60,4 +97,8 @@
     outline: none;
     padding: 10px 40px;
     cursor: pointer;
+}
+
+.error {
+    font-weight: normal;
 }

@@ -1,11 +1,10 @@
 .content {
     background: rgb(240, 239, 242);
-    padding: 80px 30px;
 }
 
 .attendances__wrapper {
     width: 900px;
-    margin: 0 auto;
+    margin: 50px auto;
 }
 
 .title {

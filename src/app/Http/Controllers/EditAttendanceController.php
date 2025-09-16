@@ -27,10 +27,19 @@ class EditAttendanceController extends Controller
         $attendance = Attendance::find($id);
         $validatedData = $request->validated();
 
-        RequestAttendance::create([
-            'attendance_id' => $request->input($attendance->id),
-            'request_work_start' => $validatedData['request_work_start'],
-            'request_work_end' => $validatedData['request_work_end'],
+        $requestAttendance = RequestAttendance::create([
+            'attendance_id' => $attendance->id,
+            'requested_work_start' => $validatedData['requested_work_start'],
+            'requested_work_end' => $validatedData['requested_work_end'],
+            'note' => $validatedData['note'],
         ]);
+
+        RequestBreakTime::create([
+            'request_id' => $requestAttendance->id,
+            'requested_break_start' => $validatedData['requested_break_start'],
+            'requested_break_end' => $validatedData['requested_break_end'],
+        ]);
+
+        return to_route('attendance.index')->with('status', '申請しました');
     }
 }

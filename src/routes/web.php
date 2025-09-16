@@ -13,7 +13,7 @@ Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(fu
     Route::post('/', [AttendanceController::class, 'store'])->name('store');
     Route::get('/list', [AttendanceController::class, 'index'])->name('index');
     Route::get('/detail/{id}', [EditAttendanceController::class, 'show'])->name('detail');
-    Route::put('/detail/{id}', [EditAttendanceController::class, 'update'])->name('update');
+    Route::post('/detail/{id}', [EditAttendanceController::class, 'sendRequest'])->name('send');
 });
 
 // 管理ユーザー
