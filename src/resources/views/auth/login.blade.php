@@ -11,7 +11,7 @@
     @if (session('status'))
         <p class="session">{{ session('status') }}</p>
     @endif
-    <h1 class="title">ログイン</h1>
+    <h1 class="auth-title">ログイン</h1>
     <form class="user-form" action="{{ route('login') }}" method="POST">
         @csrf
         <div class="user-form__item">

@@ -43,6 +43,6 @@ class EditAttendanceController extends Controller
             }
         }
 
-        return to_route('attendance.index')->with('status', '申請しました');
+        return to_route('request.index')->with('status', '申請しました');
     }
 }

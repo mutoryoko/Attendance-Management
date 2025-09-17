@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EditAttendanceController;
+use App\Http\Controllers\RequestAttendanceController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,6 +16,7 @@ Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(fu
     Route::get('/detail/{id}', [EditAttendanceController::class, 'show'])->name('detail');
     Route::post('/detail/{id}', [EditAttendanceController::class, 'sendRequest'])->name('send');
 });
+Route::get('/stamp_correction_request/list', [RequestAttendanceController::class, 'index'])->middleware(['auth'])->name('request.index');
 
 // 管理ユーザー
 Route::prefix('admin')->name('admin.')->group(function () {

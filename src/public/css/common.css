@@ -15,6 +15,21 @@ img {
     width: 100%;
 }
 
+.content {
+    max-width: 1540px;
+    background: rgb(240, 239, 242);
+    padding: 30px;
+    margin: 0 auto;
+}
+
+.title {
+    width: 900px;
+    font-size: 30px;
+    border-left: 8px solid #000;
+    padding: 3px 16px;
+    margin: 0 auto 40px;
+}
+
 /* ヘッダー */
 .header {
     position: sticky;
@@ -58,13 +73,6 @@ img {
     cursor: pointer;
     padding: 0;
     margin-right: 0;
-}
-
-/* コンテンツ */
-.content {
-    max-width: 1540px;
-    padding: 30px;
-    margin: 0 auto;
 }
 
 /* ユーザー登録・ログインページ */

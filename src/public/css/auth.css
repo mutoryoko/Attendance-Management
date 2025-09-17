@@ -1,4 +1,8 @@
-.title {
+.content {
+    background: #fff;
+}
+
+.auth-title {
     font-size: 36px;
     text-align: center;
     margin: 30px auto 60px;

@@ -1,17 +1,6 @@
-.content {
-    background: rgb(240, 239, 242);
-}
-
 .attendances__wrapper {
     width: 900px;
     margin: 50px auto;
-}
-
-.title {
-    font-size: 30px;
-    border-left: 8px solid #000;
-    padding: 3px 16px;
-    margin-bottom: 40px;
 }
 
 /* ページネーション */
