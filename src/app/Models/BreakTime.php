@@ -17,8 +17,35 @@ class BreakTime extends Model
         'end_at',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_at' => 'datetime',
+        'end_at' => 'datetime',
+    ];
+
+    // リレーション
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }
+
+    /**
+     * @return string
+     */
+    // 休憩開始時刻をH:i形式で取得
+    public function getFormattedBreakStartAttribute()
+    {
+        return $this->start_at ? $this->start_at->format('H:i') : null;
+    }
+
+    // 休憩終了時刻をH:i形式で取得
+    public function getFormattedBreakEndAttribute()
+    {
+        return $this->end_at ? $this->end_at->format('H:i') : null;
+    }
+
 }

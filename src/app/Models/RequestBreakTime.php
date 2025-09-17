@@ -11,12 +11,12 @@ class RequestBreakTime extends Model
 
     protected $fillable = [
         'request_id',
-        'start_at',
-        'end_at',
+        'requested_break_start',
+        'requested_break_end',
     ];
 
-    public function request()
+    public function requestAttendance()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(RequestAttendance::class);
     }
 }

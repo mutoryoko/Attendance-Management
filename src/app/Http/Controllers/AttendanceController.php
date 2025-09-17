@@ -166,14 +166,4 @@ class AttendanceController extends Controller
 
         return back()->with('status', '打刻が完了しました');
     }
-
-    public function show()
-    {
-        //
-    }
-
-    public function update()
-    {
-        //
-    }
 }

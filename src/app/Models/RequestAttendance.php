@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class RequestAttendance extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'attendance_id',
         'admin_user_id',
-        'requested_clock_in',
-        'requested_clock_out',
+        'requested_work_start',
+        'requested_work_end',
         'is_approved',
         'note',
     ];

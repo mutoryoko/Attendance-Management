@@ -19,8 +19,8 @@ class AdminUser extends Authenticatable
         'remember_token',
     ];
 
-    public function requests()
+    public function requestAttendances()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(RequestAttendance::class);
     }
 }

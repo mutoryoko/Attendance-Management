@@ -45,12 +45,12 @@
                     @endphp
                     <tr class="table-row">
                         <td class="table-data">{{ $date->isoFormat('MM/DD(ddd)') }}</td>
-                        <td class="table-data">{{ $attendance->formatted_in_time ?? '' }}</td>
-                        <td class="table-data">{{ $attendance->formatted_out_time ?? '' }}</td>
+                        <td class="table-data">{{ $attendance->formatted_work_start ?? '' }}</td>
+                        <td class="table-data">{{ $attendance->formatted_work_end ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                         @if ($attendance)
-                        <td class="table-data"><a class="detail__link" href="">詳細</a></td>
+                        <td class="table-data"><a class="detail__link" href="{{ route('attendance.detail', ['id' => $attendance->id]) }}">詳細</a></td>
                         @endif
                     </tr>
                     @endforeach

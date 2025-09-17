@@ -29,7 +29,7 @@ class Attendance extends Model
     // リレーション
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function breakTimes()
@@ -37,22 +37,22 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
 
-    public function request()
+    public function requestAttendance()
     {
-        return $this->hasOne(Request::class);
+        return $this->hasOne(RequestAttendance::class);
     }
 
     /**
      * @return string
      */
     // 出勤時刻をH:i形式で取得
-    public function getFormattedInTimeAttribute()
+    public function getFormattedWorkStartAttribute()
     {
         return $this->clock_in_time ? $this->clock_in_time->format('H:i') : null;
     }
 
     // 退勤時刻をH:i形式で取得
-    public function getFormattedOutTimeAttribute()
+    public function getFormattedWorkEndAttribute()
     {
         return $this->clock_out_time ? $this->clock_out_time->format('H:i') : null;
     }
