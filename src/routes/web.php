@@ -8,7 +8,7 @@ use App\Http\Controllers\RequestAttendanceController;
 use Illuminate\Support\Facades\Route;
 
 
-// 一般ユーザー（スタッフ）
+// 一般ユーザー
 Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(function () {
     Route::get('/', [AttendanceController::class, 'create'])->name('create');
     Route::post('/', [AttendanceController::class, 'store'])->name('store');
@@ -16,9 +16,11 @@ Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(fu
     Route::get('/detail/{id}', [EditAttendanceController::class, 'show'])->name('detail');
     Route::post('/detail/{id}', [EditAttendanceController::class, 'sendRequest'])->name('send');
 });
-Route::get('/stamp_correction_request/list', [RequestAttendanceController::class, 'index'])->middleware(['auth'])->name('request.index');
 
-// 管理ユーザー
+// 一般ユーザー・管理者共通
+Route::get('/stamp_correction_request/list', [RequestAttendanceController::class, 'index'])->middleware('auth.any')->name('request');
+
+// 管理者
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminUserController::class, 'loginForm'])->name('loginForm');
     Route::post('/login', [AdminUserController::class, 'login'])->name('login');

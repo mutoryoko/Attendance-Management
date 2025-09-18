@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('request_attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('applier_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
-            $table->foreignId('admin_user_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('approver_id')->nullable()->constrained('admin_users')->onDelete('set null');
             $table->time('requested_work_start')->nullable();
             $table->time('requested_work_end')->nullable();
             $table->string('note');

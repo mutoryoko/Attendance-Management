@@ -1,0 +1,48 @@
+.approval-tab {
+    width: 900px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+    margin: 30px auto;
+}
+
+.requests__table {
+    width: 900px;
+    background-color: #fff;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 auto;
+}
+
+.requests__table-inner {
+    width: 100%;
+}
+
+.table-row__header {
+    border-bottom: 3px solid rgb(225, 225, 225);
+}
+
+.table-row {
+    border-bottom: 2px solid rgb(225, 225, 225);
+}
+
+.table-row:last-of-type {
+    border: none;
+}
+
+.table-header {
+    color: rgb(115, 115, 115);
+    padding: 15px;
+}
+
+.table-data {
+    text-align: center;
+    color: rgb(115, 115, 115);
+    padding: 15px 10px;
+}
+
+.detail__link {
+    text-decoration: none;
+    color: #000;
+}

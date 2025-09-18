@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\RequestAttendance;
 use App\Models\RequestBreakTime;
+use Illuminate\Support\Facades\Auth;
 
 class EditAttendanceController extends Controller
 {
@@ -25,6 +26,7 @@ class EditAttendanceController extends Controller
         $validatedData = $request->validated();
 
         $requestAttendance = RequestAttendance::create([
+            'applier_id' => Auth::id(),
             'attendance_id' => $attendance->id,
             'requested_work_start' => $validatedData['requested_work_start'],
             'requested_work_end' => $validatedData['requested_work_end'],
@@ -43,6 +45,6 @@ class EditAttendanceController extends Controller
             }
         }
 
-        return to_route('request.index')->with('status', '申請しました');
+        return to_route('request')->with('status', '申請しました');
     }
 }

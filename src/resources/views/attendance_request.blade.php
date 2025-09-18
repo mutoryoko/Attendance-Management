@@ -13,6 +13,50 @@
     @endif
     <div class="request__wrapper">
         <h1 class="title">申請一覧</h1>
+        <div class="approval-tab">
+            <a href="">承認待ち</a>
+            <a href="">承認済み</a>
+        </div>
+        <div class="requests__table">
+            <table class="requests__table-inner">
+                <thead>
+                    <tr class="table-row__header">
+                        <th class="table-header">状態</th>
+                        <th class="table-header">名前</th>
+                        <th class="table-header">対象日時</th>
+                        <th class="table-header">申請理由</th>
+                        <th class="table-header">申請日時</th>
+                        <th class="table-header">詳細</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Auth::guard('web')->check())
+                        @foreach ($requests as $request)
+                        <tr class="table-row">
+                            <td class="table-data">承認待ち</td>
+                            <td class="table-data">{{ Auth::user()->name ?? '' }}</td>
+                            <td class="table-data">{{ $request->attendance()->work_date ?? '' }}</td>
+                            <td class="table-data">{{ $request->note ?? '' }}</td>
+                            <td class="table-data">{{ $request->created_at ?? '' }}</td>
+                            <td class="table-data"><a class="detail__link" href="">詳細</a></td>
+                        </tr>
+                        @endforeach
+                    @endif
+                    @if(Auth::guard('admin')->check())
+                        @foreach($allRequests as $request)
+                        <tr class="table-row">
+                            <td class="table-data">承認待ち</td>
+                            <td class="table-data">{{ $request->applier()->name ?? ''}}</td>
+                            <td class="table-data">{{ $request->attendance()->work_date ?? '' }}</td>
+                            <td class="table-data">{{ $request->note ?? '' }}</td>
+                            <td class="table-data">{{ $request->created_at->format('Y/m/j') ?? '' }}</td>
+                            <td class="table-data"><a class="detail__link" href="">詳細</a></td>
+                        </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection

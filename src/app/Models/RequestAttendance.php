@@ -10,15 +10,21 @@ class RequestAttendance extends Model
     use HasFactory;
 
     protected $fillable = [
+        'applier_id',
         'attendance_id',
-        'admin_user_id',
+        'approver_id',
         'requested_work_start',
         'requested_work_end',
         'is_approved',
         'note',
     ];
 
-    public function adminUser()
+    public function applier()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function approver()
     {
         return $this->belongsTo(AdminUser::class);
     }
