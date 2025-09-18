@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title', '申請一覧画面（一般ユーザー）')
+@section('title', '申請一覧画面')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/request.css') }}" />
@@ -14,8 +14,8 @@
     <div class="request__wrapper">
         <h1 class="title">申請一覧</h1>
         <div class="approval-tab">
-            <a href="">承認待ち</a>
-            <a href="">承認済み</a>
+            <a class="waiting-tab" href="">承認待ち</a>
+            <a class="approved-tab" href="">承認済み</a>
         </div>
         <div class="requests__table">
             <table class="requests__table-inner">
@@ -35,10 +35,12 @@
                         <tr class="table-row">
                             <td class="table-data">承認待ち</td>
                             <td class="table-data">{{ Auth::user()->name ?? '' }}</td>
-                            <td class="table-data">{{ $request->attendance()->work_date ?? '' }}</td>
+                            <td class="table-data">{{ $request->attendance->work_date->format('Y/m/j') ?? '' }}</td>
                             <td class="table-data">{{ $request->note ?? '' }}</td>
-                            <td class="table-data">{{ $request->created_at ?? '' }}</td>
-                            <td class="table-data"><a class="detail__link" href="">詳細</a></td>
+                            <td class="table-data">{{ $request->created_at->format('Y/m/j') ?? '' }}</td>
+                            <td class="table-data">
+                                <a class="detail__link" href="{{ route('attendance.detail', ['id' => $request->attendance->id]) }}">詳細</a>
+                            </td>
                         </tr>
                         @endforeach
                     @endif
@@ -46,8 +48,8 @@
                         @foreach($allRequests as $request)
                         <tr class="table-row">
                             <td class="table-data">承認待ち</td>
-                            <td class="table-data">{{ $request->applier()->name ?? ''}}</td>
-                            <td class="table-data">{{ $request->attendance()->work_date ?? '' }}</td>
+                            <td class="table-data">{{ $request->applier->name ?? ''}}</td>
+                            <td class="table-data">{{ $request->attendance->work_date->format('Y/m/j') ?? '' }}</td>
                             <td class="table-data">{{ $request->note ?? '' }}</td>
                             <td class="table-data">{{ $request->created_at->format('Y/m/j') ?? '' }}</td>
                             <td class="table-data"><a class="detail__link" href="">詳細</a></td>

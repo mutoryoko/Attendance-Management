@@ -21,12 +21,12 @@ class RequestAttendance extends Model
 
     public function applier()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'applier_id');
     }
 
     public function approver()
     {
-        return $this->belongsTo(AdminUser::class);
+        return $this->belongsTo(AdminUser::class, 'approver_id');
     }
 
     public function attendance()
