@@ -11,9 +11,27 @@ use Illuminate\Support\Facades\Auth;
 
 class EditAttendanceController extends Controller
 {
-    public function show($id)
+    public function show(string $id)
     {
-        $attendance = Attendance::find($id);
+        $user = Auth::user();
+        $attendance = null;
+        $date = null;
+
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $id)) {
+            // 日付形式の場合 (欠勤日のリンクから来た場合)
+            $date = $id;
+            $attendance = Attendance::firstOrNew([
+                'user_id' => $user->id,
+                'work_date' => $date,
+            ]);
+        } else {
+            // 数値IDの場合 (出勤日のリンクから来た場合)
+            $attendance = Attendance::where('user_id', $user->id)->find($id);
+            if (!$attendance) {
+                abort(404);
+            }
+            $date = $attendance->work_date;
+        }
 
         $breakTimes = BreakTime::where('attendance_id', $attendance->id)->get();
 
@@ -22,8 +40,23 @@ class EditAttendanceController extends Controller
 
     public function sendRequest(ChangeTimeRequest $request, $id)
     {
-        $attendance = Attendance::find($id);
+        $user = Auth::user();
+        $date = null;
         $validatedData = $request->validated();
+
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $id)) {
+            $date = $id;
+            $attendance = Attendance::firstOrCreate([
+                'user_id'   => $user->id,
+                'work_date' => $date,
+            ]);
+        } else {
+            $attendance = Attendance::where('user_id', $user->id)->find($id);
+            if (!$attendance) {
+                abort(404); // データが見つからなければ404エラー
+            }
+            $date = $attendance->work_date;
+        }
 
         $requestAttendance = RequestAttendance::create([
             'applier_id' => Auth::id(),

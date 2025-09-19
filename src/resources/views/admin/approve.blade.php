@@ -39,7 +39,7 @@
                     </td>
                 </tr>
                 @php
-                $breakLoopCount = max(count($requestedBreakTimes) + 1, 2);
+                $breakLoopCount = count($requestedBreakTimes);
                 @endphp
                 @for ($i = 0; $i < $breakLoopCount; $i++)
                     @php

@@ -117,4 +117,5 @@
 
 .time-data {
     display: flex;
+    align-items: center;
 }
