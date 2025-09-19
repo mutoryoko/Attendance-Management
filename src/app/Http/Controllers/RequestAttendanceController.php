@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\RequestAttendance;
+use App\Models\RequestBreakTime;
 
 class RequestAttendanceController extends Controller
 {
@@ -31,11 +32,14 @@ class RequestAttendanceController extends Controller
     // 管理者用 詳細画面表示
     public function show($id)
     {
-        //
+        $request = RequestAttendance::find($id);
+        $requestedBreakTimes = RequestBreakTime::with('requestAttendance')->get();
+
+        return view('admin.approve', compact('request', 'requestedBreakTimes'));
     }
 
     // 管理者用 承認処理
-    public function approve()
+    public function approve($id)
     {
         //
     }

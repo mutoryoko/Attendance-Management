@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EditAttendanceController;
 use App\Http\Controllers\RequestAttendanceController;
+use App\Models\RequestAttendance;
 use Illuminate\Support\Facades\Route;
 
 
@@ -27,6 +28,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware(['auth:admin'])->group(function(){
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('index');
+        Route::get('/stamp_correction_request/approve/{attendance_correct_request}', [RequestAttendanceController::class, 'show'])->name('detail');
+        Route::post('/stamp_correction_request/approve/{attendance_correct_request}', [RequestAttendanceController::class, 'approve'])->name('approve');
         Route::post('/logout', [AdminUserController::class, 'destroy'])->name('logout');
     });
 });

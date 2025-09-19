@@ -19,6 +19,12 @@ class RequestAttendance extends Model
         'note',
     ];
 
+    protected $casts = [
+        'requested_work_start' => 'datetime',
+        'requested_work_end' => 'datetime',
+    ];
+
+    // リレーション
     public function applier()
     {
         return $this->belongsTo(User::class, 'applier_id');
@@ -37,5 +43,20 @@ class RequestAttendance extends Model
     public function requestBreakTimes()
     {
         return $this->hasMany(RequestBreakTime::class);
+    }
+
+    /**
+     * @return string
+     */
+    // 出勤時刻（修正）をH:i形式で取得
+    public function getFormattedRequestedWorkStartAttribute()
+    {
+        return $this->requested_work_start ? $this->requested_work_start->format('H:i') : null;
+    }
+
+    // 退勤時刻（修正）をH:i形式で取得
+    public function getFormattedRequestedWorkEndAttribute()
+    {
+        return $this->requested_work_end ? $this->requested_work_end->format('H:i') : null;
     }
 }
