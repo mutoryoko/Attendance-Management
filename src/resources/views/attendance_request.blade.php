@@ -13,9 +13,13 @@
     @endif
     <div class="request__wrapper">
         <h1 class="title">申請一覧</h1>
-        <div class="approval-tab">
-            <a class="waiting-tab" href="">承認待ち</a>
-            <a class="approved-tab" href="">承認済み</a>
+        <div class="tabs">
+            <a class="tab-link {{ $status === 'pending' ? 'active' : '' }}" href="{{ route('request', ['status' => 'pending']) }}">
+                承認待ち
+            </a>
+            <a class="tab-link {{ $status === 'approved' ? 'active' : '' }}" href="{{ route('request', ['status' => 'approved']) }}">
+                承認済み
+            </a>
         </div>
         <div class="requests__table">
             <table class="requests__table-inner">
@@ -45,7 +49,7 @@
                         @endforeach
                     @endif
                     @if(Auth::guard('admin')->check())
-                        @foreach($allRequests as $request)
+                        @foreach($requests as $request)
                         <tr class="table-row">
                             <td class="table-data">承認待ち</td>
                             <td class="table-data">{{ $request->applier->name ?? ''}}</td>

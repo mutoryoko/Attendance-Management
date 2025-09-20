@@ -10,19 +10,28 @@ use App\Models\RequestBreakTime;
 class RequestAttendanceController extends Controller
 {
     // 一般ユーザー・管理者共通
-    public function index()
+    public function index(Request $request)
     {
-        if (Auth::guard('admin')->check()) {
-            $allRequests = RequestAttendance::with(['applier', 'attendance'])->latest()->get();
+        $status = $request->query('status', 'pending');
+        $isApproved = ($status === 'approved');
 
-            return view('attendance_request', compact('allRequests'));
+        if (Auth::guard('admin')->check()) {
+            $requests = RequestAttendance::with(['applier', 'attendance'])
+                        ->where('is_approved', $isApproved)
+                        ->latest()
+                        ->get();
+
+            return view('attendance_request', compact('requests', 'status'));
         }
         elseif (Auth::guard('web')->check()) {
             $user = Auth::user();
-            $requests = RequestAttendance::where('applier_id', $user->id)
-                        ->with('attendance')->latest()->get();
+            $requests = RequestAttendance::with('attendance')
+                        ->where('applier_id', $user->id)
+                        ->where('is_approved', $isApproved)
+                        ->latest()
+                        ->get();
 
-            return view('attendance_request', compact('requests'));
+            return view('attendance_request', compact('requests', 'status'));
         }
         else {
             return view('login');
