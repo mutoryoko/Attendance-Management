@@ -23,7 +23,7 @@
                     <th class="table-header">日付</th>
                     <td class="table-data work-date">
                         <p class="work-year">{{ $attendance->work_date->format('Y年') ?? '' }}</p>
-                        <p class="work-date">{{ $attendance->work_date->format('n月j日') ?? '' }}</p>
+                        {{ $attendance->work_date->format('n月j日') ?? '' }}
                     </td>
                 </tr>
                 <tr class="table-row">

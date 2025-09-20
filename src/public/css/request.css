@@ -1,9 +1,6 @@
-.content {
-    padding: 70px 30px ;
-}
-
 .request__wrapper {
     height: 100vh;
+    margin: 50px auto;
 }
 
 .tabs {

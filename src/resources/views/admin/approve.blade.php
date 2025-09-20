@@ -10,54 +10,54 @@
 <div class="content">
     <div class="attendances__wrapper">
         <h1 class="title">勤怠詳細</h1>
-        <form class="attendance__edit-form" action="{{ route('admin.approve', ['attendance_correct_request' => $request->id]) }}" method="POST">
+        <form class="attendance__edit-form" action="{{ route('admin.approve', ['attendance_correct_request' => $requestAttendance->id]) }}" method="POST">
             @csrf
             <table class="detail__table">
                 <tr class="table-row">
                     <th class="table-header">名前</th>
                     <td class="table-data">
-                        <p class="user-name">{{ $request->applier->name ?? '' }}</p>
+                        <p class="applier-name">{{ $requestAttendance->applier->name ?? '' }}</p>
                     </td>
                 </tr>
                 <tr class="table-row">
                     <th class="table-header">日付</th>
                     <td class="table-data work-date">
-                        <p class="work-year">
-                            {{ $request->attendance->work_date->format('Y年') ?? '' }}
+                        <p class="year">
+                            {{ $requestAttendance->attendance->work_date->format('Y年') ?? '' }}
                         </p>
-                        <p class="work-date">
-                            {{ $request->attendance->work_date->format('n月j日') ?? '' }}
+                        <p class="date">
+                            {{ $requestAttendance->attendance->work_date->format('n月j日') ?? '' }}
                         </p>
                     </td>
                 </tr>
                 <tr class="table-row">
                     <th class="table-header">出勤・退勤</th>
                     <td class="table-data time-data">
-                        {{ $request->formatted_requested_work_start ?? '' }}
+                        {{ $requestAttendance->formatted_requested_work_start ?? '' }}
                         <span class="range">〜</span>
-                        {{ $request->formatted_requested_work_end ?? '' }}
+                        {{ $requestAttendance->formatted_requested_work_end ?? '' }}
                     </td>
                 </tr>
                 @php
-                $breakLoopCount = count($requestedBreakTimes);
+                $breakLoopCount = count($requestBreakTimes);
                 @endphp
                 @for ($i = 0; $i < $breakLoopCount; $i++)
                     @php
-                    $requestedBreakTime = $requestedBreakTimes[$i] ?? null;
+                    $requestBreakTime = $requestBreakTimes[$i] ?? null;
                     @endphp
                 <tr class="table-row">
                     <th class="table-header">休憩{{ $i + 1 }}</th>
                     <td class="table-data time-data">
-                        {{ $requestedBreakTime->formatted_requested_break_start ?? '' }}
+                        {{ $requestBreakTime->formatted_requested_break_start ?? '' }}
                         <span class="range">〜</span>
-                        {{ $requestedBreakTime->formatted_requested_break_end ?? '' }}
+                        {{ $requestBreakTime->formatted_requested_break_end ?? '' }}
                     </td>
                 </tr>
                 @endfor
                 <tr class="table-row">
                     <th class="table-header">備考</th>
-                    <td class="table-data note-data">
-                        {{ $request->note }}
+                    <td class="table-data">
+                        {{ $requestAttendance->note }}
                     </td>
                 </tr>
             </table>

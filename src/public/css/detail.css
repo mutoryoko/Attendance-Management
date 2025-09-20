@@ -14,14 +14,14 @@
     text-align: left;
     color: rgb(115, 115, 115);
     letter-spacing: 0.1rem;
-    padding: 10px 60px;
+    padding: 40px 60px;
 }
 
 .table-data {
     font-family: "Inter", sans-serif;
     font-weight: bold;
     letter-spacing: 0.1rem;
-    padding: 40px 0;
+    padding: 40px 60px 40px 0;
 }
 
 .user-name {
@@ -29,7 +29,7 @@
 }
 
 .work-year {
-    margin: 0 0.5em 0 1.6em;
+    margin: 0 9em 0 1.6em;
 }
 
 .work-date {
@@ -107,12 +107,13 @@
 }
 
 /* 管理者用 勤怠詳細画面 */
-.user-name {
+.applier-name {
     margin: 0;
 }
 
-.work-year {
+.year {
     margin-left: 0;
+    margin-right: 4em;
 }
 
 .time-data {
