@@ -34,40 +34,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(Auth::guard('web')->check())
-                        @foreach ($requestAttendances as $requestAttendance)
-                        <tr class="table-row">
-                            @if($status === 'approved')
-                            <td class="table-data">承認済み</td>
-                            @else
-                            <td class="table-data">承認待ち</td>
+                    @foreach ($requestAttendances as $requestAttendance)
+                    <tr class="table-row">
+                        @if($status === 'approved')
+                        <td class="table-data">承認済み</td>
+                        @else
+                        <td class="table-data">承認待ち</td>
+                        @endif
+                        <td class="table-data">
+                            {{ $requestAttendance->applier->name ?? ''}}
+                        </td>
+                        <td class="table-data">
+                            {{ $requestAttendance->attendance->work_date->format('Y/m/j') ?? '' }}
+                        </td>
+                        <td class="table-data">
+                            {{ $requestAttendance->note ?? '' }}
+                        </td>
+                        <td class="table-data">
+                            {{ $requestAttendance->created_at->format('Y/m/j') ?? '' }}
+                        </td>
+                        <td class="table-data">
+                            @if(Auth::guard('web')->check())
+                            <a class="detail__link" href="{{ route('attendance.detail', ['id' => $requestAttendance->attendance->id]) }}">詳細</a>
+                            @elseif(Auth::guard('admin')->check())
+                            <a class="detail__link" href="{{ route('admin.request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">詳細</a>
                             @endif
-                            <td class="table-data">{{ Auth::user()->name ?? '' }}</td>
-                            <td class="table-data">{{ $requestAttendance->attendance->work_date->format('Y/m/j') ?? '' }}</td>
-                            <td class="table-data">{{ $requestAttendance->note ?? '' }}</td>
-                            <td class="table-data">{{ $requestAttendance->created_at->format('Y/m/j') ?? '' }}</td>
-                            <td class="table-data">
-                                <a class="detail__link" href="{{ route('attendance.detail', ['id' => $requestAttendance->attendance->id]) }}">詳細</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    @endif
-                    @if(Auth::guard('admin')->check())
-                        @foreach($requestAttendances as $requestAttendance)
-                        <tr class="table-row">
-                            @if($status === 'approved')
-                            <td class="table-data">承認済み</td>
-                            @else
-                            <td class="table-data">承認待ち</td>
-                            @endif
-                            <td class="table-data">{{ $requestAttendance->applier->name ?? ''}}</td>
-                            <td class="table-data">{{ $requestAttendance->attendance->work_date->format('Y/m/j') ?? '' }}</td>
-                            <td class="table-data">{{ $requestAttendance->note ?? '' }}</td>
-                            <td class="table-data">{{ $requestAttendance->created_at->format('Y/m/j') ?? '' }}</td>
-                            <td class="table-data"><a class="detail__link" href="{{ route('admin.request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">詳細</a></td>
-                        </tr>
-                        @endforeach
-                    @endif
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

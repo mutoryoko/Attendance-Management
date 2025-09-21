@@ -38,7 +38,7 @@ class EditAttendanceController extends Controller
         return view('detail', compact('attendance', 'breakTimes'));
     }
 
-    public function sendRequest(ChangeTimeRequest $request, $id)
+    public function sendRequest(ChangeTimeRequest $request, string $id)
     {
         $user = Auth::user();
         $date = null;

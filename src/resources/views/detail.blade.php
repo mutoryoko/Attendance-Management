@@ -1,22 +1,27 @@
 @extends('layouts.default')
 
-@section('title', '勤怠詳細画面（一般ユーザー）')
+@section('title', '勤怠詳細画面')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/detail.css') }}" />
 @endsection
 
+{{-- 内容は管理者・一般ユーザー共通 --}}
 @section('content')
 <div class="content">
     <div class="attendances__wrapper">
         <h1 class="title">勤怠詳細</h1>
+        @if(Auth::guard('web')->check())
         <form class="attendance__edit-form" action="{{ route('attendance.send', ['id' => $attendance->exists ? $attendance->id : $attendance->work_date->format('Y-m-d')]) }}" method="POST">
+        @elseif(Auth::guard('admin')->check())
+        <form class="attendance__edit-form" action="{{ route('admin.update', ['id' => $attendance->id]) }}" method="POST">
+        @endif
             @csrf
             <table class="detail__table">
                 <tr class="table-row">
                     <th class="table-header">名前</th>
                     <td class="table-data">
-                        <p class="user-name">{{ Auth::user()->name }}</p>
+                        <p class="user-name">{{ $attendance->user->name }}</p>
                     </td>
                 </tr>
                 <tr class="table-row">

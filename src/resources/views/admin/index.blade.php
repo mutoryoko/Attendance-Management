@@ -49,7 +49,7 @@
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                         <td class="table-data">
-                            <a class="detail__link" href="">詳細</a>
+                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
                         </td>
                     </tr>
                     @endforeach
