@@ -22,21 +22,25 @@
 }
 
 .prev-month,
-.next-month {
+.next-month,
+.prev-day,
+.next-day {
     color: rgb(115, 115, 115);
     font-size: 18px;
     font-weight: bold;
 }
 
 
-.month-text {
+.month-text,
+.date-text {
     font-family: "Inter", sans-serif;
     font-size: 20px;
     font-weight: bold;
     letter-spacing: 0.1rem;
 }
 
-.month-text::before {
+.month-text::before,
+.date-text::before {
     content: url("../img/calendar-icon.svg");
     width: 20px;
     height: 15px;
@@ -85,4 +89,14 @@
 .detail__link {
     text-decoration: none;
     color: #000;
+}
+
+/* 管理者用　勤怠一覧 */
+.admin-attendances__wrapper{
+    height: 100vh;
+}
+
+.title-date {
+    font-family: "Inter", sans-serif;
+    letter-spacing: 0.1rem;
 }

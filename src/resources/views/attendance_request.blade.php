@@ -64,7 +64,7 @@
                             <td class="table-data">{{ $requestAttendance->attendance->work_date->format('Y/m/j') ?? '' }}</td>
                             <td class="table-data">{{ $requestAttendance->note ?? '' }}</td>
                             <td class="table-data">{{ $requestAttendance->created_at->format('Y/m/j') ?? '' }}</td>
-                            <td class="table-data"><a class="detail__link" href="{{ route('admin.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">詳細</a></td>
+                            <td class="table-data"><a class="detail__link" href="{{ route('admin.request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">詳細</a></td>
                         </tr>
                         @endforeach
                     @endif
