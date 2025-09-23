@@ -10,6 +10,8 @@
 <div class="content">
     @if (session('status'))
     <p class="session">{{ session('status') }}</p>
+    @elseif(session('error'))
+    <p class="session-error">{{ session('error') }}</p>
     @endif
     <div class="attendances__wrapper admin-attendances__wrapper">
         <h1 class="title">

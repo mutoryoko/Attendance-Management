@@ -145,15 +145,15 @@ class AttendanceController extends Controller
                     // 合計休憩時間の計算
                     $totalBreakSeconds = 0;
                     foreach ($attendance->breakTimes as $break) {
-                        $start = Carbon::parse($break->start_at);
-                        $end = Carbon::parse($break->end_at);
+                        $start = $break->start_at;
+                        $end = $break->end_at;
                         $totalBreakSeconds += $start->diffInSeconds($end);
                     }
                     $totalBreakMinutes = floor($totalBreakSeconds / 60);
 
                     // 実労働時間の計算
-                    $clockIn = Carbon::parse($attendance->clock_in_time);
-                    $clockOut = Carbon::parse($attendance->clock_out_time);
+                    $clockIn = $attendance->clock_in_time;
+                    $clockOut = $attendance->clock_out_time;
                     $totalWorkSeconds = $clockIn->diffInSeconds($clockOut);
                     $totalWorkMinutes = floor($totalWorkSeconds / 60) - $totalBreakMinutes;
 

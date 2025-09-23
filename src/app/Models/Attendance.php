@@ -18,6 +18,7 @@ class Attendance extends Model
         'clock_out_time',
         'total_break_minutes',
         'total_work_minutes',
+        'note',
     ];
 
     protected $casts = [
@@ -40,6 +41,17 @@ class Attendance extends Model
     public function requestAttendance()
     {
         return $this->hasOne(RequestAttendance::class);
+    }
+
+    public function pendingRequest()
+    {
+        return $this->hasOne(RequestAttendance::class)->where('is_approved', false);
+    }
+
+    // 最新の勤怠修正申請を1件取得する
+    public function latestRequest()
+    {
+        return $this->hasOne(RequestAttendance::class)->latestOfMany();
     }
 
     /**

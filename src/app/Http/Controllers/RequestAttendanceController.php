@@ -24,8 +24,7 @@ class RequestAttendanceController extends Controller
                         ->get();
 
             return view('attendance_request', compact('requestAttendances', 'status'));
-        }
-        elseif (Auth::guard('web')->check()) {
+        } elseif (Auth::guard('web')->check()) {
             $user = Auth::user();
             $requestAttendances = RequestAttendance::with('attendance')
                         ->where('applier_id', $user->id)
@@ -34,16 +33,15 @@ class RequestAttendanceController extends Controller
                         ->get();
 
             return view('attendance_request', compact('requestAttendances', 'status'));
-        }
-        else {
+        } else {
             return view('login');
         }
     }
 
-    // 管理者用 詳細画面表示
+    // 詳細画面表示
     public function show($id)
     {
-        $requestAttendance = RequestAttendance::findOrFail($id);
+        $requestAttendance = RequestAttendance::with('attendance')->findOrFail($id);
         $requestBreakTimes = RequestBreakTime::with('requestAttendance')
                                 ->where('request_id', $requestAttendance->id)
                                 ->get();
@@ -78,6 +76,7 @@ class RequestAttendanceController extends Controller
                     ]);
                 }
             }
+            // 一覧に表示されるようにAttendancesテーブルにも登録処理
         });
         return to_route('request', ['status' => 'approved'])->with('status', '承認しました');
     }

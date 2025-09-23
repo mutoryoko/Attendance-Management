@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title', '修正申請承認画面（管理者）')
+@section('title', '申請詳細画面')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/detail.css') }}" />
@@ -62,10 +62,11 @@
                 </tr>
             </table>
             <div class="approve__button">
-                @if ($requestAttendance->attendance->latestRequest->is_approved)
-                <button class="approved" disabled>承認済み</button>
+                {{-- 一般ユーザー用ボタン --}}
+                @if ($attendance->latestRequest->is_approved)
+                <button disabled>承認済み</button>
                 @else
-                <button class="approve__btn--submit" type="submit">承認</button>
+                <p class="alert">※承認待ちのため修正はできません</p>
                 @endif
             </div>
         </form>
