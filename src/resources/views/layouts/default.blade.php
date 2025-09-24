@@ -45,7 +45,7 @@
                             <a class="nav__link" href="{{ route('admin.index')}}">勤怠一覧</a>
                         </li>
                         <li class="header__nav--item">
-                            <a class="nav__link" href="">スタッフ一覧</a>
+                            <a class="nav__link" href="{{ route('admin.staff') }}">スタッフ一覧</a>
                         </li>
                         <li class="header__nav--item">
                             <a class="nav__link" href="{{ route('request') }}">申請一覧</a>

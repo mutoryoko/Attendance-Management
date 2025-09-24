@@ -1,4 +1,5 @@
-.attendances__wrapper {
+.attendances__wrapper,
+.users__table-wrapper {
     width: 900px;
     margin: 50px auto;
 }
@@ -48,8 +49,9 @@
     vertical-align: middle;
 }
 
-/* 勤怠表 */
-.attendances__table {
+/* 勤怠表・スタッフ表 */
+.attendances__table,
+.users__table {
     width: 100%;
     background-color: #fff;
     border-radius: 10px;
@@ -58,7 +60,8 @@
     font-size: 16px;
 }
 
-.attendances__table-inner {
+.attendances__table-inner,
+.users__table-inner {
     width: 100%;
     margin: 0 auto;
 }
@@ -91,12 +94,27 @@
     color: #000;
 }
 
-/* 管理者用　勤怠一覧 */
-.admin-attendances__wrapper{
+/* 管理者用　勤怠一覧・スタッフ一覧 */
+.admin-attendances__wrapper,
+.users__table-wrapper {
     height: 100vh;
 }
 
 .title-date {
     font-family: "Inter", sans-serif;
     letter-spacing: 0.1rem;
+}
+
+.export__btn {
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 22px;
+    letter-spacing: 0.2rem;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 10px 40px;
+    margin-top: 40px;
+    cursor: pointer;
 }
