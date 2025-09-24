@@ -49,9 +49,16 @@
                         <td class="table-data">{{ $attendance->formatted_work_end ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
-                        @if ($attendance)
-                        <td class="table-data"><a class="detail__link" href="{{ route('attendance.detail', ['id' => $attendance->id]) }}">詳細</a></td>
+                        <td class="table-data">
+                        @if ($date->lt(today()))
+                            @if ($attendance)
+                                <a class="detail__link" href="{{ route('attendance.detail', ['id' => $attendance->id]) }}">詳細</a>
+                            @else
+                                {{-- 欠勤日の場合、日付をパラメータとする --}}
+                                <a class="detail__link" href="{{ route('attendance.detail', ['id' => $date->format('Y-m-d')]) }}">詳細</a>
+                            @endif
                         @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

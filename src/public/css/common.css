@@ -126,10 +126,19 @@ img {
     margin-top: 5px;
 }
 
-.session {
+.session,
+.session-error {
     color: rgb(31, 170, 89);
     text-align: right;
     font-size: 20px;
     font-weight: bold;
     margin: 0 0 30px 0;
+}
+
+.session-error {
+    color: red;
+}
+
+.alert {
+    color: red;
 }
