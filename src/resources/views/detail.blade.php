@@ -80,11 +80,11 @@
                     </td>
                 </tr>
             </table>
-            <div class="edit__button">
+            <div class="button__wrapper">
                 @if ($attendance->pendingRequest)
                 <p class="alert">※承認待ちのため修正はできません</p>
                 @else
-                <button class="edit__btn--submit" type="submit">修正</button>
+                <button class="edit__btn" type="submit">修正</button>
                 @endif
             </div>
         </form>

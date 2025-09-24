@@ -61,11 +61,11 @@
                     </td>
                 </tr>
             </table>
-            <div class="approve__button">
+            <div class="button__wrapper">
                 @if ($requestAttendance->attendance->latestRequest->is_approved)
                 <button class="approved" disabled>承認済み</button>
                 @else
-                <button class="approve__btn--submit" type="submit">承認</button>
+                <button class="approve__btn" type="submit">承認</button>
                 @endif
             </div>
         </form>

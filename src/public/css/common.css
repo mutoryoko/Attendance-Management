@@ -121,6 +121,14 @@ img {
     cursor: pointer;
 }
 
+/* 詳細画面・承認画面のボタン */
+.button__wrapper {
+    width: 900px;
+    text-align: end;
+    margin: 0 auto;
+}
+
+/* エラー・フラッシュメッセージなど */
 .error {
     color: red;
     margin-top: 5px;

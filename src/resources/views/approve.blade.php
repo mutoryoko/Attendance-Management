@@ -61,7 +61,7 @@
                     </td>
                 </tr>
             </table>
-            <div class="approve__button">
+            <div class="button__wrapper">
                 {{-- 一般ユーザー用ボタン --}}
                 @if ($attendance->latestRequest->is_approved)
                 <button disabled>承認済み</button>

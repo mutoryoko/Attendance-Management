@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EditAttendanceController;
@@ -19,7 +20,11 @@ Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(fu
 });
 
 // 一般ユーザー・管理者共通
-Route::get('/stamp_correction_request/list', [RequestAttendanceController::class, 'index'])->middleware('auth.any')->name('request');
+Route::prefix('stamp_correction_request')->controller(RequestAttendanceController::class)->group(function () {
+    Route::get('/list', 'index')->middleware('auth.any')->name('request');
+    Route::get('/approve/{attendance_correct_request}', 'show')->middleware('admin')->name('admin.request.detail');
+    Route::post('/approve/{attendance_correct_request}', 'approve')->middleware('admin')->name('admin.approve');
+});
 
 // 管理者
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -31,8 +36,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/attendance/detail/{id}', [AdminAttendanceController::class, 'show'])->name('detail');
         Route::post('/attendance/detail/{id}', [AdminAttendanceController::class, 'update'])->name('update');
 
-        Route::get('/stamp_correction_request/approve/{attendance_correct_request}', [RequestAttendanceController::class, 'show'])->name('request.detail');
-        Route::post('/stamp_correction_request/approve/{attendance_correct_request}', [RequestAttendanceController::class, 'approve'])->name('approve');
+        Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('staff');
+        Route::get('/attendance/staff/{id}', [AdminStaffController::class, 'indexByStaff'])->name('attendance.staff');
+
         Route::post('/logout', [AdminUserController::class, 'destroy'])->name('logout');
     });
 });
