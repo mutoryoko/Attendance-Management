@@ -53,7 +53,7 @@ class EditAttendanceController extends Controller
         } else {
             $attendance = Attendance::where('user_id', $user->id)->find($id);
             if (!$attendance) {
-                abort(404); // データが見つからなければ404エラー
+                abort(404);
             }
             $date = $attendance->work_date;
         }
