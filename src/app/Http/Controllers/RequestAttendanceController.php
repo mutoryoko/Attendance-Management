@@ -46,7 +46,7 @@ class RequestAttendanceController extends Controller
                                 ->where('request_id', $requestAttendance->id)
                                 ->get();
 
-        return view('admin.approve', compact('requestAttendance', 'requestBreakTimes'));
+        return view('approve', compact('requestAttendance', 'requestBreakTimes'));
     }
 
     // 管理者用 承認処理
@@ -76,7 +76,7 @@ class RequestAttendanceController extends Controller
                     ]);
                 }
             }
-            // 一覧に表示されるようにAttendancesテーブルにも登録処理
+            // 一覧に表示されるようにAttendancesテーブルにも登録処理あとで追加
         });
         return to_route('request', ['status' => 'approved'])->with('status', '承認しました');
     }

@@ -54,11 +54,9 @@
                             {{ $requestAttendance->created_at->format('Y/m/j') ?? '' }}
                         </td>
                         <td class="table-data">
-                            @if(Auth::guard('web')->check())
-                            <a class="detail__link" href="{{ route('attendance.detail', ['id' => $requestAttendance->attendance->id]) }}">詳細</a>
-                            @elseif(Auth::guard('admin')->check())
-                            <a class="detail__link" href="{{ route('admin.request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">詳細</a>
-                            @endif
+                            <a class="detail__link" href="{{ route('request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">
+                                詳細
+                            </a>
                         </td>
                     </tr>
                     @endforeach
