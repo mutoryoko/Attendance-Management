@@ -9,11 +9,17 @@
 {{-- 内容は管理者・一般ユーザー共通 --}}
 @section('content')
 <div class="content">
+    @if (session('status'))
+    <p class="session">{{ session('status') }}</p>
+    @elseif(session('error'))
+    <p class="session-error">{{ session('error') }}</p>
+    @endif
+
     <h1 class="title">勤怠詳細</h1>
     @if(Auth::guard('web')->check())
     <form class="attendance__edit-form" action="{{ route('attendance.send', ['id' => $attendance->exists ? $attendance->id : $attendance->work_date->format('Y-m-d')]) }}" method="POST">
     @elseif(Auth::guard('admin')->check())
-    <form class="attendance__edit-form" action="{{ route('admin.update', ['id' => $attendance->id]) }}" method="POST">
+    <form class="attendance__edit-form" action="{{ route('admin.update', ['id' => $attendance->exists ? $attendance->id : $attendance->work_date->format('Y-m-d'), 'user' => $user->id]) }}" method="POST">
     @endif
         @csrf
         <table class="detail__table">
@@ -21,6 +27,9 @@
                 <th class="table-header">名前</th>
                 <td class="table-data">
                     <p class="user-name">{{ $attendance->user->name }}</p>
+                    @if (!$attendance->exists)
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    @endif
                 </td>
             </tr>
             <tr class="table-row">

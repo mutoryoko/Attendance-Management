@@ -6,7 +6,6 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EditAttendanceController;
 use App\Http\Controllers\RequestAttendanceController;
-use App\Models\RequestAttendance;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,7 +18,7 @@ Route::middleware('auth')->prefix('attendance')->name('attendance.')->group(func
     Route::post('/detail/{id}', [EditAttendanceController::class, 'sendRequest'])->name('send');
 });
 
-// 一般ユーザー・管理者共通
+// 一般ユーザー・管理者
 Route::prefix('stamp_correction_request')->controller(RequestAttendanceController::class)->group(function () {
     Route::get('/list', 'index')->middleware('auth.any')->name('request');
     Route::get('/approve/{attendance_correct_request}', 'show')->middleware('auth.any')->name('request.detail');
