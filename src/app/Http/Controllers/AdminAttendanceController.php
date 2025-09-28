@@ -18,16 +18,19 @@ class AdminAttendanceController extends Controller
         $date = $request->query('date', Carbon::now()->format('Y-m-d'));
         $currentDay= Carbon::parse($date);
 
-        $attendances = Attendance::with('user')
-                        ->whereYear('work_date', $currentDay->year)
-                        ->whereMonth('work_date', $currentDay->month)
-                        ->whereDay('work_date', $currentDay->day)
-                        ->get();
+        $users = User::with(['attendances' => function ($query) use ($currentDay) {
+            $query->whereDate('work_date', $currentDay);
+        }])->select(['id', 'name'])->get();
 
         $prevDay = $currentDay->copy()->subDay()->format('Y-m-d');
         $nextDay = $currentDay->copy()->addDay()->format('Y-m-d');
 
-        return view('admin.index', compact('currentDay', 'attendances', 'prevDay', 'nextDay'));
+        return view('admin.index', compact(
+            'currentDay',
+            'users',
+            'prevDay',
+            'nextDay'
+        ));
     }
 
     //　勤怠詳細画面

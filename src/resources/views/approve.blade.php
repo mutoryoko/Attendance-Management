@@ -16,17 +16,17 @@
                 <tr class="table-row">
                     <th class="table-header">名前</th>
                     <td class="table-data">
-                        <p class="applier-name">{{ $requestAttendance->applier->name ?? '' }}</p>
+                        <p class="applier-name">{{ $requestAttendance->applier->name }}</p>
                     </td>
                 </tr>
                 <tr class="table-row">
                     <th class="table-header">日付</th>
                     <td class="table-data work-date">
                         <p class="year">
-                            {{ $requestAttendance->attendance->work_date->format('Y年') ?? '' }}
+                            {{ $requestAttendance->attendance->work_date->format('Y年') }}
                         </p>
                         <p class="date">
-                            {{ $requestAttendance->attendance->work_date->format('n月j日') ?? '' }}
+                            {{ $requestAttendance->attendance->work_date->format('n月j日') }}
                         </p>
                     </td>
                 </tr>
