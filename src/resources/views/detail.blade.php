@@ -27,7 +27,7 @@
                 <th class="table-header">名前</th>
                 <td class="table-data">
                     <p class="user-name">{{ $attendance->user->name }}</p>
-                    @if (!$attendance->exists)
+                    @if (Auth::guard('admin')->check() && !$attendance->exists)
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     @endif
                 </td>
