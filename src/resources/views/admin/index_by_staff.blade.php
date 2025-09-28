@@ -27,7 +27,7 @@
             <table class="attendances__table-inner">
                 <thead>
                     <tr class="table-row__header">
-                        <th class="table-header">日付</th>
+                        <th class="table-header th__date">日付</th>
                         <th class="table-header">出勤</th>
                         <th class="table-header">退勤</th>
                         <th class="table-header">休憩</th>
@@ -47,7 +47,7 @@
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                         <td class="table-data">
-                        @if ($date->lt(today()))
+                        @if ($date->lte(today()))
                             @if ($attendance)
                                 <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
                             @else

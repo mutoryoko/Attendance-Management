@@ -23,6 +23,7 @@
 
 .requests__table {
     width: 900px;
+    table-layout: fixed;
     background-color: #fff;
     border-radius: 10px;
     font-family: "Inter", sans-serif;
@@ -49,13 +50,17 @@
 
 .table-header {
     color: rgb(115, 115, 115);
-    padding: 15px;
+    padding: 15px 0;
+}
+
+.th__note {
+    width: 20%;
 }
 
 .table-data {
     text-align: center;
     color: rgb(115, 115, 115);
-    padding: 15px 10px;
+    padding: 15px 0;
 }
 
 .detail__link {

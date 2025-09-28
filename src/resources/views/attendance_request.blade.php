@@ -28,7 +28,7 @@
                         <th class="table-header">状態</th>
                         <th class="table-header">名前</th>
                         <th class="table-header">対象日時</th>
-                        <th class="table-header">申請理由</th>
+                        <th class="table-header th__note">申請理由</th>
                         <th class="table-header">申請日時</th>
                         <th class="table-header">詳細</th>
                     </tr>
