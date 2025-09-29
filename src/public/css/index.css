@@ -124,3 +124,11 @@
     margin-top: 40px;
     cursor: pointer;
 }
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .attendances__wrapper,
+    .users__table-wrapper {
+        width: 630px;
+        margin: 30px auto;
+    }
+}
