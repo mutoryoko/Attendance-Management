@@ -67,3 +67,19 @@
     text-decoration: none;
     color: #000;
 }
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .request__wrapper {
+        margin: 30px auto;
+    }
+
+    .tabs {
+        width: 630px;
+        margin: 40px auto 20px;
+    }
+
+    .requests__table {
+        width: 630px;
+        font-size: 14px;
+    }
+}
