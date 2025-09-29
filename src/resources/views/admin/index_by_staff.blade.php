@@ -8,9 +8,6 @@
 
 @section('content')
 <div class="content">
-    @if (session('status'))
-    <p class="session">{{ session('status') }}</p>
-    @endif
     <div class="attendances__wrapper">
         <h1 class="title">{{ $user->name }}さんの勤怠</h1>
         <div class="pagination">
@@ -30,7 +27,7 @@
             <table class="attendances__table-inner">
                 <thead>
                     <tr class="table-row__header">
-                        <th class="table-header">日付</th>
+                        <th class="table-header th__date">日付</th>
                         <th class="table-header">出勤</th>
                         <th class="table-header">退勤</th>
                         <th class="table-header">休憩</th>
@@ -50,12 +47,12 @@
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                         <td class="table-data">
-                        @if ($date->lt(today()))
+                        @if ($date->lte(today()))
                             @if ($attendance)
                                 <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
                             @else
                                 {{-- 欠勤日の場合、日付をパラメータとする --}}
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $date->format('Y-m-d')]) }}">詳細</a>
+                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $date->format('Y-m-d'), 'user' => $user->id]) }}">詳細</a>
                             @endif
                         @endif
                         </td>

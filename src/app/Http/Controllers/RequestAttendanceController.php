@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\RequestAttendance;
 use App\Models\RequestBreakTime;
 use App\Models\BreakTime;
+use App\Models\Attendance;
+use Illuminate\Support\Facades\Log;
+
 
 class RequestAttendanceController extends Controller
 {
@@ -27,10 +30,10 @@ class RequestAttendanceController extends Controller
         } elseif (Auth::guard('web')->check()) {
             $user = Auth::user();
             $requestAttendances = RequestAttendance::with('attendance')
-                        ->where('applier_id', $user->id)
-                        ->where('is_approved', $isApproved)
-                        ->latest()
-                        ->get();
+                                ->where('applier_id', $user->id)
+                                ->where('is_approved', $isApproved)
+                                ->latest()
+                                ->get();
 
             return view('attendance_request', compact('requestAttendances', 'status'));
         } else {
@@ -43,41 +46,70 @@ class RequestAttendanceController extends Controller
     {
         $requestAttendance = RequestAttendance::with('attendance')->findOrFail($id);
         $requestBreakTimes = RequestBreakTime::with('requestAttendance')
-                                ->where('request_id', $requestAttendance->id)
-                                ->get();
+                            ->where('request_id', $requestAttendance->id)
+                            ->get();
 
-        return view('admin.approve', compact('requestAttendance', 'requestBreakTimes'));
+        return view('approve', compact('requestAttendance', 'requestBreakTimes'));
     }
 
     // 管理者用 承認処理
     public function approve($id)
     {
-        DB::transaction(function()use($id) {
-            $adminId = Auth::guard('admin')->user()->id;
+        try {
+            DB::transaction(function()use($id) {
+                $adminId = Auth::guard('admin')->user()->id;
 
-            $requestAttendance = RequestAttendance::findOrFail($id);
+                $requestAttendance = RequestAttendance::with('attendance')->findOrFail($id);
 
-            $requestBreakTimes = RequestBreakTime::with('requestAttendance')
-                                ->where('request_id', $requestAttendance->id)
-                                ->get();
+                $requestBreakTimes = RequestBreakTime::with('requestAttendance')
+                                    ->where('request_id', $requestAttendance->id)
+                                    ->get();
 
-            $requestAttendance->approver_id = $adminId;
-            $requestAttendance->is_approved = true;
-            $requestAttendance->save();
+                // DBに承認者IDと「承認済み」を登録
+                $requestAttendance->approver_id = $adminId;
+                $requestAttendance->is_approved = true;
+                $requestAttendance->save();
 
-            if($requestBreakTimes->isNotEmpty()) {
-                $attendanceId = $requestAttendance->attendance_id;
+                $attendance = Attendance::where('id', $requestAttendance->attendance_id)->first();
+                $attendance->breakTimes()->delete(); //休憩時間を削除してから再登録する
 
-                foreach($requestBreakTimes as $requestBreak) {
-                    BreakTime::updateOrCreate([
-                        'attendance_id' => $attendanceId,
-                        'start_at' => $requestBreak->requested_break_start,
-                        'end_at' => $requestBreak->requested_break_end,
-                    ]);
+                if($requestBreakTimes->isNotEmpty()) {
+                    foreach($requestBreakTimes as $requestBreak) {
+                        BreakTime::create([
+                            'attendance_id' => $attendance->id,
+                            'start_at' => $requestBreak->requested_break_start,
+                            'end_at' => $requestBreak->requested_break_end,
+                        ]);
+                    }
                 }
-            }
-            // 一覧に表示されるようにAttendancesテーブルにも登録処理
-        });
+                $attendance->load('breakTimes');
+
+                // 合計休憩時間の計算
+                $totalBreakSeconds = 0;
+                foreach ($attendance->breakTimes as $break) {
+                    $totalBreakSeconds += $break->start_at->diffInSeconds($break->end_at);
+                }
+                $totalBreakMinutes = floor($totalBreakSeconds / 60);
+
+                // 実労働時間の計算
+                $clockIn = $requestAttendance->requested_work_start;
+                $clockOut = $requestAttendance->requested_work_end;
+                $totalWorkSeconds = $clockIn->diffInSeconds($clockOut);
+                $totalWorkMinutes = floor($totalWorkSeconds / 60) - $totalBreakMinutes;
+
+                Attendance::where('id', $requestAttendance->attendance->id)->update([
+                    'clock_in_time' => $clockIn,
+                    'clock_out_time' => $clockOut,
+                    'total_break_minutes' => $totalBreakMinutes,
+                    'total_work_minutes' => $totalWorkMinutes,
+                    'note' => $requestAttendance->note,
+                ]);
+            });
+        } catch (\Exception $e) {
+            Log::error('勤怠修正承認エラー: ' . $e->getMessage());
+            return redirect()->back()->with('error', '承認に失敗しました');
+        }
+
         return to_route('request', ['status' => 'approved'])->with('status', '承認しました');
     }
 }

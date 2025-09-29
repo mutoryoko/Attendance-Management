@@ -15,6 +15,7 @@ class ChangeTimeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'sometimes|required|exists:users,id', // フィールドがあるときのみ
             'requested_work_start' => 'nullable|date_format:H:i|before:requested_work_end',
             'requested_work_end' => 'nullable|date_format:H:i|after:requested_work_start',
             'breaks.*.start' => 'nullable|date_format:H:i|before:requested_work_end|after:requested_work_start',

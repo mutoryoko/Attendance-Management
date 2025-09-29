@@ -26,10 +26,7 @@ class EditAttendanceController extends Controller
             ]);
         } else {
             // 数値IDの場合 (出勤日のリンクから来た場合)
-            $attendance = Attendance::where('user_id', $user->id)->find($id);
-            if (!$attendance) {
-                abort(404);
-            }
+            $attendance = Attendance::where('user_id', $user->id)->findOrFail($id);
             $date = $attendance->work_date;
         }
 
@@ -53,7 +50,7 @@ class EditAttendanceController extends Controller
         } else {
             $attendance = Attendance::where('user_id', $user->id)->find($id);
             if (!$attendance) {
-                abort(404); // データが見つからなければ404エラー
+                abort(404);
             }
             $date = $attendance->work_date;
         }

@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title', '申請詳細画面')
+@section('title', '修正申請承認画面（管理者）')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/detail.css') }}" />
@@ -16,17 +16,17 @@
                 <tr class="table-row">
                     <th class="table-header">名前</th>
                     <td class="table-data">
-                        <p class="applier-name">{{ $requestAttendance->applier->name ?? '' }}</p>
+                        <p class="applier-name">{{ $requestAttendance->applier->name }}</p>
                     </td>
                 </tr>
                 <tr class="table-row">
                     <th class="table-header">日付</th>
                     <td class="table-data work-date">
                         <p class="year">
-                            {{ $requestAttendance->attendance->work_date->format('Y年') ?? '' }}
+                            {{ $requestAttendance->attendance->work_date->format('Y年') }}
                         </p>
                         <p class="date">
-                            {{ $requestAttendance->attendance->work_date->format('n月j日') ?? '' }}
+                            {{ $requestAttendance->attendance->work_date->format('n月j日') }}
                         </p>
                     </td>
                 </tr>
@@ -62,11 +62,12 @@
                 </tr>
             </table>
             <div class="button__wrapper">
-                {{-- 一般ユーザー用ボタン --}}
-                @if ($attendance->latestRequest->is_approved)
-                <button disabled>承認済み</button>
+                @if ($requestAttendance->is_approved)
+                <button class="approved" disabled>承認済み</button>
+                @elseif(Auth::guard('admin')->check())
+                <button class="approve__btn" type="submit">承認</button>
                 @else
-                <p class="alert">※承認待ちのため修正はできません</p>
+                <p class="alert">※承認待ちのため修正はできません。</p>
                 @endif
             </div>
         </form>

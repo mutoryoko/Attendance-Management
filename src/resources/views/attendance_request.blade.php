@@ -28,7 +28,7 @@
                         <th class="table-header">状態</th>
                         <th class="table-header">名前</th>
                         <th class="table-header">対象日時</th>
-                        <th class="table-header">申請理由</th>
+                        <th class="table-header th__note">申請理由</th>
                         <th class="table-header">申請日時</th>
                         <th class="table-header">詳細</th>
                     </tr>
@@ -42,23 +42,21 @@
                         <td class="table-data">承認待ち</td>
                         @endif
                         <td class="table-data">
-                            {{ $requestAttendance->applier->name ?? ''}}
+                            {{ $requestAttendance->applier->name }}
                         </td>
                         <td class="table-data">
-                            {{ $requestAttendance->attendance->work_date->format('Y/m/j') ?? '' }}
+                            {{ $requestAttendance->attendance->work_date->format('Y/m/j') }}
                         </td>
                         <td class="table-data">
-                            {{ $requestAttendance->note ?? '' }}
+                            {{ $requestAttendance->note }}
                         </td>
                         <td class="table-data">
-                            {{ $requestAttendance->created_at->format('Y/m/j') ?? '' }}
+                            {{ $requestAttendance->created_at->format('Y/m/j') }}
                         </td>
                         <td class="table-data">
-                            @if(Auth::guard('web')->check())
-                            <a class="detail__link" href="{{ route('attendance.detail', ['id' => $requestAttendance->attendance->id]) }}">詳細</a>
-                            @elseif(Auth::guard('admin')->check())
-                            <a class="detail__link" href="{{ route('admin.request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">詳細</a>
-                            @endif
+                            <a class="detail__link" href="{{ route('request.detail', ['attendance_correct_request' => $requestAttendance->id]) }}">
+                                詳細
+                            </a>
                         </td>
                     </tr>
                     @endforeach

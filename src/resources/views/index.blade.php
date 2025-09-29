@@ -30,7 +30,7 @@
             <table class="attendances__table-inner">
                 <thead>
                     <tr class="table-row__header">
-                        <th class="table-header">日付</th>
+                        <th class="table-header th__date">日付</th>
                         <th class="table-header">出勤</th>
                         <th class="table-header">退勤</th>
                         <th class="table-header">休憩</th>
