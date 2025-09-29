@@ -1,11 +1,10 @@
 .content {
-    height: 100vh;
     padding: 60px 30px;
 }
 
 .attendance__edit-form {
     width: 900px;
-    margin: 0 auto 30px;
+    margin: 0 auto;
 }
 
 .detail__table {
@@ -136,12 +135,17 @@
 
 @media (min-width: 768px) and (max-width: 850px) {
     .content {
-        padding: 40px 20px;
+        height: 100vh;
+        padding: 40px 30px;
     }
 
     .attendance__edit-form {
         width: 630px;
-        margin: 0 auto 30px;
+        margin: 0 auto;
+    }
+
+    .detail__table {
+        margin-bottom: 20px;
     }
 
     .table-header {
@@ -174,5 +178,19 @@
 
     .note-text {
         width: 285px;
+    }
+
+    .edit__btn,
+    .approve__btn {
+        font-size: 18px;
+    }
+
+    .approved {
+        font-size: 18px;
+        padding: 8px 12px;
+    }
+
+    .year {
+        margin-right: 3em;
     }
 }
