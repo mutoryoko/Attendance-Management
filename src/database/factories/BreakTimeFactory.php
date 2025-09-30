@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Attendance;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RequestBreakTime>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BreakTime>
  */
 class BreakTimeFactory extends Factory
 {
@@ -15,8 +15,8 @@ class BreakTimeFactory extends Factory
     {
         return [
             'attendance_id' => Attendance::factory(),
-            'start_at' => '13:00:00',
-            'end_at' => '14:00:00',
+            'start_at' => '12:00:00',
+            'end_at' => null,
         ];
     }
 }

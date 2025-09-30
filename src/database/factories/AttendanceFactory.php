@@ -22,7 +22,7 @@ class AttendanceFactory extends Factory
             'work_date' => fake()->date(),
             'clock_in_time' => null,
             'clock_out_time' => null,
-            'total_break_minutes' => 60,
+            'total_break_minutes' => 0,
             'total_work_minutes' => 0,
         ];
     }

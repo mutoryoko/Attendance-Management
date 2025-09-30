@@ -23,7 +23,7 @@ class AttendancesTableSeeder extends Seeder
         foreach ($users as $user) {
             foreach ($period as $date) {
                 // 80%の確率で出勤データを作成（欠勤日を作るため）
-                if (rand(1, 100) <= 80) {
+                if (rand(1, 100) <= 70) {
                     Attendance::factory()->create([
                         'user_id' => $user->id,
                         'work_date' => $date->format('Y-m-d'),
