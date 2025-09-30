@@ -71,13 +71,13 @@
                     <span class="range">〜</span>
                     <input class="time__input" type="time" name="breaks[{{ $i }}][end]" value="{{ old('breaks.' . $i . '.end', $breakTime ? $breakTime->formatted_break_end : '') }}" />
 
-                    @error('breaks.' . $i . '.end')
-                        <p class="error">{{ $message }}</p>
-                    @else
-                        @error('breaks.' . $i . '.start')
-                            <p class="error">{{ $message }}</p>
-                        @enderror
-                    @enderror
+                    @if($errors->has('breaks'))
+                    <p class="error">{{ $errors->first('breaks') }}</p>
+                    @elseif($errors->has('breaks.' . $i . '.end'))
+                    <p class="error">{{ $errors->first('breaks.' . $i . '.end') }}</p>
+                    @elseif($errors->has('breaks.' . $i . '.start'))
+                    <p class="error">{{ $errors->first('breaks.' . $i . '.start') }}</p>
+                    @endif
                 </td>
             </tr>
             @endfor
