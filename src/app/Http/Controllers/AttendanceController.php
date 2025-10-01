@@ -20,16 +20,16 @@ class AttendanceController extends Controller
         $startOfMonth = $currentMonth->copy()->startOfMonth();
         $endOfMonth = $currentMonth->copy()->endOfMonth();
 
-        $period = CarbonPeriod::create($startOfMonth,'1 day', $endOfMonth);
+        $period = CarbonPeriod::create($startOfMonth, '1 day', $endOfMonth);
 
         $attendances = Attendance::where('user_id', Auth::id())
-                    ->whereYear('work_date', $currentMonth->year)
-                    ->whereMonth('work_date', $currentMonth->month)
-                    ->orderBy('work_date', 'asc')
-                    ->get()
-                    ->keyBy(function ($item) {
-                        return Carbon::parse($item->work_date)->format('Y-m-d');
-                    });
+            ->whereYear('work_date', $currentMonth->year)
+            ->whereMonth('work_date', $currentMonth->month)
+            ->orderBy('work_date', 'asc')
+            ->get()
+            ->keyBy(function ($item) {
+                return Carbon::parse($item->work_date)->format('Y-m-d');
+            });
 
         $prevMonth = $currentMonth->copy()->subMonth()->format('Y-m');
         $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
@@ -124,40 +124,55 @@ class AttendanceController extends Controller
                             'end_at' => $now->toTimeString(),
                         ]);
                     }
+                    // 合計休憩時間の計算
+                    $totalBreakSeconds = 0;
+                    foreach ($attendance->refresh()->breakTimes as $break) {
+                        if ($break->start_at && $break->end_at) {
+                            $start = $break->start_at;
+                            $end = $break->end_at;
+                            $totalBreakSeconds += $start->diffInSeconds($end);
+                        }
+                    }
+                    $totalBreakMinutes = floor($totalBreakSeconds / 60);
+
+                    $attendance->total_break_minutes = $totalBreakMinutes;
+                    $attendance->save();
                 }
                 break;
 
             // 退勤
             case 'clock_out':
                 if ($attendance && is_null($attendance->clock_out_time)) {
+                    // UI側で制御されているため、休憩中に退勤されることは想定しないが念の為
                     // 休憩中の場合は先に休憩を終了させる
                     $activeBreak = $attendance->breakTimes()
                         ->whereNull('end_at')
                         ->first();
                     if ($activeBreak) {
                         $activeBreak->update(['end_at' => $now->toTimeString()]);
-                        // attendanceを再読み込みして最新の休憩情報を反映
-                        $attendance->refresh();
+                        // 休憩の強制終了のため、ここで合計休憩時間の計算
+                        $totalBreakSeconds = 0;
+                        foreach ($attendance->refresh()->breakTimes as $break) {
+                            if ($break->start_at && $break->end_at) {
+                                $start = $break->start_at;
+                                $end = $break->end_at;
+                                $totalBreakSeconds += $start->diffInSeconds($end);
+                            }
+                        }
+                        $totalBreakMinutes = floor($totalBreakSeconds / 60);
+
+                        $attendance->total_break_minutes = $totalBreakMinutes;
                     }
 
                     $attendance->clock_out_time = $now->toTimeString();
 
-                    // 合計休憩時間の計算
-                    $totalBreakSeconds = 0;
-                    foreach ($attendance->breakTimes as $break) {
-                        $start = $break->start_at;
-                        $end = $break->end_at;
-                        $totalBreakSeconds += $start->diffInSeconds($end);
-                    }
-                    $totalBreakMinutes = floor($totalBreakSeconds / 60);
-
                     // 実労働時間の計算
                     $clockIn = $attendance->clock_in_time;
                     $clockOut = $attendance->clock_out_time;
+                    $totalBreakMinutes = $attendance->total_break_minutes;
                     $totalWorkSeconds = $clockIn->diffInSeconds($clockOut);
                     $totalWorkMinutes = floor($totalWorkSeconds / 60) - $totalBreakMinutes;
 
-                    $attendance->total_break_minutes = $totalBreakMinutes;
                     $attendance->total_work_minutes = $totalWorkMinutes;
                     $attendance->save();
                 }
