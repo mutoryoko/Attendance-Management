@@ -16,6 +16,8 @@ use App\Http\Responses\LoginViewResponse;
 use App\Http\Responses\RegisterViewResponse;
 use App\Http\Responses\LoginResponse;
 use App\Http\Responses\LogoutResponse;
+use App\Http\Responses\RegisterResponse as CustomRegisterResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\LoginViewResponse as LoginViewResponseContract;
 use Laravel\Fortify\Contracts\RegisterViewResponse as RegisterViewResponseContract;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
@@ -29,6 +31,8 @@ class FortifyServiceProvider extends ServiceProvider
         // 一般ユーザー用
         $this->app->singleton(LoginViewResponseContract::class, LoginViewResponse::class);
         $this->app->singleton(RegisterViewResponseContract::class, RegisterViewResponse::class);
+        //　会員登録
+        $this->app->singleton(RegisterResponse::class, CustomRegisterResponse::class);
         // ログイン
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
         // ログアウト
@@ -40,10 +44,10 @@ class FortifyServiceProvider extends ServiceProvider
         // 一般ユーザー登録
         Fortify::createUsersUsing(CreateNewUser::class);
 
-        // //メール認証
-        // Fortify::verifyEmailView(function () {
-        //     return view('auth.verify-email');
-        // });
+        //メール認証
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
 
         // ログイン画面表示
         Fortify::loginView(function () {

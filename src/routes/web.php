@@ -6,16 +6,31 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EditAttendanceController;
 use App\Http\Controllers\RequestAttendanceController;
+use App\Http\Controllers\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
 
 
 // 一般ユーザー
-Route::middleware('auth')->prefix('attendance')->name('attendance.')->group(function () {
+Route::middleware('auth', 'verified')->prefix('attendance')->name('attendance.')->group(function () {
     Route::get('/', [AttendanceController::class, 'create'])->name('create');
     Route::post('/', [AttendanceController::class, 'store'])->name('store');
     Route::get('/list', [AttendanceController::class, 'index'])->name('index');
     Route::get('/detail/{id}', [EditAttendanceController::class, 'show'])->name('detail');
     Route::post('/detail/{id}', [EditAttendanceController::class, 'sendRequest'])->name('send');
+});
+
+Route::prefix('email')->name('verification.')->group(function () {
+    // 認証処理
+    Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+        ->middleware('signed')
+        ->name('verify');
+    // メール認証誘導画面
+    Route::get('/verify', [EmailVerificationController::class, 'showNotice'])
+        ->name('notice');
+    // 認証メールの再送信
+    Route::post('/verification-notification', [EmailVerificationController::class, 'resendFromSession'])
+        ->middleware('throttle:6,1')
+        ->name('resend');
 });
 
 // 一般ユーザー・管理者
