@@ -19,19 +19,21 @@ Route::middleware('auth', 'verified')->prefix('attendance')->name('attendance.')
     Route::post('/detail/{id}', [EditAttendanceController::class, 'sendRequest'])->name('send');
 });
 
-Route::prefix('email')->name('verification.')->group(function () {
-    // 認証処理
-    Route::get('/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
-        ->middleware('signed')
-        ->name('verify');
-    // メール認証誘導画面
-    Route::get('/verify', [EmailVerificationController::class, 'showNotice'])
-        ->name('notice');
-    // 認証メールの再送信
-    Route::post('/verification-notification', [EmailVerificationController::class, 'resendFromSession'])
-        ->middleware('throttle:6,1')
-        ->name('resend');
-});
+Route::prefix('email')->name('verification.')
+    ->controller(EmailVerificationController::class)
+    ->group(function () {
+        // 認証処理
+        Route::get('/verify/{id}/{hash}', 'verify')
+            ->middleware('signed')
+            ->name('verify');
+        // メール認証誘導画面
+        Route::get('/verify', 'showNotice')
+            ->name('notice');
+        // 認証メールの再送信
+        Route::post('/verification-notification', 'resendFromSession')
+            ->middleware('throttle:6,1')
+            ->name('resend');
+    });
 
 // 一般ユーザー・管理者
 Route::prefix('stamp_correction_request')->controller(RequestAttendanceController::class)->group(function () {

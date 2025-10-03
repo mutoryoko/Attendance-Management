@@ -69,7 +69,7 @@ class EmailVerificationController extends Controller
             return redirect('/attendance')->with('status', 'すでに認証済みです');
         }
         // ハッシュが一致するかチェック
-        if (! hash_equals(sha1($user->getEmailForVerification()), $hash)) {
+        if (!hash_equals(sha1($user->getEmailForVerification()), $hash)) {
             abort(403);
         }
         // メール認証完了
