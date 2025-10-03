@@ -136,11 +136,14 @@ img {
 
 .session,
 .session-error {
-    color: rgb(31, 170, 89);
     text-align: right;
     font-size: 20px;
     font-weight: bold;
     margin: 0 0 30px 0;
+}
+
+.session {
+    color: rgb(31, 170, 89);
 }
 
 .session-error {

@@ -50,16 +50,16 @@ docker compose exec php bash
 composer install
 cp .env.example .env
 ```
-メール機能はMailtrapを想定。<br />
-アカウント作成後、下記を参考に.envファイルを編集する。
+メール機能はMailhogを想定。<br />
+.envファイルを編集する。
 ```
 MAIL_MAILER=smtp
-MAIL_HOST=sandbox.smtp.mailtrap.io
-MAIL_PORT=587または2525
-MAIL_USERNAME=Mailtrapのユーザー名
-MAIL_PASSWORD=Mailtrapのパスワード
-MAIL_ENCRYPTION=tls　（Laravel9〜は省略可）
-MAIL_FROM_ADDRESS="no-reply@example.com"
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=null
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 &nbsp;
@@ -124,8 +124,10 @@ php artisan test
 | 佐藤二郎 | jiro@seeder.com | password2 | 認証済 |
 | 北島三郎 | saburo@seeder.com | password3 | 未認証 |
 
-一般ユーザーの勤怠情報は過去1ヶ月分、登録しています。<br />
-打刻できるようにするため、シーディングした当日分は登録されていません。
+&nbsp;
+### 【勤怠情報】
+* 過去1ヶ月分、出勤・退勤時間（ランダム）・休憩時間（1回または2回）。
+* 打刻できるようにするため、シーディングした当日の勤怠は登録されていません。
 
 &nbsp;
 
