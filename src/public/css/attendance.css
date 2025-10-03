@@ -51,10 +51,9 @@
     gap: 80px;
 }
 
-.clock__btn {
+.clock__btn,
+.break__btn {
     width: 200px;
-    background: #000;
-    color: #fff;
     font-weight: bold;
     font-size: 32px;
     letter-spacing: 0.3rem;
@@ -65,18 +64,14 @@
     cursor: pointer;
 }
 
+.clock__btn {
+    background: #000;
+    color: #fff;
+}
+
 .break__btn {
-    width: 200px;
     background: #fff;
     color: #000;
-    font-weight: bold;
-    font-size: 32px;
-    letter-spacing: 0.3rem;
-    border: none;
-    border-radius: 20px;
-    outline: none;
-    padding: 10px 20px;
-    cursor: pointer;
 }
 
 .message {
@@ -100,7 +95,8 @@
         margin-bottom: 50px;
     }
 
-    .clock__btn {
+    .clock__btn,
+    .break__btn {
         width: 150px;
         font-size: 24px;
         border-radius: 10px;
