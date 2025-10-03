@@ -30,7 +30,7 @@ Route::prefix('email')->name('verification.')
         Route::get('/verify', 'showNotice')
             ->name('notice');
         // 認証メールの再送信
-        Route::post('/verification-notification', 'resendFromSession')
+        Route::post('/verification-notification', 'resendNotification')
             ->middleware('throttle:6,1')
             ->name('resend');
     });

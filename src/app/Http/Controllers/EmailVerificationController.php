@@ -13,51 +13,57 @@ class EmailVerificationController extends Controller
     // メール認証誘導画面
     public function showNotice()
     {
-        $userId = session('unauthenticated_user_id');
-        $user = $userId ? User::find($userId) : null;
+        $user = null;
+
+        if (Auth::check()) {
+            $user = Auth::user();
+        } else {
+            $userId = session('unauthenticated_user_id');
+            $user = $userId ? User::find($userId) : null;
+        }
 
         if (!$user) {
-            return to_route('register')->withErrors('再度登録してください');
+            return to_route('register')->with('error', 'ユーザー情報が見つかりません。再度登録してください。');
         }
 
         if ($user->hasVerifiedEmail()) {
-            return to_route('attendance.create');
+            return Auth::check()
+                ? to_route('attendance.create')
+                : to_route('login')->with('status', 'メール認証は完了しています。ログインしてください。');
         }
 
         return view('auth.verify-email');
     }
 
-    // 未認証ユーザーに再送信
-    public function resendFromSession()
+    // メール再送信
+    public function resendNotification(Request $request)
     {
-        $userId = session('unauthenticated_user_id');
+        $user = null;
 
-        if (!$userId) {
-            return to_route('register')->withErrors('再送できません。もう一度登録してください。');
+        if (Auth::check()) {
+            $user = Auth::user();
+        } else {
+            $userId = session('unauthenticated_user_id');
+            if ($userId) {
+                $user = User::find($userId);
+            }
         }
 
-        $user = User::find($userId);
+        // 対象のユーザーが見つからない場合
+        if (!$user) {
+            // ログイン状態に応じてリダイレクト先を変更
+            return Auth::check() ? redirect('/logout') : to_route('register')
+                ->with('error', 'ユーザー情報が見つかりません。もう一度登録してください。');
+        }
 
-        if (!$user || $user->hasVerifiedEmail()) {
-            return to_route('login')->with('status', 'すでに認証済みです。');
+        // すでに認証済みの場合
+        if ($user->hasVerifiedEmail()) {
+            return to_route('attendance.create')->with('status', 'すでに認証済みです');
         }
 
         $user->sendEmailVerificationNotification();
 
         return back()->with('status', '認証メールを再送しました。');
-    }
-
-    // 未認証のままログインしようとした場合（念の為）
-    public function resend(Request $request)
-    {
-        // ログイン中のユーザーが認証済みかチェック
-        if ($request->user()->hasVerifiedEmail()) {
-            return to_route('attendance.create');
-        }
-
-        $request->user()->sendEmailVerificationNotification();
-
-        return back()->with('status', '認証メールを再送しました');
     }
 
      // メール認証処理
