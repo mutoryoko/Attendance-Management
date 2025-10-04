@@ -54,46 +54,48 @@ class AdminStaffController extends Controller
     }
 
     // csvエクスポート
-    public function export(Request $request)
+    public function export(Request $request, string $id)
     {
-        // $query = Attendance::query();
+        $user = User::findOrFail($id);
 
-        // $query = $this->getSearchQuery($request, $query);
+        $monthQuery = $request->query('month', Carbon::now()->format('Y-m'));
+        $targetDate = Carbon::parse($monthQuery);
+        $year = $targetDate->year;
+        $month = $targetDate->month;
 
-        // $csvData = $query->get()->toArray();
+        $csvHeader = ['ID', '出勤日', '出勤時間', '退勤時間', '合計休憩時間（分）', '実労働時間（分）', '備考', '作成日', '更新日',];
 
-        // $csvHeader = [
-        //     'id',
-        //     'user_id',
-        //     'work_date',
-        //     'clock_in_time',
-        //     'clock_out_time',
-        //     'total_break_minutes',
-        //     'total_work_minutes',
-        //     'note',
-        //     'created_at',
-        //     'updated_at',
-        // ];
+        $fileName = $user->name . '_' . $targetDate->format('Y年m月') . '勤怠情報.csv';
 
-        // $response = new StreamedResponse(function () use ($csvHeader, $csvData) {
-        //     $createCsvFile = fopen('php://output', 'w');
+        return response()->streamDownload(function () use ($id, $year, $month, $csvHeader) {
+            $file = fopen('php://output', 'w');
 
-        //     mb_convert_variables('SJIS-win', 'UTF-8', $csvHeader);
+            // 文字化け対策（BOM）
+            fwrite($file, "\xEF\xBB\xBF");
 
-        //     fputcsv($createCsvFile, $csvHeader);
+            fputcsv($file, $csvHeader);
 
-        //     foreach ($csvData as $csv) {
-        //         $csv['created_at'] = Date::make($csv['created_at'])->setTimezone('Asia/Tokyo')->format('Y/m/d H:i:s');
-        //         $csv['updated_at'] = Date::make($csv['updated_at'])->setTimezone('Asia/Tokyo')->format('Y/m/d H:i:s');
-        //         fputcsv($createCsvFile, $csv);
-        //     }
+            $attendances = Attendance::where('user_id', $id)
+                ->whereYear('work_date', $year)
+                ->whereMonth('work_date', $month)
+                ->orderBy('work_date', 'asc')
+                ->get();
 
-        //     fclose($createCsvFile);
-        // }, 200, [
-        //     'Content-Type' => 'text/csv',
-        //     'Content-Disposition' => 'attachment; filename="contacts.csv"',
-        // ]);
-
-        // return $response;
+            foreach($attendances as $attendance) {
+                $row = [
+                    $attendance->id,
+                    $attendance->work_date->format('Y-m-d'),
+                    $attendance->clock_in_time->format('H:i:s'),
+                    $attendance->clock_out_time->format('H:i:s'),
+                    $attendance->total_break_minutes,
+                    $attendance->total_work_minutes,
+                    $attendance->note,
+                    $attendance->created_at->format('Y-m-d H:i:s'),
+                    $attendance->updated_at->format('Y-m-d H:i:s'),
+                ];
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        }, $fileName);
     }
 }
