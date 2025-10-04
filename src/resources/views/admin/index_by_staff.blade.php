@@ -24,8 +24,8 @@
             </a>
         </div>
         <form action="{{ route('admin.attendance.export', ['id' => $user->id]) }}?month={{ $currentMonth->format('Y-m') }}" method="POST">
+            @csrf
             <div class="attendances__table">
-                @csrf
                 <table class="attendances__table-inner">
                     <thead>
                         <tr class="table-row__header">
