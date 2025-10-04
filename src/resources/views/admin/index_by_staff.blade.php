@@ -61,9 +61,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="button__wrapper">
-            <button class="export__btn">CSV出力</button>
-        </div>
+        <form action="{{ route('admin.attendance.export', ['id' => $user->id]) }}?month={{ $currentMonth->format('Y-m') }}" method="POST">
+            @csrf
+            <div class="button__wrapper">
+                <button class="export__btn">CSV出力</button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

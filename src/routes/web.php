@@ -54,6 +54,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('staff');
         Route::get('/attendance/staff/{id}', [AdminStaffController::class, 'indexByStaff'])->name('attendance.staff');
+        Route::post('/attendance/staff/{id}/export', [AdminStaffController::class, 'export'])->name('attendance.export');
 
         Route::post('/logout', [AdminUserController::class, 'destroy'])->name('logout');
     });
