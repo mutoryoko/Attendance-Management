@@ -42,7 +42,6 @@ services:
         ports:
             - 8080:80
 
-
     mail:
         image: mailhog/mailhog
         container_name: mailhog
