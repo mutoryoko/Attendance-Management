@@ -63,7 +63,7 @@ class EmailVerificationController extends Controller
 
         $user->sendEmailVerificationNotification();
 
-        return back()->with('status', '認証メールを再送しました。');
+        return back()->with('status', '認証メールを再送しました');
     }
 
      // メール認証処理

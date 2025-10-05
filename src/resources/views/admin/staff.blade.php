@@ -16,7 +16,7 @@
                     <tr class="table-row__header">
                         <th class="table-header">名前</th>
                         <th class="table-header">メールアドレス</th>
-                        <th class="table-header">詳細</th>
+                        <th class="table-header">月次勤怠</th>
                     </tr>
                 </thead>
                 <tbody>

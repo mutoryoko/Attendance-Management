@@ -49,8 +49,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('auth:admin')->group(function(){
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('index');
-        Route::get('/attendance/detail/{id}', [AdminAttendanceController::class, 'show'])->name('detail');
-        Route::post('/attendance/detail/{id}', [AdminAttendanceController::class, 'update'])->name('update');
+        Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])->name('detail');
+        Route::post('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('update');
 
         Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('staff');
         Route::get('/attendance/staff/{id}', [AdminStaffController::class, 'indexByStaff'])->name('attendance.staff');

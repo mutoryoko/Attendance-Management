@@ -50,7 +50,7 @@
                         <td class="table-data">{{ $attendance->formatted_break_time ?? '' }}</td>
                         <td class="table-data">{{ $attendance->formatted_work_time ?? '' }}</td>
                         <td class="table-data">
-                        @if ($date->lt(today()))
+                        @if ($date->lte(today()))
                             @if ($attendance)
                                 <a class="detail__link" href="{{ route('attendance.detail', ['id' => $attendance->id]) }}">詳細</a>
                             @else

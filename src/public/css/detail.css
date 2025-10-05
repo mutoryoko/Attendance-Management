@@ -1,5 +1,9 @@
 .content {
-    padding: 60px 30px;
+    padding: 80px 30px;
+}
+
+.approve__content {
+    height: 100vh;
 }
 
 .attendance__edit-form {
