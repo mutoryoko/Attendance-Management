@@ -31,7 +31,7 @@ class FortifyServiceProvider extends ServiceProvider
         // 一般ユーザー用
         $this->app->singleton(LoginViewResponseContract::class, LoginViewResponse::class);
         $this->app->singleton(RegisterViewResponseContract::class, RegisterViewResponse::class);
-        //　会員登録
+        // 会員登録
         $this->app->singleton(RegisterResponse::class, CustomRegisterResponse::class);
         // ログイン
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
@@ -44,7 +44,7 @@ class FortifyServiceProvider extends ServiceProvider
         // 一般ユーザー登録
         Fortify::createUsersUsing(CreateNewUser::class);
 
-        //メール認証
+        // メール認証
         Fortify::verifyEmailView(function () {
             return view('auth.verify-email');
         });

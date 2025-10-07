@@ -33,7 +33,7 @@ class AdminAttendanceController extends Controller
         ));
     }
 
-    //　勤怠詳細画面
+    // 勤怠詳細画面
     public function show(Request $request, string $id)
     {
         $user = null;
@@ -57,7 +57,7 @@ class AdminAttendanceController extends Controller
         } else {
             // 数値IDの場合 (出勤日のリンクから来た場合)
             $attendance = Attendance::with('user', 'breakTimes', 'pendingRequest')
-                        ->findOrFail($id);
+                ->findOrFail($id);
             $user = $attendance->user;
         }
 

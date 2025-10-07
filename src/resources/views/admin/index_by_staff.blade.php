@@ -49,10 +49,10 @@
                         <td class="table-data">
                         @if ($date->lte(today()))
                             @if ($attendance)
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
+                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
                             @else
-                                {{-- 欠勤日の場合、日付をパラメータとする --}}
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $date->format('Y-m-d'), 'user' => $user->id]) }}">詳細</a>
+                            {{-- 欠勤日の場合、日付をパラメータとする --}}
+                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $date->format('Y-m-d'), 'user' => $user->id]) }}">詳細</a>
                             @endif
                         @endif
                         </td>
@@ -61,6 +61,7 @@
                 </tbody>
             </table>
         </div>
+
         <form action="{{ route('admin.attendance.export', ['id' => $user->id]) }}?month={{ $currentMonth->format('Y-m') }}" method="POST">
             @csrf
             <div class="button__wrapper">

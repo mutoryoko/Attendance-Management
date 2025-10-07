@@ -18,7 +18,7 @@ class ChangeTimeRequest extends FormRequest
             'user_id' => [
                 'sometimes', // フィールドがあるときのみ
                 'required',
-                'exists:users, id',
+                'exists:users,id',
             ],
             'requested_work_start' => [
                 'nullable',

@@ -11,6 +11,7 @@
     @if (session('status'))
     <p class="session">{{ session('status') }}</p>
     @endif
+
     <div class="request__wrapper">
         <h1 class="title">申請一覧</h1>
         <div class="tabs">
@@ -21,6 +22,7 @@
                 承認済み
             </a>
         </div>
+
         <div class="requests__table">
             <table class="requests__table-inner">
                 <thead>

@@ -44,11 +44,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    // メール認証
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmailCustom);
     }
 
+    // リレーション
     public function attendances()
     {
         return $this->hasMany(Attendance::class);

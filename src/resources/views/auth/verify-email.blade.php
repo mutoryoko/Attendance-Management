@@ -9,7 +9,7 @@
 @section('content')
     {{-- メール認証の通知 --}}
     @if (session('status'))
-        <p class="session">{{ session('status') }}</p>
+    <p class="session">{{ session('status') }}</p>
     @endif
     <div class="content">
         <p class="text">登録していただいたメールアドレスに認証メールを送付しました。<br/>メール認証を完了してください。</p>

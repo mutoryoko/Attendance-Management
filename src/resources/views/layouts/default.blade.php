@@ -18,6 +18,7 @@
                 <div class="header__logo">
                     <img src="{{ asset('img/logo.svg') }}" alt="ロゴ" />
                 </div>
+
                 @if(Auth::guard('web')->check())
                 <nav class="header__nav">
                     <ul class="header__nav--items">
@@ -61,6 +62,7 @@
                 @endif
             </div>
         </header>
+
         <main>
             @yield('content')
         </main>

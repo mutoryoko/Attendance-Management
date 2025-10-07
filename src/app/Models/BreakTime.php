@@ -33,19 +33,15 @@ class BreakTime extends Model
         return $this->belongsTo(Attendance::class);
     }
 
-    /**
-     * @return string
-     */
     // 休憩開始時刻をH:i形式で取得
-    public function getFormattedBreakStartAttribute()
+    public function getFormattedBreakStartAttribute(): ?string
     {
         return $this->start_at ? $this->start_at->format('H:i') : null;
     }
 
     // 休憩終了時刻をH:i形式で取得
-    public function getFormattedBreakEndAttribute()
+    public function getFormattedBreakEndAttribute(): ?string
     {
         return $this->end_at ? $this->end_at->format('H:i') : null;
     }
-
 }

@@ -13,6 +13,7 @@
     @elseif(session('error'))
     <p class="session-error">{{ session('error') }}</p>
     @endif
+
     <h1 class="auth-title">会員登録</h1>
     <form class="user-form" action="{{ route('register') }}" method="POST">
         @csrf
@@ -33,7 +34,7 @@
         <div class="user-form__item">
             <label for="password" class="user-form__label"><div>パスワード</div></label>
             <input id="password" class="user-form__input" type="password" name="password" />
-            {{-- ここでは「一致しません」というエラーは表示しない --}}
+            {{-- ここでは「一致しません」エラーは表示しない --}}
             @error('password')
             @if (!str_contains($message, '一致しません'))
             <p class="error">{{ $message }}</p>
@@ -43,7 +44,6 @@
         <div class="user-form__item">
             <label for="pw-confirm" class="user-form__label"><div>確認用パスワード</div></label>
             <input id="pw-confirm" class="user-form__input" type="password" name="password_confirmation" />
-            {{-- password.confirmedのエラーをここに表示 --}}
             @error('password')
             @if (str_contains($message, '一致しません'))
             <p class="error">{{ $message }}</p>

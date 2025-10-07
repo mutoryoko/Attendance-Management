@@ -58,19 +58,18 @@
                 </td>
             </tr>
             @php
-            $breakLoopCount = max(count($attendance->breakTimes) + 1, 2);
+            $breakLoopCount = $attendance->breakTimes->count() + 1;
             @endphp
             @for ($i = 0; $i < $breakLoopCount; $i++)
-                @php
-                $breakTime = $attendance->breakTimes[$i] ?? null;
-                @endphp
+            @php
+            $breakTime = $attendance->breakTimes[$i] ?? null;
+            @endphp
             <tr class="table-row">
                 <th class="table-header">休憩{{ $i + 1 }}</th>
                 <td class="table-data">
                     <input class="time__input" type="time" name="breaks[{{ $i }}][start]" value="{{ old('breaks.' . $i . '.start', $breakTime ? $breakTime->formatted_break_start : '') }}" />
                     <span class="range">〜</span>
                     <input class="time__input" type="time" name="breaks[{{ $i }}][end]" value="{{ old('breaks.' . $i . '.end', $breakTime ? $breakTime->formatted_break_end : '') }}" />
-
                     @if($errors->has('breaks'))
                     <p class="error">{{ $errors->first('breaks') }}</p>
                     @elseif($errors->has('breaks.' . $i . '.end'))
@@ -85,13 +84,13 @@
                 <th class="table-header">備考</th>
                 <td class="table-data note-data">
                     <textarea class="note-text" name="note" placeholder="電車遅延のため" rows="3">{{ old('note', $attendance->note ?? '') }}</textarea>
-
                     @error('note')
                     <p class="error">{{ $message }}</p>
                     @enderror
                 </td>
             </tr>
         </table>
+
         <div class="button__wrapper">
             @if ($attendance->pendingRequest)
             <p class="alert">※承認待ちのため修正はできません</p>

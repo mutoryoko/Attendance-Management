@@ -55,7 +55,7 @@ composer install
 cp .env.example .env
 ```
 メール機能はMailhogを使用。<br />
-.envファイルのMAIL_FROM_ADDRESSは任意のアドレスに変更してもよい。
+.envファイルのMAIL_FROM_ADDRESSは任意のアドレスに変更可。
 
 以下のコマンドを実行。
 ```

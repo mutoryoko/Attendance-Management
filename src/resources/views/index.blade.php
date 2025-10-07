@@ -11,6 +11,7 @@
     @if (session('status'))
     <p class="session">{{ session('status') }}</p>
     @endif
+
     <div class="attendances__wrapper">
         <h1 class="title">勤怠一覧</h1>
         <div class="pagination">
@@ -26,6 +27,7 @@
                 <img class="arrow" src="{{ asset('img/arrow-right.svg') }}" alt="右矢印">
             </a>
         </div>
+
         <div class="attendances__table">
             <table class="attendances__table-inner">
                 <thead>

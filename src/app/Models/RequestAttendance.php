@@ -45,17 +45,14 @@ class RequestAttendance extends Model
         return $this->hasMany(RequestBreakTime::class);
     }
 
-    /**
-     * @return string
-     */
     // 出勤時刻（修正）をH:i形式で取得
-    public function getFormattedRequestedWorkStartAttribute()
+    public function getFormattedRequestedWorkStartAttribute(): ?string
     {
         return $this->requested_work_start ? $this->requested_work_start->format('H:i') : null;
     }
 
     // 退勤時刻（修正）をH:i形式で取得
-    public function getFormattedRequestedWorkEndAttribute()
+    public function getFormattedRequestedWorkEndAttribute(): ?string
     {
         return $this->requested_work_end ? $this->requested_work_end->format('H:i') : null;
     }

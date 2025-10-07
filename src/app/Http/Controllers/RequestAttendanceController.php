@@ -22,18 +22,18 @@ class RequestAttendanceController extends Controller
 
         if (Auth::guard('admin')->check()) {
             $requestAttendances = RequestAttendance::with(['applier', 'attendance'])
-                        ->where('is_approved', $isApproved)
-                        ->latest()
-                        ->get();
+                ->where('is_approved', $isApproved)
+                ->latest()
+                ->get();
 
             return view('attendance_request', compact('requestAttendances', 'status'));
         } elseif (Auth::guard('web')->check()) {
             $user = Auth::user();
             $requestAttendances = RequestAttendance::with('attendance')
-                                ->where('applier_id', $user->id)
-                                ->where('is_approved', $isApproved)
-                                ->latest()
-                                ->get();
+                ->where('applier_id', $user->id)
+                ->where('is_approved', $isApproved)
+                ->latest()
+                ->get();
 
             return view('attendance_request', compact('requestAttendances', 'status'));
         } else {
@@ -46,8 +46,8 @@ class RequestAttendanceController extends Controller
     {
         $requestAttendance = RequestAttendance::with('attendance')->findOrFail($id);
         $requestBreakTimes = RequestBreakTime::with('requestAttendance')
-                            ->where('request_id', $requestAttendance->id)
-                            ->get();
+            ->where('request_id', $requestAttendance->id)
+            ->get();
 
         return view('approve', compact('requestAttendance', 'requestBreakTimes'));
     }
@@ -62,8 +62,8 @@ class RequestAttendanceController extends Controller
                 $requestAttendance = RequestAttendance::with('attendance')->findOrFail($id);
 
                 $requestBreakTimes = RequestBreakTime::with('requestAttendance')
-                                    ->where('request_id', $requestAttendance->id)
-                                    ->get();
+                    ->where('request_id', $requestAttendance->id)
+                    ->get();
 
                 // DBに承認者IDと「承認済み」を登録
                 $requestAttendance->approver_id = $adminId;

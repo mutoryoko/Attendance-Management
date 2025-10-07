@@ -10,9 +10,10 @@ class LoginResponse implements LoginResponseContract
     {
         $user = $request->user();
 
+        // 未認証ユーザーの場合
         if (!$user->hasVerifiedEmail()) {
-            auth()->logout(); // ログイン直後に強制ログアウト
-            session()->put('unauthenticated_user_id', $user->id); // 再送用にセッション保存
+            auth()->logout();
+            session()->put('unauthenticated_user_id', $user->id); // メール再送用にセッション保存
             return to_route('verification.notice');
         }
 

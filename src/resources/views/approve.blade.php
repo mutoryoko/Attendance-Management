@@ -42,9 +42,9 @@
                 $breakLoopCount = count($requestBreakTimes);
                 @endphp
                 @for ($i = 0; $i < $breakLoopCount; $i++)
-                    @php
-                    $requestBreakTime = $requestBreakTimes[$i] ?? null;
-                    @endphp
+                @php
+                $requestBreakTime = $requestBreakTimes[$i] ?? null;
+                @endphp
                 <tr class="table-row">
                     <th class="table-header">休憩{{ $i + 1 }}</th>
                     <td class="table-data time-data">
@@ -61,6 +61,7 @@
                     </td>
                 </tr>
             </table>
+
             <div class="button__wrapper">
                 @if ($requestAttendance->is_approved)
                 <button class="approved" disabled>承認済み</button>

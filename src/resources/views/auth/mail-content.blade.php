@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>メール認証のご案内</title>
     </head>
+
     <body>
         <p>{{ $user->name }} 様</p>
         <p>Coachtech 勤怠管理アプリにご登録いただき、ありがとうございます。</p>

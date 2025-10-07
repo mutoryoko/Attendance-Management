@@ -13,6 +13,7 @@
     @elseif(session('error'))
     <p class="session-error">{{ session('error') }}</p>
     @endif
+
     <div class="attendances__wrapper admin-attendances__wrapper">
         <h1 class="title">
             <span class="title-date">{{ $currentDay->format('Y年n月j日') }}</span>の勤怠
@@ -58,9 +59,13 @@
                         <td class="table-data">
                             @if ($currentDay->lte(today()))
                                 @if($attendance)
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
+                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">
+                                    詳細
+                                </a>
                                 @else
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $currentDay->format('Y-m-d'), 'user' => $user->id] ) }}">詳細</a>
+                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $currentDay->format('Y-m-d'), 'user' => $user->id] ) }}">
+                                    詳細
+                                </a>
                                 @endif
                             @endif
                         </td>

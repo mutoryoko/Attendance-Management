@@ -54,17 +54,14 @@ class Attendance extends Model
         return $this->hasOne(RequestAttendance::class)->latestOfMany();
     }
 
-    /**
-     * @return string
-     */
     // 出勤時刻をH:i形式で取得
-    public function getFormattedWorkStartAttribute()
+    public function getFormattedWorkStartAttribute(): ?string
     {
         return $this->clock_in_time ? $this->clock_in_time->format('H:i') : null;
     }
 
     // 退勤時刻をH:i形式で取得
-    public function getFormattedWorkEndAttribute()
+    public function getFormattedWorkEndAttribute(): ?string
     {
         return $this->clock_out_time ? $this->clock_out_time->format('H:i') : null;
     }
