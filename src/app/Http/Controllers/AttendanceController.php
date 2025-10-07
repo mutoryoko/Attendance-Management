@@ -143,27 +143,6 @@ class AttendanceController extends Controller
             // 退勤
             case 'clock_out':
                 if ($attendance && is_null($attendance->clock_out_time)) {
-                    // UI側で制御されているため、休憩中に退勤されることは想定しないが念の為
-                    // 休憩中の場合は先に休憩を終了させる
-                    $activeBreak = $attendance->breakTimes()
-                        ->whereNull('end_at')
-                        ->first();
-                    if ($activeBreak) {
-                        $activeBreak->update(['end_at' => $now->toTimeString()]);
-                        // 休憩の強制終了のため、ここで合計休憩時間の計算
-                        $totalBreakSeconds = 0;
-                        foreach ($attendance->refresh()->breakTimes as $break) {
-                            if ($break->start_at && $break->end_at) {
-                                $start = $break->start_at;
-                                $end = $break->end_at;
-                                $totalBreakSeconds += $start->diffInSeconds($end);
-                            }
-                        }
-                        $totalBreakMinutes = floor($totalBreakSeconds / 60);
-
-                        $attendance->total_break_minutes = $totalBreakMinutes;
-                    }
-
                     $attendance->clock_out_time = $now->toTimeString();
 
                     // 実労働時間の計算

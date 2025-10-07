@@ -101,6 +101,7 @@ class AdminAttendanceController extends Controller
 
                 if (isset($validatedData['breaks'])) {
                     foreach ($validatedData['breaks'] as $breakData) {
+                        // nullableのため、空データ対策
                         if (!empty($breakData['start']) && !empty($breakData['end'])) {
                             $attendance->breakTimes()->create([
                                 'start_at' => $breakData['start'],
