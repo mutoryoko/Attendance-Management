@@ -38,9 +38,9 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
 
-    public function requestAttendance()
+    public function requestAttendances()
     {
-        return $this->hasOne(RequestAttendance::class);
+        return $this->hasMany(RequestAttendance::class);
     }
 
     public function pendingRequest()

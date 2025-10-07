@@ -23,7 +23,7 @@ class RequestBreakTime extends Model
     // リレーション
     public function requestAttendance()
     {
-        return $this->belongsTo(RequestAttendance::class);
+        return $this->belongsTo(RequestAttendance::class, 'request_id');
     }
 
     // 出勤時刻（修正）をH:i形式で取得
