@@ -12,6 +12,7 @@
         <h1 class="title">勤怠詳細</h1>
         <form class="attendance__edit-form" action="{{ route('admin.approve', ['attendance_correct_request' => $requestAttendance->id]) }}" method="POST">
             @csrf
+            @method('PATCH')
             <table class="detail__table">
                 <tr class="table-row">
                     <th class="table-header">名前</th>

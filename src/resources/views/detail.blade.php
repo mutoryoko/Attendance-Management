@@ -16,12 +16,20 @@
     @endif
 
     <h1 class="title">勤怠詳細</h1>
-    @if(Auth::guard('web')->check())
-    <form class="attendance__edit-form" action="{{ route('attendance.send', ['id' => $attendance->exists ? $attendance->id : $attendance->work_date->format('Y-m-d')]) }}" method="POST">
-    @elseif(Auth::guard('admin')->check())
-    <form class="attendance__edit-form" action="{{ route('admin.update', ['id' => $attendance->exists ? $attendance->id : $attendance->work_date->format('Y-m-d'), 'user' => $user->id]) }}" method="POST">
+    @php
+    $formTargetId = $attendance->exists ? $attendance->id : $attendance->work_date->format('Y-m-d');
+
+    if (Auth::guard('admin')->check()) {
+        $formAction = route('admin.update', ['id' => $formTargetId, 'user' => $user->id]);
+    } else {
+        $formAction = route('attendance.send', ['id' => $formTargetId]);
+    }
+    @endphp
+    <form class="attendance__edit-form" action="{{ $formAction }}" method="POST">
+    @csrf
+    @if(Auth::guard('admin')->check())
+        @method('PATCH')
     @endif
-        @csrf
         <table class="detail__table">
             <tr class="table-row">
                 <th class="table-header">名前</th>

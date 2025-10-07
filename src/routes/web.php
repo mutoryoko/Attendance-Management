@@ -20,8 +20,7 @@ Route::middleware('auth', 'verified')->prefix('attendance')->name('attendance.')
 });
 
 Route::prefix('email')->name('verification.')
-    ->controller(EmailVerificationController::class)
-    ->group(function () {
+    ->controller(EmailVerificationController::class)->group(function () {
         // 認証処理
         Route::get('/verify/{id}/{hash}', 'verify')
             ->middleware('signed')
@@ -33,13 +32,13 @@ Route::prefix('email')->name('verification.')
         Route::post('/verification-notification', 'resendNotification')
             ->middleware('throttle:6,1')
             ->name('resend');
-    });
+});
 
 // 一般ユーザー・管理者
 Route::prefix('stamp_correction_request')->controller(RequestAttendanceController::class)->group(function () {
     Route::get('/list', 'index')->middleware('auth.any')->name('request');
     Route::get('/approve/{attendance_correct_request}', 'show')->middleware('auth.any')->name('request.detail');
-    Route::post('/approve/{attendance_correct_request}', 'approve')->middleware('auth:admin')->name('admin.approve');
+    Route::patch('/approve/{attendance_correct_request}', 'approve')->middleware('auth:admin')->name('admin.approve');
 });
 
 // 管理者
@@ -50,7 +49,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('auth:admin')->group(function(){
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('index');
         Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])->name('detail');
-        Route::post('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('update');
+        Route::patch('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('update');
 
         Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('staff');
         Route::get('/attendance/staff/{id}', [AdminStaffController::class, 'indexByStaff'])->name('attendance.staff');
