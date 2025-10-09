@@ -4,21 +4,21 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
+use App\Models\AdminUser;
 
-class LoginTest extends TestCase
+class AdminLoginTest extends TestCase
 {
     use RefreshDatabase;
 
     // メールアドレスのエラー
     public function test_show_error_when_email_is_missing(): void
     {
-        User::factory()->create([
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+        AdminUser::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('admin-pass'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('admin.login'), [
             'email' => '',
             'password' => 'password',
         ]);
@@ -31,12 +31,12 @@ class LoginTest extends TestCase
     // パスワードのエラー
     public function test_show_error_when_password_is_missing(): void
     {
-        User::factory()->create([
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+        AdminUser::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('admin-pass'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('admin.login'), [
             'email' => 'test@example.com',
             'password' => '',
         ]);
@@ -49,12 +49,12 @@ class LoginTest extends TestCase
     // 入力情報が間違っているエラー
     public function test_login_fails_with_invalid_credentials(): void
     {
-        User::factory()->create([
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+        AdminUser::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('admin-pass'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('admin.login'), [
             'email' => 'test@example.com',
             'password' => 'wrong-password',
         ]);
