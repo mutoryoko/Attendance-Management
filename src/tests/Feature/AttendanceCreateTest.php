@@ -25,7 +25,7 @@ class AttendanceCreateTest extends TestCase
 
         $expectedDate = $fixedTime->format('Y年n月j日') . '（' . $dayOfWeek . '）';
 
-        $response = $this->get('/attendance');
+        $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
         // 画面に表示されているはずの「日付」と「時刻」の文字列を準備

@@ -18,7 +18,7 @@ class LoginTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('login.store'), [
             'email' => '',
             'password' => 'password',
         ]);
@@ -36,7 +36,7 @@ class LoginTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('login.store'), [
             'email' => 'test@example.com',
             'password' => '',
         ]);
@@ -54,7 +54,7 @@ class LoginTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('login.store'), [
             'email' => 'test@example.com',
             'password' => 'wrong-password',
         ]);
