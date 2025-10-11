@@ -46,6 +46,7 @@ class AttendanceController extends Controller
         // 今日の勤怠記録を取得
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
+            ->latest('id')
             ->first();
 
         $status = '';
