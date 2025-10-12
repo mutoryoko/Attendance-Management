@@ -11,13 +11,13 @@ class AttendanceCreateTest extends TestCase
 {
     use RefreshDatabase;
 
+    // 打刻ページに現在の日時が表示される
     public function test_displays_current_datetime_on_attendance_create_page(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $fixedTime = Carbon::now(); // 現在時刻の場合
-        // $fixedTime = Carbon::create(2025, 10, 10, 9, 0, 0); //時間を固定する場合
+        $fixedTime = Carbon::now();
         $this->travelTo($fixedTime);
 
         $week = ['日', '月', '火', '水', '木', '金', '土'];

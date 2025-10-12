@@ -12,12 +12,22 @@ class AttendanceFunctionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var \Illuminate\Support\Carbon
+     */
+    protected $fixedDate;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        //　各テストの共通処理（現在時刻の固定）
+        $this->fixedDate = Carbon::create(2025, 10, 11, 9, 0, 0);
+        Carbon::setTestNow($this->fixedDate);
+    }
+
     // 出勤ボタンの表示し、出勤処理後、ステータスが「出勤中」になる
     public function test_display_attendance_button_and_user_can_clock_in(): void
     {
-        $fixedDate = Carbon::create(2025, 10, 11, 9, 0, 0);
-        Carbon::setTestNow($fixedDate);
-
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -48,9 +58,6 @@ class AttendanceFunctionTest extends TestCase
     // 出勤は一日一回のみできる
     public function test_user_can_clock_in_once_a_day(): void
     {
-        $fixedDate = Carbon::create(2025, 10, 11, 18, 0, 0);
-        Carbon::setTestNow($fixedDate);
-
         $user = User::factory()->create();
         Attendance::factory()->clockedOut()->create([
             'user_id' => $user->id,
@@ -68,9 +75,6 @@ class AttendanceFunctionTest extends TestCase
     // 出勤時刻を一覧画面で確認できる
     public function test_user_can_check_the_attendance_on_index_page(): void
     {
-        $fixedDate = Carbon::create(2025, 10, 11, 9, 0, 0);
-        Carbon::setTestNow($fixedDate);
-
         $user = User::factory()->create();
         $this->actingAs($user);
 
