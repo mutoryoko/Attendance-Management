@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Carbon\Carbon;
 
+// ID6：出勤機能とID8：退勤機能
 class AttendanceFunctionTest extends TestCase
 {
     use RefreshDatabase;
@@ -26,7 +27,7 @@ class AttendanceFunctionTest extends TestCase
     }
 
     // 出勤ボタンの表示し、出勤処理後、ステータスが「出勤中」になる
-    public function test_display_attendance_button_and_user_can_clock_in(): void
+    public function test_display_clock_in_button_and_status_become_working(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -73,7 +74,7 @@ class AttendanceFunctionTest extends TestCase
     }
 
     // 出勤時刻を一覧画面で確認できる
-    public function test_user_can_check_the_attendance_on_index_page(): void
+    public function test_user_can_check_the_clock_in_time_on_index_page(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -96,5 +97,77 @@ class AttendanceFunctionTest extends TestCase
 
         $response->assertSee(Carbon::now()->format('m/d'));
         $response->assertSee(Carbon::now()->format('H:i'));
+    }
+
+    // 退勤ボタンの表示し、退勤処理後、ステータスが「退勤済」になる
+    public function test_display_clock_out_button_and_status_become_clocked_out(): void
+    {
+        $user = User::factory()->create();
+        Attendance::factory()->create([
+            'user_id' => $user->id,
+            'work_date' => now()->format('Y-m-d'),
+        ]);
+        $this->actingAs($user);
+
+        $response = $this->get(route('attendance.create'));
+        $response->assertStatus(200);
+
+        $response->assertSee('<button class="clock__btn" type="submit" name="action" value="clock_out">退勤</button>', false);
+
+        Carbon::setTestNow(Carbon::create(2025, 10, 11, 18, 0, 0));
+        $workEndTime = now();
+        $response = $this->post(route('attendance.store'), [
+            'action' => 'clock_out'
+        ]);
+
+        $this->assertDatabaseHas('attendances', [
+            'user_id' => $user->id,
+            'work_date' => now()->format('Y-m-d'),
+            'clock_out_time' => $workEndTime->format('H:i:s'),
+        ]);
+
+        $response = $this->get(route('attendance.create'));
+        $response->assertStatus(200);
+
+        $response->assertSee('<p class="status">退勤済</p>', false);
+        $response->assertDontSee('<p class="status">勤務外</p>', false);
+        $response->assertDontSee('<p class="status">出勤中</p>', false);
+        $response->assertDontSee('<p class="status">休憩中</p>', false);
+    }
+
+    // 退勤時刻を一覧画面で確認できる
+    public function test_user_can_check_the_clock_out_time_on_index_page(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get(route('attendance.create'));
+        $response->assertStatus(200);
+
+        Carbon::setTestNow(Carbon::create(2025, 10, 11, 10, 0, 0));
+        $workStartTime = now();
+        $response = $this->post(route('attendance.store'), [
+            'action' => 'clock_in'
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2025, 10, 11, 20, 0, 0));
+        $workEndTime = now();
+        $response = $this->post(route('attendance.store'), [
+            'action' => 'clock_out'
+        ]);
+
+        $this->assertDatabaseHas('attendances', [
+            'user_id' => $user->id,
+            'work_date' => now()->format('Y-m-d'),
+            'clock_in_time' => $workStartTime->format('H:i:s'),
+            'clock_out_time' => $workEndTime->format('H:i:s'),
+        ]);
+
+        $response = $this->get(route('attendance.index'));
+        $response->assertStatus(200);
+
+        $response->assertSee(now()->format('m/d'));
+        $response->assertSee($workStartTime->format('H:i'));
+        $response->assertSee($workEndTime->format('H:i'));
     }
 }
