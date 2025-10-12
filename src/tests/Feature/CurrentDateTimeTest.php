@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Carbon\Carbon;
 
-class AttendanceCreateTest extends TestCase
+class CurrentDateTimeTest extends TestCase
 {
     use RefreshDatabase;
 
