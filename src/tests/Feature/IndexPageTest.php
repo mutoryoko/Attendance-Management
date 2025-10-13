@@ -176,10 +176,9 @@ class IndexPageTest extends TestCase
     public function test_take_user_to_the_detail_page()
     {
         $user = User::factory()->create();
-        $date = Carbon::now();
         $attendance = Attendance::factory()->clockedOut()->create([
             'user_id' => $user->id,
-            'work_date' => $date->format('Y-m-d'),
+            'work_date' => Carbon::now()->format('Y-m-d'),
         ]);
         BreakTime::factory()->create([
             'attendance_id' => $attendance->id,

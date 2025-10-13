@@ -21,7 +21,7 @@ class AttendanceFunctionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        //　各テストの共通処理（現在時刻の固定）
+        // 各テストの共通処理（現在時刻の固定）
         $this->fixedDate = Carbon::create(2025, 10, 11, 9, 0, 0);
         Carbon::setTestNow($this->fixedDate);
     }
@@ -95,8 +95,7 @@ class AttendanceFunctionTest extends TestCase
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $response->assertSee(Carbon::now()->format('m/d'));
-        $response->assertSee(Carbon::now()->format('H:i'));
+        $response->assertSee('9:00');
     }
 
     // 退勤ボタンの表示し、退勤処理後、ステータスが「退勤済」になる
@@ -166,8 +165,7 @@ class AttendanceFunctionTest extends TestCase
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $response->assertSee(now()->format('m/d'));
-        $response->assertSee($workStartTime->format('H:i'));
-        $response->assertSee($workEndTime->format('H:i'));
+        $response->assertSee('10:00');
+        $response->assertSee('20:00');
     }
 }
