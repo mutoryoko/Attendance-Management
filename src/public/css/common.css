@@ -17,6 +17,7 @@ img {
 
 .content {
     max-width: 1540px;
+    min-height: 100vh;
     background: rgb(240, 239, 242);
     padding: 30px;
     margin: 0 auto;

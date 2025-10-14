@@ -54,8 +54,10 @@ class DetailPageTest extends TestCase
         $response = $this->get(route('attendance.detail', ['id' => $this->attendance->id]));
         $response->assertStatus(200);
 
-        $response->assertSee('2025年');
-        $response->assertSee('10月1日');
+        $response->assertSeeInOrder([
+            '2025年',
+            '10月1日',
+        ]);
     }
 
     // 出勤・退勤時刻が表示される
@@ -64,8 +66,10 @@ class DetailPageTest extends TestCase
         $response = $this->get(route('attendance.detail', ['id' => $this->attendance->id]));
         $response->assertStatus(200);
 
-        $response->assertSee('09:01');
-        $response->assertSee('18:02');
+        $response->assertSeeInOrder([
+            '09:01',
+            '18:02',
+        ]);
     }
 
     // 休憩時刻が表示される
@@ -74,7 +78,9 @@ class DetailPageTest extends TestCase
         $response = $this->get(route('attendance.detail', ['id' => $this->attendance->id]));
         $response->assertStatus(200);
 
-        $response->assertSee('12:30');
-        $response->assertSee('13:30');
+        $response->assertSeeInOrder([
+            '12:30',
+            '13:30',
+        ]);
     }
 }
