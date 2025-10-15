@@ -12,7 +12,7 @@ class CurrentDateTimeTest extends TestCase
     use RefreshDatabase;
 
     // 打刻ページに現在の日時が表示される
-    public function test_displays_current_datetime_on_attendance_create_page(): void
+    public function test_display_current_datetime(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);

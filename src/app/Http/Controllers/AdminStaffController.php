@@ -31,7 +31,8 @@ class AdminStaffController extends Controller
 
         $period = CarbonPeriod::create($startOfMonth, '1 day', $endOfMonth);
 
-        $attendances = Attendance::where('user_id', $user->id)
+        $attendances = Attendance::with('breakTimes')
+            ->where('user_id', $user->id)
             ->whereYear('work_date', $currentMonth->year)
             ->whereMonth('work_date', $currentMonth->month)
             ->orderBy('work_date', 'asc')
@@ -75,7 +76,8 @@ class AdminStaffController extends Controller
 
             fputcsv($file, $csvHeader);
 
-            $attendances = Attendance::where('user_id', $id)
+            $attendances = Attendance::with('breakTimes')
+                ->where('user_id', $id)
                 ->whereYear('work_date', $year)
                 ->whereMonth('work_date', $month)
                 ->orderBy('work_date', 'asc')

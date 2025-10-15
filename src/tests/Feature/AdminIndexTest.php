@@ -36,7 +36,7 @@ class AdminIndexTest extends TestCase
     }
 
     // その日の全ユーザーの勤怠情報を確認できる
-    public function test_admin_can_check_all_attendances(): void
+    public function test_admin_can_check_all_attendance_data(): void
     {
         $user1 = $this->users->firstWhere('name', '鈴木一郎');
         $attendance1 = Attendance::factory()->create([
@@ -117,7 +117,7 @@ class AdminIndexTest extends TestCase
     }
 
     // 前日の勤怠情報が表示される
-    public function test_display_attendances_of_previous_day()
+    public function test_display_attendance_data_of_previous_day()
     {
         $prevDay = Carbon::now()->subDay()->format('Y-m-d');
 
@@ -172,7 +172,7 @@ class AdminIndexTest extends TestCase
     }
 
     // 翌日の勤怠情報が表示される
-    public function test_display_attendances_of_next_day()
+    public function test_display_attendance_data_of_next_day()
     {
         $nextDay = Carbon::now()->addDay()->format('Y-m-d');
 
