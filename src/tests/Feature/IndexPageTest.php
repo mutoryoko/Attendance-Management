@@ -8,13 +8,13 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 
 class IndexPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_display_all_attendances_on_index_page(): void
+    // 勤怠情報がすべて表示される
+    public function test_display_all_attendances(): void
     {
         $user = User::factory()->create();
         $startDate = Carbon::now()->startOfMonth();

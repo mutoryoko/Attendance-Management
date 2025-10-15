@@ -15,11 +15,6 @@ class AdminIndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @var \Illuminate\Support\Carbon
-     */
-    protected $fixedDate;
-
     private \Illuminate\Database\Eloquent\Collection $users;
     private AdminUser $admin;
 
@@ -27,17 +22,13 @@ class AdminIndexTest extends TestCase
     {
         parent::setUp();
 
-        // 各テストの共通処理（現在時刻の固定）
-        $this->fixedDate = Carbon::create(2025, 10, 11, 20, 0, 0);
-        Carbon::setTestNow($this->fixedDate);
-
         $this->users = User::factory()
             ->count(3)
             ->state(new Sequence(
-            ['name' => '鈴木一郎'],
-            ['name' => '佐藤二郎'],
-            ['name' => '北島三郎'],
-        ))
+                ['name' => '鈴木一郎'],
+                ['name' => '佐藤二郎'],
+                ['name' => '北島三郎'],
+            ))
             ->create();
 
         $this->admin = AdminUser::factory()->create();
@@ -50,7 +41,7 @@ class AdminIndexTest extends TestCase
         $user1 = $this->users->firstWhere('name', '鈴木一郎');
         $attendance1 = Attendance::factory()->create([
             'user_id' => $user1->id,
-            'work_date' => now()->format('Y-m-d'),
+            'work_date' => Carbon::today()->format('Y-m-d'),
             'clock_in_time' => '09:00:00',
             'clock_out_time' => '18:00:00',
         ]);
@@ -60,32 +51,32 @@ class AdminIndexTest extends TestCase
             'end_at' => '13:00:00',
         ]);
 
-        // 佐藤二郎 (実労働 8時間05分)
+        // 2人目
         $user2 = $this->users->firstWhere('name', '佐藤二郎');
         $attendance2 = Attendance::factory()->create([
             'user_id' => $user2->id,
             'work_date' => Carbon::today()->format('Y-m-d'),
-            'clock_in_time' => '09:05:00',
+            'clock_in_time' => '09:10:00',
             'clock_out_time' => '18:10:00',
         ]);
         BreakTime::factory()->create([
             'attendance_id' => $attendance2->id,
-            'start_at' => '12:00:00',
-            'end_at' => '13:00:00',
+            'start_at' => '12:30:00',
+            'end_at' => '13:20:00',
         ]);
 
-        // 北島三郎 (実労働 7時間55分)
+        // 3人目
         $user3 = $this->users->firstWhere('name', '北島三郎');
         $attendance3 = Attendance::factory()->create([
             'user_id' => $user3->id,
             'work_date' => Carbon::today()->format('Y-m-d'),
-            'clock_in_time' => '08:55:00',
+            'clock_in_time' => '08:50:00',
             'clock_out_time' => '17:50:00',
         ]);
         BreakTime::factory()->create([
             'attendance_id' => $attendance3->id,
             'start_at' => '12:00:00',
-            'end_at' => '13:00:00',
+            'end_at' => '13:30:00',
         ]);
 
         $response = $this->get(route('admin.index'));
@@ -100,17 +91,138 @@ class AdminIndexTest extends TestCase
         ]);
         $response->assertSeeInOrder([
             '佐藤二郎',
-            '09:05',
+            '09:10',
             '18:10',
-            '1:00',
-            '8:05',
+            '0:50',
+            '8:10',
         ]);
         $response->assertSeeTextInOrder([
             '北島三郎',
-            '08:55',
+            '08:50',
             '17:50',
-            '1:00',
-            '7:55',
+            '1:30',
+            '7:30',
         ]);
+    }
+
+    // 遷移したら現在の日付が表示される
+    public function test_display_current_date_when_admin_access(): void
+    {
+        $currentDay = Carbon::now()->format('Y年n月j日');
+
+        $response = $this->get(route('admin.index'));
+        $response->assertStatus(200);
+
+        $response->assertSee($currentDay);
+    }
+
+    // 前日の勤怠情報が表示される
+    public function test_display_attendances_of_previous_day()
+    {
+        $prevDay = Carbon::now()->subDay()->format('Y-m-d');
+
+        // 1人目:フルタイム
+        $user1 = $this->users->firstWhere('name', '鈴木一郎');
+        $attendance1 = Attendance::factory()->create([
+            'user_id' => $user1->id,
+            'work_date' => $prevDay,
+            'clock_in_time' => '09:00:00',
+            'clock_out_time' => '18:00:00',
+        ]);
+        BreakTime::factory()->create([
+            'attendance_id' => $attendance1->id,
+            'start_at' => '12:00:00',
+            'end_at' => '13:01:00',
+        ]);
+
+        // 2人目：休憩なし
+        $user2 = $this->users->firstWhere('name', '佐藤二郎');
+        Attendance::factory()->create([
+            'user_id' => $user2->id,
+            'work_date' => $prevDay,
+            'clock_in_time' => '13:00:00',
+            'clock_out_time' => '18:10:00',
+        ]);
+
+        // 3人目:欠勤
+        $user3 = $this->users->firstWhere('name', '北島三郎');
+
+        $response = $this->get(route('admin.index'));
+        $response->assertStatus(200);
+
+        $response = $this->get(route('admin.index', ['date' => $prevDay]));
+        $response->assertStatus(200);
+
+        $response->assertSee(Carbon::now()->subDay()->format('Y年n月j日'));
+        $response->assertSeeInOrder([
+            '鈴木一郎',
+            '09:00',
+            '18:00',
+            '1:01',
+            '7:59',
+        ]);
+        $response->assertSeeInOrder([
+            '佐藤二郎',
+            '13:00',
+            '18:10',
+            '0:00',
+            '5:10',
+        ]);
+        $response->assertSeeText('北島三郎');
+    }
+
+    // 翌日の勤怠情報が表示される
+    public function test_display_attendances_of_next_day()
+    {
+        $nextDay = Carbon::now()->addDay()->format('Y-m-d');
+
+        // 1人目:フルタイム
+        $user1 = $this->users->firstWhere('name', '鈴木一郎');
+        $attendance1 = Attendance::factory()->create([
+            'user_id' => $user1->id,
+            'work_date' => $nextDay,
+            'clock_in_time' => '10:00:00',
+            'clock_out_time' => '20:00:00',
+        ]);
+        BreakTime::factory()->create([
+            'attendance_id' => $attendance1->id,
+            'start_at' => '14:00:00',
+            'end_at' => '15:30:00',
+        ]);
+
+        // 2人目：休憩なし
+        $user2 = $this->users->firstWhere('name', '佐藤二郎');
+        Attendance::factory()->create([
+            'user_id' => $user2->id,
+            'work_date' => $nextDay,
+            'clock_in_time' => '13:00:00',
+            'clock_out_time' => '18:30:00',
+        ]);
+
+        // 3人目:欠勤
+        $user3 = $this->users->firstWhere('name', '北島三郎');
+
+        $response = $this->get(route('admin.index'));
+        $response->assertStatus(200);
+
+        $response = $this->get(route('admin.index', ['date' => $nextDay]));
+        $response->assertStatus(200);
+
+        $response->assertSee(Carbon::now()->addDay()->format('Y年n月j日'));
+        $response->assertSeeInOrder([
+            '鈴木一郎',
+            '10:00',
+            '20:00',
+            '1:30',
+            '8:30',
+        ]);
+        $response->assertSeeInOrder([
+            '佐藤二郎',
+            '13:00',
+            '18:30',
+            '0:00',
+            '5:30',
+        ]);
+        $response->assertSeeText('北島三郎');
     }
 }
