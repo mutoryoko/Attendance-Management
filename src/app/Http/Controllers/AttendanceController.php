@@ -22,7 +22,8 @@ class AttendanceController extends Controller
 
         $period = CarbonPeriod::create($startOfMonth, '1 day', $endOfMonth);
 
-        $attendances = Attendance::where('user_id', Auth::id())
+        $attendances = Attendance::with('breakTimes')
+            ->where('user_id', Auth::id())
             ->whereYear('work_date', $currentMonth->year)
             ->whereMonth('work_date', $currentMonth->month)
             ->orderBy('work_date', 'asc')

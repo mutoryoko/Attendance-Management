@@ -23,8 +23,8 @@ class BreakTime extends Model
      * @var array
      */
     protected $casts = [
-        'start_at' => 'datetime',
-        'end_at' => 'datetime',
+        'start_at' => 'datetime:H:i:s',
+        'end_at' => 'datetime:H:i:s',
     ];
 
     // リレーション

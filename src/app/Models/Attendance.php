@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -23,8 +25,8 @@ class Attendance extends Model
 
     protected $casts = [
         'work_date' => 'date',
-        'clock_in_time' => 'datetime',
-        'clock_out_time' => 'datetime',
+        'clock_in_time' => 'datetime:H:i:s',
+        'clock_out_time' => 'datetime:H:i:s',
     ];
 
     // リレーション
@@ -69,7 +71,7 @@ class Attendance extends Model
     // 合計休憩時間をH:i形式で取得
     public function getFormattedBreakTimeAttribute(): string
     {
-        $totalMinutes = $this->attributes['total_break_minutes'];
+        $totalMinutes = $this->total_break_minutes;
 
         return sprintf('%d:%02d', floor($totalMinutes / 60), $totalMinutes % 60);
     }
@@ -77,8 +79,45 @@ class Attendance extends Model
     // 実労働時間をH:i形式で取得
     public function getFormattedWorkTimeAttribute(): string
     {
-        $totalMinutes = $this->attributes['total_work_minutes'];
+        $totalMinutes = $this->total_work_minutes;
 
         return sprintf('%d:%02d', floor($totalMinutes / 60), $totalMinutes % 60);
+    }
+
+    // 合計休憩時間（分）を動的に計算する
+    protected function totalBreakMinutes(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                // breakTimesリレーションが読み込まれていれば計算する
+                if ($this->relationLoaded('breakTimes')) {
+                    $totalSeconds = 0;
+                    foreach ($this->breakTimes as $break) {
+                        $totalSeconds += $break->end_at->diffInSeconds($break->start_at);
+                    }
+                    return (int) floor($totalSeconds / 60);
+                }
+                // 読み込まれていなければ、DBに保存された値を返す
+                return $value;
+            }
+        );
+    }
+
+    // 実労働時間（分）を動的に計算する
+    protected function totalWorkMinutes(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                // 出退勤時刻がなければ計算しない
+                if (!$this->clock_in_time || !$this->clock_out_time) {
+                    return 0;
+                }
+
+                $totalMinutes = $this->clock_out_time->diffInMinutes($this->clock_in_time);;
+                $breakMinutes = $this->total_break_minutes;
+
+                return $totalMinutes - $breakMinutes;
+            }
+        );
     }
 }

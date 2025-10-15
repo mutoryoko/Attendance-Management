@@ -224,9 +224,9 @@ class ShowRequestTest extends TestCase
         $response = $this->get(route('request'));
         $response->assertStatus(200);
 
+        // 詳細ボタンを押す
         $requestAttendance = RequestAttendance::where('attendance_id', $this->attendance->id)->first();
         $expectedUrl = route('request.detail', ['attendance_correct_request' => $requestAttendance->id]);
-
         $response = $this->get($expectedUrl);
         $response->assertStatus(200);
     }

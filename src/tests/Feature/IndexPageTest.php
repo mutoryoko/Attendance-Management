@@ -43,18 +43,11 @@ class IndexPageTest extends TestCase
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
-            $attendance->refresh();
-
-            $response->assertSee(Carbon::parse($attendance->work_date)->format('m/d'));
-            $response->assertSee(Carbon::parse($attendance->clock_in_time)->format('H:i'));
-            $response->assertSee(Carbon::parse($attendance->clock_out_time)->format('H:i'));
-
-            // 分から時刻形式の文字列を生成
-            $breakInterval = CarbonInterval::minutes($attendance->total_break_minutes)->cascade();
-            $workInterval = CarbonInterval::minutes($attendance->total_work_minutes)->cascade();
-
-            $response->assertSee(sprintf('%d:%02d', $breakInterval->h, $breakInterval->i));
-            $response->assertSee(sprintf('%d:%02d', $workInterval->h, $workInterval->i));
+            $response->assertSee($attendance->work_date->format('m/d'));
+            $response->assertSee($attendance->clock_in_time->format('H:i'));
+            $response->assertSee($attendance->clock_out_time->format('H:i'));
+            $response->assertSee($attendance->formatted_break_time);
+            $response->assertSee($attendance->formatted_work_time);
         }
     }
 
@@ -107,18 +100,11 @@ class IndexPageTest extends TestCase
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
-            $attendance->refresh();
-
-            $response->assertSee(Carbon::parse($attendance->work_date)->format('m/d'));
-            $response->assertSee(Carbon::parse($attendance->clock_in_time)->format('H:i'));
-            $response->assertSee(Carbon::parse($attendance->clock_out_time)->format('H:i'));
-
-            // 分から時刻形式の文字列を生成
-            $breakInterval = CarbonInterval::minutes($attendance->total_break_minutes)->cascade();
-            $workInterval = CarbonInterval::minutes($attendance->total_work_minutes)->cascade();
-
-            $response->assertSee(sprintf('%d:%02d', $breakInterval->h, $breakInterval->i));
-            $response->assertSee(sprintf('%d:%02d', $workInterval->h, $workInterval->i));
+            $response->assertSee($attendance->work_date->format('m/d'));
+            $response->assertSee($attendance->clock_in_time->format('H:i'));
+            $response->assertSee($attendance->clock_out_time->format('H:i'));
+            $response->assertSee($attendance->formatted_break_time);
+            $response->assertSee($attendance->formatted_work_time);
         }
     }
 
@@ -159,16 +145,11 @@ class IndexPageTest extends TestCase
         foreach ($attendances as $attendance) {
             $attendance->refresh();
 
-            $response->assertSee(Carbon::parse($attendance->work_date)->format('m/d'));
-            $response->assertSee(Carbon::parse($attendance->clock_in_time)->format('H:i'));
-            $response->assertSee(Carbon::parse($attendance->clock_out_time)->format('H:i'));
-
-            // 分から時刻形式の文字列を生成
-            $breakInterval = CarbonInterval::minutes($attendance->total_break_minutes)->cascade();
-            $workInterval = CarbonInterval::minutes($attendance->total_work_minutes)->cascade();
-
-            $response->assertSee(sprintf('%d:%02d', $breakInterval->h, $breakInterval->i));
-            $response->assertSee(sprintf('%d:%02d', $workInterval->h, $workInterval->i));
+            $response->assertSee($attendance->work_date->format('m/d'));
+            $response->assertSee($attendance->clock_in_time->format('H:i'));
+            $response->assertSee($attendance->clock_out_time->format('H:i'));
+            $response->assertSee($attendance->formatted_break_time);
+            $response->assertSee($attendance->formatted_work_time);
         }
     }
 
@@ -190,7 +171,9 @@ class IndexPageTest extends TestCase
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $response = $this->get(route('attendance.detail', ['id' => $attendance->id]));
+        // 詳細ボタンを押す
+        $expectedUrl = route('attendance.detail', ['id' => $attendance->id]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
     }
 }

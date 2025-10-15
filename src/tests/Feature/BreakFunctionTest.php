@@ -17,26 +17,29 @@ class BreakFunctionTest extends TestCase
      */
     protected $fixedDate;
 
-    //　各テストの共通処理（現在時刻の固定）
+    private User $user;
+    private Attendance $attendance;
+
     protected function setUp(): void
     {
         parent::setUp();
         //　各テストの共通処理（現在時刻の固定）
         $this->fixedDate = Carbon::create(2025, 10, 11, 9, 0, 0);
         Carbon::setTestNow($this->fixedDate);
+
+        // 出勤中のユーザーがログインする
+        $this->user = User::factory()->create();
+        $this->attendance = Attendance::factory()->create([
+            'user_id' => $this->user->id,
+            'work_date' => now()->format('Y-m-d'),
+            'clock_in_time' => now()->format('H:i'),
+        ]);
+        $this->actingAs($this->user);
     }
 
     // 休憩入ボタンが表示され、休憩入処理後、ステータスが休憩中になる
     public function test_display_break_start_button_and_function_properly(): void
     {
-        $user = User::factory()->create();
-        $attendance = Attendance::factory()->create([
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->format('H:i'),
-        ]);
-        $this->actingAs($user);
-
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
@@ -49,7 +52,7 @@ class BreakFunctionTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('break_times', [
-            'attendance_id' => $attendance->id,
+            'attendance_id' => $this->attendance->id,
             'start_at' => $breakStartTime->format('H:i:s'),
         ]);
 
@@ -65,14 +68,6 @@ class BreakFunctionTest extends TestCase
     // 一日に何回でも休憩できる（休憩入）
     public function test_user_can_take_break_start_several_times_a_day(): void
     {
-        $user = User::factory()->create();
-        Attendance::factory()->create([
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->subHour()->format('H:i:s'),
-        ]);
-        $this->actingAs($user);
-
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
@@ -93,14 +88,6 @@ class BreakFunctionTest extends TestCase
     // 休憩戻ボタンが表示され、休憩戻処理後、ステータスが出勤中になる
     public function test_display_break_end_button_and_function_properly(): void
     {
-        $user = User::factory()->create();
-        $attendance = Attendance::factory()->create([
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->format('H:i:s'),
-        ]);
-        $this->actingAs($user);
-
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
@@ -122,7 +109,7 @@ class BreakFunctionTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('break_times', [
-            'attendance_id' => $attendance->id,
+            'attendance_id' => $this->attendance->id,
             'start_at' => $breakStartTime->format('H:i:s'),
             'end_at' => $breakEndTime->format('H:i:s'),
         ]);
@@ -139,14 +126,6 @@ class BreakFunctionTest extends TestCase
     // 一日に何回でも休憩できる（休憩戻）
     public function test_user_can_take_break_end_several_times_a_day(): void
     {
-        $user = User::factory()->create();
-        Attendance::factory()->create([
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->subHour()->format('H:i:s'),
-        ]);
-        $this->actingAs($user);
-
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
@@ -172,14 +151,6 @@ class BreakFunctionTest extends TestCase
     // 休憩時刻を一覧で確認できる
     public function test_user_can_check_the_break_time_on_index_page(): void
     {
-        $user = User::factory()->create();
-        $attendance = Attendance::factory()->create([
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->format('H:i:s'),
-        ]);
-        $this->actingAs($user);
-
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
@@ -196,7 +167,7 @@ class BreakFunctionTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('break_times', [
-            'attendance_id' => $attendance->id,
+            'attendance_id' => $this->attendance->id,
             'start_at' => $breakStartTime->format('H:i:s'),
             'end_at' => $breakEndTime->format('H:i:s'),
         ]);
