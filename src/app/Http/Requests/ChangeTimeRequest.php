@@ -88,7 +88,7 @@ class ChangeTimeRequest extends FormRequest
             'breaks.*.start.after' => '休憩時間が不適切な値です',
             'breaks.*.end.required_with' => '休憩終了時間も入力してください',
             'breaks.*.end.before' => '休憩時間もしくは退勤時間が不適切な値です',
-            'breaks.*.end.after' => '休憩時間もしくは退勤時間が不適切な値です',
+            'breaks.*.end.after' => '休憩時間が不適切な値です',
             'note.required' => '備考を記入してください',
             'note.string' => '備考は文字列で入力してください',
             'note.max' => '備考は255文字以内で入力してください',

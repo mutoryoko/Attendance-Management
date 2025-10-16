@@ -19,7 +19,8 @@ class AdminAttendanceController extends Controller
         $currentDay= Carbon::parse($date);
 
         $users = User::with(['attendances' => function ($query) use ($currentDay) {
-            $query->whereDate('work_date', $currentDay);
+            $query->whereDate('work_date', $currentDay)
+                ->with('breakTimes');
         }])->select(['id', 'name'])->get();
 
         $prevDay = $currentDay->copy()->subDay()->format('Y-m-d');

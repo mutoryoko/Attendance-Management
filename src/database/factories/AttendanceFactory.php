@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Attendance;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -12,41 +11,41 @@ use Carbon\Carbon;
  */
 class AttendanceFactory extends Factory
 {
-    protected $model = Attendance::class;
-
-    // @return array<string, mixed>
+    // モデルのデフォルト（出勤中）
     public function definition(): array
     {
+        $workDate = Carbon::parse($this->faker->dateTimeThisMonth()->format('Y-m-d'));
+        $clockInTime = $workDate->copy()->hour(rand(9, 11))->minute(rand(0, 59))->second(0);
+
         return [
             'user_id' => User::factory(),
-            'work_date' => fake()->date(),
-            'clock_in_time' => null,
+            'work_date' => $workDate->format('Y-m-d'),
+            'clock_in_time' => $clockInTime->format('H:i:s'),
             'clock_out_time' => null,
             'total_break_minutes' => 0,
-            'total_work_minutes' => 0,
+            'total_work_minutes' => null,
         ];
     }
+
     /**
-     * モデルファクトリの設定
+     * モデルが「退勤済」状態
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function configure()
+    public function clockedOut()
     {
-        return $this->afterMaking(function (Attendance $attendance) {
+        return $this->state(function (array $attributes) {
+            $clockIn = Carbon::parse($attributes['work_date'] . ' ' . $attributes['clock_in_time']);
 
-            $workDate = Carbon::parse($attendance->work_date);
+            $clockOut = $clockIn->copy()->hour(rand(17, 20))->minute(rand(0, 59))->second(0);
 
-            $clockIn = $workDate->copy()->hour(rand(8, 10))->minute(rand(0, 59))->second(0);
-            $clockOut = $workDate->copy()->hour(rand(17, 20))->minute(rand(0, 59))->second(0);
-
-            $totalBreakMinutes = $attendance->total_break_minutes;
-
+            $totalBreakMinutes = $attributes['total_break_minutes'] ?? 0;
             $totalWorkMinutes = $clockIn->diffInMinutes($clockOut) - $totalBreakMinutes;
 
-            $attendance->clock_in_time = $clockIn;
-            $attendance->clock_out_time = $clockOut;
-            $attendance->total_work_minutes = $totalWorkMinutes > 0 ? $totalWorkMinutes : 0;
+            return [
+                'clock_out_time' => $clockOut->format('H:i:s'),
+                'total_work_minutes' => $totalWorkMinutes > 0 ? $totalWorkMinutes : 0,
+            ];
         });
     }
 }

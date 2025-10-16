@@ -101,11 +101,6 @@
 }
 
 /* 管理者用　勤怠一覧・スタッフ一覧 */
-.admin-attendances__wrapper,
-.users__table-wrapper {
-    height: 100vh;
-}
-
 .title-date {
     font-family: "Inter", sans-serif;
     letter-spacing: 0.1rem;
