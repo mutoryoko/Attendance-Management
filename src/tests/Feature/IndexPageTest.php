@@ -43,11 +43,13 @@ class IndexPageTest extends TestCase
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
-            $response->assertSee($attendance->work_date->format('m/d'));
-            $response->assertSee($attendance->clock_in_time->format('H:i'));
-            $response->assertSee($attendance->clock_out_time->format('H:i'));
-            $response->assertSee($attendance->formatted_break_time);
-            $response->assertSee($attendance->formatted_work_time);
+            $response->assertSee([
+                $attendance->work_date->format('m/d'),
+                $attendance->clock_in_time->format('H:i'),
+                $attendance->clock_out_time->format('H:i'),
+                $attendance->formatted_break_time,
+                $attendance->formatted_work_time,
+            ]);
         }
     }
 
@@ -100,11 +102,13 @@ class IndexPageTest extends TestCase
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
-            $response->assertSee($attendance->work_date->format('m/d'));
-            $response->assertSee($attendance->clock_in_time->format('H:i'));
-            $response->assertSee($attendance->clock_out_time->format('H:i'));
-            $response->assertSee($attendance->formatted_break_time);
-            $response->assertSee($attendance->formatted_work_time);
+            $response->assertSee([
+                $attendance->work_date->format('m/d'),
+                $attendance->clock_in_time->format('H:i'),
+                $attendance->clock_out_time->format('H:i'),
+                $attendance->formatted_break_time,
+                $attendance->formatted_work_time,
+            ]);
         }
     }
 
@@ -143,13 +147,13 @@ class IndexPageTest extends TestCase
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
-            $attendance->refresh();
-
-            $response->assertSee($attendance->work_date->format('m/d'));
-            $response->assertSee($attendance->clock_in_time->format('H:i'));
-            $response->assertSee($attendance->clock_out_time->format('H:i'));
-            $response->assertSee($attendance->formatted_break_time);
-            $response->assertSee($attendance->formatted_work_time);
+            $response->assertSee([
+                $attendance->work_date->format('m/d'),
+                $attendance->clock_in_time->format('H:i'),
+                $attendance->clock_out_time->format('H:i'),
+                $attendance->formatted_break_time,
+                $attendance->formatted_work_time,
+            ]);
         }
     }
 
