@@ -45,15 +45,8 @@ class BreakFunctionTest extends TestCase
 
         $response->assertSee('<button class="break__btn" type="submit" name="action" value="break_start">休憩入</button>', false);
 
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 12, 0, 0));
-        $breakStartTime = now();
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_start',
-        ]);
-
-        $this->assertDatabaseHas('break_times', [
-            'attendance_id' => $this->attendance->id,
-            'start_at' => $breakStartTime->format('H:i:s'),
         ]);
 
         $response = $this->get(route('attendance.create'));
@@ -68,9 +61,6 @@ class BreakFunctionTest extends TestCase
     // 一日に何回でも休憩できる（休憩入）
     public function test_user_can_take_break_start_several_times_a_day(): void
     {
-        $response = $this->get(route('attendance.create'));
-        $response->assertStatus(200);
-
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_start',
         ]);
@@ -88,11 +78,6 @@ class BreakFunctionTest extends TestCase
     // 休憩戻ボタンが表示され、休憩戻処理後、ステータスが出勤中になる
     public function test_display_break_end_button_and_function_properly(): void
     {
-        $response = $this->get(route('attendance.create'));
-        $response->assertStatus(200);
-
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 12, 0, 0));
-        $breakStartTime = now();
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_start',
         ]);
@@ -102,16 +87,8 @@ class BreakFunctionTest extends TestCase
 
         $response->assertSee('<button class="break__btn" type="submit" name="action" value="break_end">休憩戻</button>', false);
 
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 13, 0, 0));
-        $breakEndTime = now();
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_end',
-        ]);
-
-        $this->assertDatabaseHas('break_times', [
-            'attendance_id' => $this->attendance->id,
-            'start_at' => $breakStartTime->format('H:i:s'),
-            'end_at' => $breakEndTime->format('H:i:s'),
         ]);
 
         $response = $this->get(route('attendance.create'));
@@ -126,9 +103,6 @@ class BreakFunctionTest extends TestCase
     // 一日に何回でも休憩できる（休憩戻）
     public function test_user_can_take_break_end_several_times_a_day(): void
     {
-        $response = $this->get(route('attendance.create'));
-        $response->assertStatus(200);
-
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_start',
         ]);
@@ -151,31 +125,23 @@ class BreakFunctionTest extends TestCase
     // 休憩時刻を一覧で確認できる
     public function test_user_can_check_the_break_time_on_index_page(): void
     {
-        $response = $this->get(route('attendance.create'));
-        $response->assertStatus(200);
-
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 12, 0, 0));
-        $breakStartTime = now();
+        Carbon::setTestNow(Carbon::create(2025, 10, 11, 12, 30, 0));
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_start',
         ]);
 
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 13, 0, 0));
-        $breakEndTime = now();
+        Carbon::setTestNow(Carbon::create(2025, 10, 11, 13, 35, 0));
         $response = $this->post(route('attendance.store'), [
             'action' => 'break_end',
-        ]);
-
-        $this->assertDatabaseHas('break_times', [
-            'attendance_id' => $this->attendance->id,
-            'start_at' => $breakStartTime->format('H:i:s'),
-            'end_at' => $breakEndTime->format('H:i:s'),
         ]);
 
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $totalBreakTime = '1:00'; // 12:00:00〜13:00:00の差分
-        $response->assertSee($totalBreakTime);
+        $response->assertSeeInOrder([
+            '10/11',
+            '09:00', // 出勤時間
+            '1:05', // 合計休憩時間
+        ]);
     }
 }

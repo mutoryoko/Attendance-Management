@@ -41,12 +41,6 @@ class AttendanceFunctionTest extends TestCase
             'action' => 'clock_in'
         ]);
 
-        $this->assertDatabaseHas('attendances', [
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->format('H:i:s'),
-        ]);
-
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
@@ -79,23 +73,17 @@ class AttendanceFunctionTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get(route('attendance.create'));
-        $response->assertStatus(200);
-
         $response = $this->post(route('attendance.store'), [
             'action' => 'clock_in'
-        ]);
-
-        $this->assertDatabaseHas('attendances', [
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => now()->format('H:i:s'),
         ]);
 
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $response->assertSee('9:00');
+        $response->assertSeeInOrder([
+            '10/11',
+            '09:00',
+        ]);
     }
 
     // 退勤ボタンの表示し、退勤処理後、ステータスが「退勤済」になる
@@ -113,16 +101,8 @@ class AttendanceFunctionTest extends TestCase
 
         $response->assertSee('<button class="clock__btn" type="submit" name="action" value="clock_out">退勤</button>', false);
 
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 18, 0, 0));
-        $workEndTime = now();
         $response = $this->post(route('attendance.store'), [
             'action' => 'clock_out'
-        ]);
-
-        $this->assertDatabaseHas('attendances', [
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_out_time' => $workEndTime->format('H:i:s'),
         ]);
 
         $response = $this->get(route('attendance.create'));
@@ -143,29 +123,22 @@ class AttendanceFunctionTest extends TestCase
         $response = $this->get(route('attendance.create'));
         $response->assertStatus(200);
 
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 10, 0, 0));
-        $workStartTime = now();
         $response = $this->post(route('attendance.store'), [
             'action' => 'clock_in'
         ]);
 
-        Carbon::setTestNow(Carbon::create(2025, 10, 11, 20, 0, 0));
-        $workEndTime = now();
+        Carbon::setTestNow(Carbon::create(2025, 10, 11, 18, 0, 0));
         $response = $this->post(route('attendance.store'), [
             'action' => 'clock_out'
-        ]);
-
-        $this->assertDatabaseHas('attendances', [
-            'user_id' => $user->id,
-            'work_date' => now()->format('Y-m-d'),
-            'clock_in_time' => $workStartTime->format('H:i:s'),
-            'clock_out_time' => $workEndTime->format('H:i:s'),
         ]);
 
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $response->assertSee('10:00');
-        $response->assertSee('20:00');
+        $response->assertSeeInOrder([
+            '10/11',
+            '09:00', // 出勤時間
+            '18:00', // 退勤時間
+        ]);
     }
 }

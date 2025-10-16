@@ -97,6 +97,7 @@ class RegisterTest extends TestCase
         $response->assertRedirect('/email/verify');
 
         $this->assertDatabaseHas('users', [
+            'name' => 'test-user',
             'email' => 'test@example.com',
         ]);
     }

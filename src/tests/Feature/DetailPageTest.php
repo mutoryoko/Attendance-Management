@@ -38,7 +38,7 @@ class DetailPageTest extends TestCase
         $this->actingAs($this->user);
     }
 
-    // ユーザーの名前を表示
+    // ログインユーザーの氏名を表示
     public function test_show_user_name(): void
     {
         $response = $this->get(route('attendance.detail', ['id' => $this->attendance->id]));

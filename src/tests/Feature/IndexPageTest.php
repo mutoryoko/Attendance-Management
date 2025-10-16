@@ -98,7 +98,10 @@ class IndexPageTest extends TestCase
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        $response = $this->get(route('attendance.index', ['month' => $prevMonth]));
+        $response->assertSeeText('前月');
+
+        $expectedUrl = route('attendance.index', ['month' => $prevMonth]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
@@ -134,16 +137,19 @@ class IndexPageTest extends TestCase
         }
         $this->actingAs($user);
 
-        $response = $this->get(route('attendance.index'));
-        $response->assertStatus(200);
-
         $nextMonth = Carbon::now()->addMonth()->format('Y-m');
 
         $attendances = Attendance::with('breakTimes')
             ->where('user_id', $user->id)
             ->get();
 
-        $response = $this->get(route('attendance.index', ['month' => $nextMonth]));
+        $response = $this->get(route('attendance.index'));
+        $response->assertStatus(200);
+
+        $response->assertSeeText('翌月');
+
+        $expectedUrl = route('attendance.index', ['month' => $nextMonth]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {

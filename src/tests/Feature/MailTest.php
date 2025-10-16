@@ -19,12 +19,12 @@ class MailTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->post(route('register.store', [
+        $response = $this->post(route('register.store'), [
             'name' => 'test-user',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-        ]));
+        ]);
         $response->assertRedirect(route('verification.notice'));
 
         $this->assertDatabaseHas('users', [
@@ -34,10 +34,7 @@ class MailTest extends TestCase
         $user = User::where('email', 'test@example.com')->first();
         $this->assertNotNull($user);
 
-        Notification::assertSentTo(
-            [$user],
-            VerifyEmailCustom::class
-        );
+        Notification::assertSentTo($user, VerifyEmailCustom::class);
     }
 
     // Mailhogに遷移する
