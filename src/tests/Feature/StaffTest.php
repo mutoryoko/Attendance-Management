@@ -201,7 +201,8 @@ class StaffTest extends TestCase
         $response = $this->get(route('admin.attendance.staff', ['id' => $user1->id]));
         $response->assertStatus(200);
 
-        // 詳細ボタンを押す
+        $response->assertSeeText('詳細');
+
         $expectedUrl = route('admin.detail', ['id' => $attendance->id]);
         $response = $this->get($expectedUrl);
         $response->assertStatus(200);

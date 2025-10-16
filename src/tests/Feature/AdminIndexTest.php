@@ -200,7 +200,7 @@ class AdminIndexTest extends TestCase
         ]);
 
         // 3人目:欠勤
-        $user3 = $this->users->firstWhere('name', '北島三郎');
+        $this->users->firstWhere('name', '北島三郎');
 
         $response = $this->get(route('admin.index'));
         $response->assertStatus(200);

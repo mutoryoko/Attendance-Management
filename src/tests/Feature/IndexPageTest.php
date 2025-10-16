@@ -175,7 +175,8 @@ class IndexPageTest extends TestCase
         $response = $this->get(route('attendance.index'));
         $response->assertStatus(200);
 
-        // 詳細ボタンを押す
+        $response->assertSeeText('詳細');
+
         $expectedUrl = route('attendance.detail', ['id' => $attendance->id]);
         $response = $this->get($expectedUrl);
         $response->assertStatus(200);
