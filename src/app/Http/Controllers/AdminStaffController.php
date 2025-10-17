@@ -87,7 +87,7 @@ class AdminStaffController extends Controller
                 $row = [
                     $attendance->work_date->isoFormat('MM/DD(ddd)'),
                     $attendance->formatted_work_start,
-                    $attendance->formatted_work_start,
+                    $attendance->formatted_work_end,
                     $attendance->formatted_break_time,
                     $attendance->formatted_work_time,
                 ];
