@@ -21,14 +21,12 @@ class ChangeTimeRequest extends FormRequest
                 'exists:users,id',
             ],
             'requested_work_start' => [
-                'nullable',
-                'required_with:requested_work_end',
+                'required',
                 'date_format:H:i',
                 'before:requested_work_end',
             ],
             'requested_work_end' => [
-                'nullable',
-                'required_with:requested_work_start',
+                'required',
                 'date_format:H:i',
                 'after:requested_work_start',
             ],
@@ -79,10 +77,10 @@ class ChangeTimeRequest extends FormRequest
     public function messages()
     {
         return [
+            'requested_work_start.required' => '出勤時間を入力してください',
             'requested_work_start.before' => '出勤時間もしくは退勤時間が不適切な値です',
-            'requested_work_start.required_with' => '出勤時間も入力してください',
+            'requested_work_end.required' => '退勤時間を入力してください',
             'requested_work_end.after' => '出勤時間もしくは退勤時間が不適切な値です',
-            'requested_work_end.required_with' => '退勤時間も入力してください',
             'breaks.*.start.required_with' =>'休憩開始時間も入力してください',
             'breaks.*.start.before' => '休憩時間が不適切な値です',
             'breaks.*.start.after' => '休憩時間が不適切な値です',

@@ -136,9 +136,9 @@ class AdminAttendanceController extends Controller
             });
         } catch(\Exception $e) {
             Log::error('勤怠更新エラー: ' . $e->getMessage());
-            return redirect()->back()->with('error', '更新に失敗しました');
+            return back()->with('error', '更新に失敗しました');
         }
 
-        return redirect()->back()->with('status', '勤怠情報を修正しました');
+        return back()->with('status', '勤怠情報を修正しました');
     }
 }
