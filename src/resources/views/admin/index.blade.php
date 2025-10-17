@@ -59,11 +59,11 @@
                         <td class="table-data">
                             @if ($currentDay->lte(today()))
                                 @if($attendance)
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">
+                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id, 'redirect_to' => url()->full()]) }}">
                                     詳細
                                 </a>
                                 @else
-                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $currentDay->format('Y-m-d'), 'user' => $user->id] ) }}">
+                                <a class="detail__link" href="{{ route('admin.detail', ['id' => $currentDay->format('Y-m-d'), 'user' => $user->id, 'redirect_to' => url()->full()] ) }}">
                                     詳細
                                 </a>
                                 @endif

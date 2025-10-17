@@ -29,6 +29,8 @@
     @csrf
     @if(Auth::guard('admin')->check())
         @method('PATCH')
+        {{-- 日次と月次でリダイレクト先を分けるため --}}
+        <input type="hidden" name="_redirect_to" value="{{ request()->query('redirect_to', route('admin.index')) }}">
     @endif
         <table class="detail__table">
             <tr class="table-row">

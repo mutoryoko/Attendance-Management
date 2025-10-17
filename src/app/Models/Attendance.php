@@ -69,17 +69,25 @@ class Attendance extends Model
     }
 
     // 合計休憩時間をH:i形式で取得
-    public function getFormattedBreakTimeAttribute(): string
+    public function getFormattedBreakTimeAttribute(): ?string
     {
         $totalMinutes = $this->total_break_minutes;
+
+        if (empty($totalMinutes)) {
+            return null;
+        }
 
         return sprintf('%d:%02d', floor($totalMinutes / 60), $totalMinutes % 60);
     }
 
     // 実労働時間をH:i形式で取得
-    public function getFormattedWorkTimeAttribute(): string
+    public function getFormattedWorkTimeAttribute(): ?string
     {
         $totalMinutes = $this->total_work_minutes;
+
+        if (empty($totalMinutes)) {
+            return null;
+        }
 
         return sprintf('%d:%02d', floor($totalMinutes / 60), $totalMinutes % 60);
     }

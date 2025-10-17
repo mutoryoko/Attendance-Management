@@ -8,6 +8,10 @@
 
 @section('content')
 <div class="content">
+    @if (session('status'))
+    <p class="session">{{ session('status') }}</p>
+    @endif
+
     <div class="attendances__wrapper">
         <h1 class="title">{{ $user->name }}さんの勤怠</h1>
         <div class="pagination">
@@ -49,10 +53,10 @@
                         <td class="table-data">
                         @if ($date->lte(today()))
                             @if ($attendance)
-                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id]) }}">詳細</a>
+                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $attendance->id, 'redirect_to' => url()->full()]) }}">詳細</a>
                             @else
                             {{-- 欠勤日の場合、日付をパラメータとする --}}
-                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $date->format('Y-m-d'), 'user' => $user->id]) }}">詳細</a>
+                            <a class="detail__link" href="{{ route('admin.detail', ['id' => $date->format('Y-m-d'), 'user' => $user->id, 'redirect_to' => url()->full()]) }}">詳細</a>
                             @endif
                         @endif
                         </td>

@@ -84,25 +84,25 @@ class AdminIndexTest extends TestCase
 
         $response->assertSeeInOrder([
             '鈴木一郎',
-            '09:00',
-            '18:00',
-            '1:00',
-            '8:00',
-        ]);
+            '<td class="table-data">09:00</td>',
+            '<td class="table-data">18:00</td>',
+            '<td class="table-data">1:00</td>',
+            '<td class="table-data">8:00</td>',
+        ], false);
         $response->assertSeeInOrder([
             '佐藤二郎',
-            '09:10',
-            '18:10',
-            '0:50',
-            '8:10',
-        ]);
-        $response->assertSeeTextInOrder([
+            '<td class="table-data">09:10</td>',
+            '<td class="table-data">18:10</td>',
+            '<td class="table-data">0:50</td>',
+            '<td class="table-data">8:10</td>',
+        ], false);
+        $response->assertSeeInOrder([
             '北島三郎',
-            '08:50',
-            '17:50',
-            '1:30',
-            '7:30',
-        ]);
+            '<td class="table-data">08:50</td>',
+            '<td class="table-data">17:50</td>',
+            '<td class="table-data">1:30</td>',
+            '<td class="table-data">7:30</td>',
+        ], false);
     }
 
     // 遷移したら現在の日付が表示される
@@ -145,30 +145,39 @@ class AdminIndexTest extends TestCase
         ]);
 
         // 3人目:欠勤
-        $user3 = $this->users->firstWhere('name', '北島三郎');
+        $this->users->firstWhere('name', '北島三郎');
 
         $response = $this->get(route('admin.index'));
         $response->assertStatus(200);
 
-        $response = $this->get(route('admin.index', ['date' => $prevDay]));
+        $response->assertSeeText('前日');
+
+        $expectedUrl = route('admin.index', ['date' => $prevDay]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
 
         $response->assertSee(Carbon::now()->subDay()->format('Y年n月j日'));
         $response->assertSeeInOrder([
             '鈴木一郎',
-            '09:00',
-            '18:00',
-            '1:01',
-            '7:59',
-        ]);
+            '<td class="table-data">09:00</td>',
+            '<td class="table-data">18:00</td>',
+            '<td class="table-data">1:01</td>',
+            '<td class="table-data">7:59</td>',
+        ], false);
         $response->assertSeeInOrder([
             '佐藤二郎',
-            '13:00',
-            '18:10',
-            '0:00',
-            '5:10',
-        ]);
-        $response->assertSeeText('北島三郎');
+            '<td class="table-data">13:00</td>',
+            '<td class="table-data">18:10</td>',
+            '<td class="table-data"></td>',
+            '<td class="table-data">5:10</td>',
+        ], false);
+        $response->assertSeeInOrder([
+            '北島三郎',
+            '<td class="table-data"></td>',
+            '<td class="table-data"></td>',
+            '<td class="table-data"></td>',
+            '<td class="table-data"></td>',
+        ], false);
     }
 
     // 翌日の勤怠情報が表示される
@@ -205,24 +214,33 @@ class AdminIndexTest extends TestCase
         $response = $this->get(route('admin.index'));
         $response->assertStatus(200);
 
-        $response = $this->get(route('admin.index', ['date' => $nextDay]));
+        $response->assertSeeText('翌日');
+
+        $expectedUrl = route('admin.index', ['date' => $nextDay]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
 
         $response->assertSee(Carbon::now()->addDay()->format('Y年n月j日'));
         $response->assertSeeInOrder([
             '鈴木一郎',
-            '10:00',
-            '20:00',
-            '1:30',
-            '8:30',
-        ]);
+            '<td class="table-data">10:00</td>',
+            '<td class="table-data">20:00</td>',
+            '<td class="table-data">1:30</td>',
+            '<td class="table-data">8:30</td>',
+        ], false);
         $response->assertSeeInOrder([
             '佐藤二郎',
-            '13:00',
-            '18:30',
-            '0:00',
-            '5:30',
-        ]);
-        $response->assertSeeText('北島三郎');
+            '<td class="table-data">13:00</td>',
+            '<td class="table-data">18:30</td>',
+            '<td class="table-data"></td>',
+            '<td class="table-data">5:30</td>',
+        ], false);
+        $response->assertSeeInOrder([
+            '北島三郎',
+            '<td class="table-data"></td>',
+            '<td class="table-data"></td>',
+            '<td class="table-data"></td>',
+            '<td class="table-data"></td>',
+        ], false);
     }
 }

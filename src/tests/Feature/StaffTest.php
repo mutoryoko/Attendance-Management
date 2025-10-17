@@ -41,14 +41,14 @@ class StaffTest extends TestCase
         $response = $this->get(route('admin.staff'));
         $response->assertStatus(200);
 
-        $response->assertSeeText([
-            '鈴木一郎',
-            'ichiro@test.com',
-            '佐藤二郎',
-            'jiro@test.com',
-            '北島三郎',
-            'saburo@test.com',
-        ]);
+        $response->assertSeeInOrder([
+            '<td class="table-data">鈴木一郎</td>',
+            '<td class="table-data">ichiro@test.com</td>',
+            '<td class="table-data">佐藤二郎</td>',
+            '<td class="table-data">jiro@test.com</td>',
+            '<td class="table-data">北島三郎</td>',
+            '<td class="table-data">saburo@test.com</td>',
+        ], false);
     }
 
     // 選択したユーザーの勤怠情報が表示される
@@ -120,10 +120,13 @@ class StaffTest extends TestCase
         $response = $this->get(route('admin.attendance.staff', ['id' => $user1->id]));
         $response->assertStatus(200);
 
-        $response = $this->get(route('admin.attendance.staff', [
+        $response->assertSeeText('前月');
+
+        $expectedUrl = route('admin.attendance.staff', [
             'id' => $user1->id,
             'month' => $prevMonth,
-        ]));
+        ]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
@@ -167,10 +170,13 @@ class StaffTest extends TestCase
         $response = $this->get(route('admin.attendance.staff', ['id' => $user1->id]));
         $response->assertStatus(200);
 
-        $response = $this->get(route('admin.attendance.staff', [
+        $response->assertSeeText('翌月');
+
+        $expectedUrl = route('admin.attendance.staff', [
             'id' => $user1->id,
             'month' => $nextMonth,
-        ]));
+        ]);
+        $response = $this->get($expectedUrl);
         $response->assertStatus(200);
 
         foreach ($attendances as $attendance) {
