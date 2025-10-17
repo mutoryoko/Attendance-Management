@@ -64,7 +64,7 @@ class AdminStaffController extends Controller
         $year = $targetDate->year;
         $month = $targetDate->month;
 
-        $csvHeader = ['ID', '出勤日', '出勤時間', '退勤時間', '合計休憩時間（分）', '実労働時間（分）', '備考', '作成日', '更新日',];
+        $csvHeader = ['日付', '出勤', '退勤', '休憩', '合計',];
 
         $fileName = $user->name . '_' . $targetDate->format('Y年m月') . '勤怠情報.csv';
 
@@ -85,15 +85,11 @@ class AdminStaffController extends Controller
 
             foreach($attendances as $attendance) {
                 $row = [
-                    $attendance->id,
-                    $attendance->work_date->format('Y-m-d'),
-                    $attendance->clock_in_time->format('H:i:s'),
-                    $attendance->clock_out_time->format('H:i:s'),
-                    $attendance->total_break_minutes,
-                    $attendance->total_work_minutes,
-                    $attendance->note,
-                    $attendance->created_at->format('Y-m-d H:i:s'),
-                    $attendance->updated_at->format('Y-m-d H:i:s'),
+                    $attendance->work_date->isoFormat('MM/DD(ddd)'),
+                    $attendance->formatted_work_start,
+                    $attendance->formatted_work_start,
+                    $attendance->formatted_break_time,
+                    $attendance->formatted_work_time,
                 ];
                 fputcsv($file, $row);
             }
