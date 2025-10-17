@@ -55,7 +55,7 @@ class ShowRequestTest extends TestCase
                     'end' => '14:30',
                 ],
             ],
-            'note' => '修正しました',
+            'note' => '修正申請します',
         ];
 
         $response = $this->post(route('attendance.send', ['id' => $this->attendance->id]), $requestData);
@@ -74,13 +74,13 @@ class ShowRequestTest extends TestCase
         $response = $this->get(route('request'));
         $response->assertStatus(200);
 
-        $response->assertSeeTextInOrder([
-            '承認待ち',
-            '鈴木一郎',
-            '2025/10/01', //　対象日
-            '修正しました',
-            '2025/10/11', // 申請日
-        ]);
+        $response->assertSeeInOrder([
+            '<td class="table-data">承認待ち</td>',
+            '<td class="table-data">鈴木一郎</td>',
+            '<td class="table-data">2025/10/01</td>', //　対象日
+            '<td class="table-data">修正申請します</td>',
+            '<td class="table-data">2025/10/11</td>', // 申請日
+        ], false);
 
         // 承認画面
         $response = $this->get(route('request.detail', ['attendance_correct_request' => $requestAttendance->id]));
@@ -94,7 +94,7 @@ class ShowRequestTest extends TestCase
             '20:00',
             '13:30',
             '14:30',
-            '修正しました',
+            '修正申請します',
         ]);
     }
 
@@ -132,19 +132,19 @@ class ShowRequestTest extends TestCase
         $response = $this->get(route('request',['status' => 'pending']));
         $response->assertStatus(200);
 
-        $response->assertSeeTextInOrder([
-            '承認待ち',
-            '鈴木一郎',
-            '2025/10/01', //　対象日
-            '申請1',
-            '2025/10/11', // 申請日
+        $response->assertSeeInOrder([
+            '<td class="table-data">承認待ち</td>',
+            '<td class="table-data">鈴木一郎</td>',
+            '<td class="table-data">2025/10/01</td>', //　対象日
+            '<td class="table-data">申請1</td>',
+            '<td class="table-data">2025/10/11</td>', // 申請日
             // 2件目
-            '承認待ち',
-            '鈴木一郎',
-            '2025/10/10', //　対象日
-            '申請2',
-            '2025/10/11', // 申請日
-        ]);
+            '<td class="table-data">承認待ち</td>',
+            '<td class="table-data">鈴木一郎</td>',
+            '<td class="table-data">2025/10/10</td>', //　対象日
+            '<td class="table-data">申請2</td>',
+            '<td class="table-data">2025/10/11</td>', // 申請日
+        ], false);
     }
 
     // 承認済みの申請が申請一覧画面に表示されている
@@ -189,19 +189,19 @@ class ShowRequestTest extends TestCase
         $response = $this->get(route('request', ['status' => 'approved']));
         $response->assertStatus(200);
 
-        $response->assertSeeTextInOrder([
-            '承認済み',
-            '鈴木一郎',
-            '2025/10/01', //　対象日
-            '申請1',
-            '2025/10/11', // 申請日
+        $response->assertSeeInOrder([
+            '<td class="table-data">承認済み</td>',
+            '<td class="table-data">鈴木一郎</td>',
+            '<td class="table-data">2025/10/01</td>', //　対象日
+            '<td class="table-data">申請1</td>',
+            '<td class="table-data">2025/10/11</td>', // 申請日
             //2件目
-            '承認済み',
-            '鈴木一郎',
-            '2025/10/10', //　対象日
-            '申請2',
-            '2025/10/11', // 申請日
-        ]);
+            '<td class="table-data">承認済み</td>',
+            '<td class="table-data">鈴木一郎</td>',
+            '<td class="table-data">2025/10/10</td>', //　対象日
+            '<td class="table-data">申請2</td>',
+            '<td class="table-data">2025/10/11</td>', // 申請日
+        ], false);
     }
 
     // 申請一覧画面から詳細画面へ遷移する
@@ -216,7 +216,7 @@ class ShowRequestTest extends TestCase
                     'end' => '14:30',
                 ],
             ],
-            'note' => '修正しました',
+            'note' => '修正申請しました',
         ];
 
         $response = $this->post(route('attendance.send', ['id' => $this->attendance->id]), $requestData);

@@ -139,6 +139,8 @@ class AdminAttendanceController extends Controller
             return back()->with('error', '更新に失敗しました');
         }
 
-        return back()->with('status', '勤怠情報を修正しました');
+        $redirectTo = $request->input('_redirect_to', route('admin.index'));
+
+        return redirect($redirectTo)->with('status', '勤怠情報を修正しました');
     }
 }

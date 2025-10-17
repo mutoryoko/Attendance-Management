@@ -10,11 +10,14 @@ use App\Models\Attendance;
 use App\Models\RequestAttendance;
 use App\Models\RequestBreakTime;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Carbon\Carbon;
 
 
 class AdminRequestTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $fixedDate;
 
     private \Illuminate\Database\Eloquent\Collection $users;
     private AdminUser $admin;
@@ -23,6 +26,10 @@ class AdminRequestTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        // 申請日の設定
+        $this->fixedDate = Carbon::create(2025, 10, 16, 9, 0, 0);
+        Carbon::setTestNow($this->fixedDate);
 
         $this->users = User::factory()
             ->count(3)
@@ -80,20 +87,24 @@ class AdminRequestTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '鈴木一郎',
-            '2025/10/01',
-            '申請1',
-        ]);
-        $response->assertSeeInOrder([
-            '佐藤二郎',
-            '2025/10/10',
-            '申請2',
-        ]);
-        $response->assertSeeInOrder([
-            '北島三郎',
-            '2025/10/15',
-            '申請3',
-        ]);
+            '<td class="table-data">承認待ち</td>',
+            '<td class="table-data">鈴木一郎',
+            '<td class="table-data">2025/10/01</td>',
+            '<td class="table-data">申請1</td>',
+            '<td class="table-data">2025/10/16</td>',
+            // 2件目
+            '<td class="table-data">承認待ち</td>',
+            '<td class="table-data">佐藤二郎',
+            '<td class="table-data">2025/10/10</td>',
+            '<td class="table-data">申請2</td>',
+            '<td class="table-data">2025/10/16</td>',
+            //　3件目
+            '<td class="table-data">承認待ち</td>',
+            '<td class="table-data">北島三郎</td>',
+            '<td class="table-data">2025/10/15</td>',
+            '<td class="table-data">申請3</td>',
+            '<td class="table-data">2025/10/16</td>'
+        ], false);
     }
 
     // 承認済みの申請が表示される
@@ -145,20 +156,24 @@ class AdminRequestTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '鈴木一郎',
-            '2025/10/01',
-            '申請1',
-        ]);
-        $response->assertSeeInOrder([
-            '佐藤二郎',
-            '2025/10/10',
-            '申請2',
-        ]);
-        $response->assertSeeInOrder([
-            '北島三郎',
-            '2025/10/15',
-            '申請3',
-        ]);
+            '<td class="table-data">承認済み</td>',
+            '<td class="table-data">鈴木一郎',
+            '<td class="table-data">2025/10/01</td>',
+            '<td class="table-data">申請1</td>',
+            '<td class="table-data">2025/10/16</td>',
+            // 2件目
+            '<td class="table-data">承認済み</td>',
+            '<td class="table-data">佐藤二郎',
+            '<td class="table-data">2025/10/10</td>',
+            '<td class="table-data">申請2</td>',
+            '<td class="table-data">2025/10/16</td>',
+            // 3件目
+            '<td class="table-data">承認済み</td>',
+            '<td class="table-data">北島三郎</td>',
+            '<td class="table-data">2025/10/15</td>',
+            '<td class="table-data">申請3</td>',
+            '<td class="table-data">2025/10/16</td>',
+        ], false);
     }
 
     // 申請の詳細が正しく表示される
@@ -174,7 +189,7 @@ class AdminRequestTest extends TestCase
             'attendance_id' => $attendance->id,
             'requested_work_start' => '10:31:00',
             'requested_work_end' => '20:35:00',
-            'note' => '修正しました',
+            'note' => '申請します',
         ]);
         RequestBreakTime::factory()->create([
             'request_id' => $requestAttendance->id,
@@ -198,7 +213,7 @@ class AdminRequestTest extends TestCase
             '20:35',
             '13:10',
             '14:15',
-            '修正しました',
+            '申請します',
         ]);
     }
 
