@@ -42,7 +42,7 @@
             @enderror
         </div>
         <div class="user-form__item">
-            <label for="pw-confirm" class="user-form__label"><div>確認用パスワード</div></label>
+            <label for="pw-confirm" class="user-form__label"><div>パスワード確認</div></label>
             <input id="pw-confirm" class="user-form__input" type="password" name="password_confirmation" />
             @error('password')
             @if (str_contains($message, '一致しません'))

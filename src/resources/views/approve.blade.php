@@ -47,7 +47,7 @@
                 $requestBreakTime = $requestBreakTimes[$i] ?? null;
                 @endphp
                 <tr class="table-row">
-                    <th class="table-header">休憩{{ $i + 1 }}</th>
+                    <th class="table-header">{{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}</th>
                     <td class="table-data time-data">
                         {{ $requestBreakTime->formatted_requested_break_start ?? '' }}
                         <span class="range">〜</span>

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->time('requested_work_end')->nullable();
             $table->string('note');
             $table->boolean('is_approved')->default(false);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable(false);
+            $table->timestamp('updated_at')->useCurrent()->nullable(false);
         });
     }
 

@@ -13,7 +13,8 @@ return new class extends Migration
             $table->foreignId('request_id')->constrained('request_attendances')->onDelete('cascade');
             $table->time('requested_break_start')->nullable();
             $table->time('requested_break_end')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable(false);
+            $table->timestamp('updated_at')->useCurrent()->nullable(false);
         });
     }
 

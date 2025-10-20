@@ -13,7 +13,8 @@ return new class extends Migration
             $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
             $table->time('start_at');
             $table->time('end_at')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable(false);
+            $table->timestamp('updated_at')->useCurrent()->nullable(false);
         });
     }
 

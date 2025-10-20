@@ -75,7 +75,9 @@
             $breakTime = $attendance->breakTimes[$i] ?? null;
             @endphp
             <tr class="table-row">
-                <th class="table-header">休憩{{ $i + 1 }}</th>
+                <th class="table-header">
+                    {{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}
+                </th>
                 <td class="table-data">
                     <input class="time__input" type="time" name="breaks[{{ $i }}][start]" value="{{ old('breaks.' . $i . '.start', $breakTime ? $breakTime->formatted_break_start : '') }}" />
                     <span class="range">〜</span>

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('total_break_minutes')->default(0);
             $table->integer('total_work_minutes')->nullable();
             $table->string('note')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable(false);
+            $table->timestamp('updated_at')->useCurrent()->nullable(false);
 
             $table->unique(['user_id', 'work_date']);
         });
